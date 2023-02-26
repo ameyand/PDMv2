@@ -30,22 +30,18 @@ author:
     fullname: Nalini Elkins
     organization: Inside Products, Inc.
     email: "nalini.elkins@insidethestack.com"
-
  -
     fullname: Michael Ackermann
     organization: BCBS Michigan
     email: "mackermann@bcbsm.com"
-
 -
     fullname: Ameya Deshpande
     organization: NITK Surathkal/Google
     email: "ameyanrd@gmail.com"
-
 -
     fullname: Tommaso Pecorella
     organization: University of Florence
     email: "tommaso.pecorella@unifi.it"
-
 -
     fullname: Adnan Rashid
     organization: Politecnico di Bari
