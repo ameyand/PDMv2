@@ -286,6 +286,7 @@ cases:
 - PDM is used in a corporate network where there are security
   measures strong enough to consider the presence of a malicious
   actor a negligible risk.
+{: req2}
 
 ## Security Goals for Confidentiality
 
@@ -318,6 +319,7 @@ be seen to be met.
 - PDM is used in a corporate network where security measures are
   strong enough to consider the presence of a malicious actor a
   negligible risk.
+{: req3}
 
 ## Cryptographic Algorithm
 
@@ -353,13 +355,17 @@ Destination Options header.
 
 The IPv6 PDMv2 destination option contains the following base fields:
 
-    SCALEDTLR: Scale for Delta Time Last Received
-    SCALEDTLS: Scale for Delta Time Last Sent
-    GLOBALPTR: Global Pointer
-    PSNTP: Packet Sequence Number This Packet
-    PSNLR: Packet Sequence Number Last Received
-    DELTATLR: Delta Time Last Received
-    DELTATLS: Delta Time Last Sent
+{:req4: counter="bar" style="empty"}
+
+{: req4}
+SCALEDTLR: Scale for Delta Time Last Received
+SCALEDTLS: Scale for Delta Time Last Sent
+GLOBALPTR: Global Pointer
+PSNTP: Packet Sequence Number This Packet
+PSNLR: Packet Sequence Number Last Received
+DELTATLR: Delta Time Last Received
+DELTATLS: Delta Time Last Sent
+{: req4}
 
 PDMv2 adds a new metric to the existing PDM [RFC8250] called the
 Global Pointer.  The existing PDM fields are identified with respect
@@ -367,21 +373,24 @@ to the identifying information called a "5-tuple".
 
 The 5-tuple consists of:
 
-    SADDR: IP address of the sender
-    SPORT: Port for the sender
-    DADDR: IP address of the destination
-    DPORT: Port for the destination
-    PROTC: Upper-layer protocol (TCP, UDP, ICMP, etc.)
+{: req4}
+SADDR: IP address of the sender
+SPORT: Port for the sender
+DADDR: IP address of the destination
+DPORT: Port for the destination
+PROTC: Upper-layer protocol (TCP, UDP, ICMP, etc.)
+{: req4}
 
 Unlike PDM fields, Global Pointer (GLOBALPTR) field in PDMv2 is
 defined for the SADDR type.  Following are the SADDR address types
 considered:
 
-{:req4: counter="bar" style="format %c:"}
+{:req5: counter="bar" style="format %c:"}
 
-{: req4}
+{: req5}
 - Link-Local
 - Global Unicast
+{: req5}
 
 The Global Pointer is treated as a common entity over all the
 5-tuples with the same SADDR type.  It is initialised to the value 1
@@ -416,6 +425,7 @@ Following is the representation of the unencrypted PDMv2 header:
 |   Delta Time Last Received    |     Delta Time Last Sent      |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
+{: artwork-align="center" artwork-name="unencrypted-pdmv2-packet"}
 
 Following is the representation of the encrypted PDMv2 header:
 ~~~
@@ -430,15 +440,17 @@ Following is the representation of the encrypted PDMv2 header:
 :                          (30 bytes)                           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
+{: artwork-align="center" artwork-name="encrypted-pdmv2-packet"}
 
-{:req5: counter="bar" style="empty"}
+{:req4: counter="bar" style="empty"}
 
-{: req5}
+{: req4}
 - Option Type
 - Option Length
 - Version Number
 - Reserved Bits
 - Random Number
+{: req4}
 
 # Security Considerations
 
