@@ -96,8 +96,6 @@ unusual server delays.
 
 PDMv2 adds confidentiality, integrity and authentication to PDM.
 
-PDMv2 adds confidentiality, integrity and authentication to PDM.
-
 PDMv2 consists of three kinds of flows:
 
 - Primary to Primary
@@ -114,7 +112,7 @@ security requirements.  The Primary to Primary and Primary to
 Secondary protocol will be described in a subsequent document.
 
 
-# Conventions and Definitions
+# Conventions used in this document
 
 {::boilerplate bcp14-tagged}
 
@@ -160,12 +158,13 @@ Note: a client may act as a server (have listening ports).
 
 The protocol will proceed in 3 steps.
 
-Step 1:  Negotiation between Primary Server and Primary Client.
+{:req: counter="bar" style="format R(%d)"}
 
-Step 2:  Registration between Primary Server / Client and Secondary
-         Server / Client
-
-Step 3:  PDM data flow between Secondary Client and Secondary Server
+{: req}
+- Negotiation between Primary Server and Primary Client.
+- Registration between Primary Server / Client and Secondary
+  Server / Client
+- PDM data flow between Secondary Client and Secondary Server
 
 After-the-fact (or real-time) data analysis of PDM flow may occur by
 network diagnosticians or network devices.  The definition of how
