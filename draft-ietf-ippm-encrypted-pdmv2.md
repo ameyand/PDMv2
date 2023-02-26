@@ -373,24 +373,26 @@ to the identifying information called a "5-tuple".
 
 The 5-tuple consists of:
 
-{: req4}
+{:req5: counter="bar" style="empty"}
+
+{: req5}
 SADDR: IP address of the sender
 SPORT: Port for the sender
 DADDR: IP address of the destination
 DPORT: Port for the destination
 PROTC: Upper-layer protocol (TCP, UDP, ICMP, etc.)
-{: req4}
+{: req5}
 
 Unlike PDM fields, Global Pointer (GLOBALPTR) field in PDMv2 is
 defined for the SADDR type.  Following are the SADDR address types
 considered:
 
-{:req5: counter="bar" style="format %c:"}
+{:req6: counter="bar" style="format %c:"}
 
-{: req5}
+{: req6}
 - Link-Local
 - Global Unicast
-{: req5}
+{: req6}
 
 The Global Pointer is treated as a common entity over all the
 5-tuples with the same SADDR type.  It is initialised to the value 1
@@ -442,15 +444,15 @@ Following is the representation of the encrypted PDMv2 header:
 ~~~
 {: artwork-align="center" artwork-name="encrypted-pdmv2-packet"}
 
-{:req4: counter="bar" style="empty"}
+{:req7: counter="bar" style="empty"}
 
-{: req4}
+{: req7}
 - Option Type
 - Option Length
 - Version Number
 - Reserved Bits
 - Random Number
-{: req4}
+{: req7}
 
 # Security Considerations
 
