@@ -277,7 +277,7 @@ by other means, they can be transmitted without encryption or
 authentication.  This includes, but is not limited to, the following
 cases:
 
-{:req2: counter="bar" style="format %c:"}
+{:req2: counter="bar" style="format %a:"}
 
 {: req2}
 - PDM is used over an already encrypted medium (For example VPN
@@ -309,9 +309,9 @@ this will be defined in a subsequent document.  Alternatively, if
 authentication is done via any of the following, this requirement may
 be seen to be met.
 
-{:req2: counter="bar" style="format %c:"}
+{:req3: counter="bar" style="format %a:"}
 
-{: req2}
+{: req3}
 - PDM is used over an already authenticated medium (For example,
   TLS session).
 - PDM is used in a link-local scenario.
@@ -377,7 +377,9 @@ Unlike PDM fields, Global Pointer (GLOBALPTR) field in PDMv2 is
 defined for the SADDR type.  Following are the SADDR address types
 considered:
 
-{: req2}
+{:req4: counter="bar" style="format %a:"}
+
+{: req4}
 - Link-Local
 - Global Unicast
 
