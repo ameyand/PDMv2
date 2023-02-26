@@ -373,6 +373,62 @@ The 5-tuple consists of:
     DPORT: Port for the destination
     PROTC: Upper-layer protocol (TCP, UDP, ICMP, etc.)
 
+Unlike PDM fields, Global Pointer (GLOBALPTR) field in PDMv2 is
+defined for the SADDR type.  Following are the SADDR address types
+considered:
+
+{: req2}
+- Link-Local
+- Global Unicast
+
+The Global Pointer is treated as a common entity over all the
+5-tuples with the same SADDR type.  It is initialised to the value 1
+and increments for every packet sent.  Global Pointer provides a
+measure of the amount of IPv6 traffic sent by the PDMv2 node.
+
+When the SADDR type is Link-Local, the PDMv2 node sends Global
+Pointer defined for Link-Local addresses, and when the SADDR type is
+Global Unicast, it sends the one defined for Global Unicast
+addresses.
+
+### PDMv2 Layout
+
+PDMv2 has two different header formats corresponding to whether the
+metric contents are encrypted or unencrypted.  The difference between
+the two types of headers is determined from the Options Length value.
+
+Following is the representation of the unencrypted PDMv2 header:
+
+~~~
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|      Random Number          |f|   ScaleDTLR   |   ScaleDTLS   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Global Pointer                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|      PSN This Packet          |    PSN Last Received          |
+|-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Delta Time Last Received    |     Delta Time Last Sent      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+~~~
+
+Following is the representation of the encrypted PDMv2 header:
+~~~
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|      Random Number          |f|                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               :
+|                      Encrypted PDM Data                       :
+:                          (30 bytes)                           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+~~~
+
 # Security Considerations
 
 TODO Security
