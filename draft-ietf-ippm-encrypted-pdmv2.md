@@ -201,7 +201,6 @@ explanation.
 |                         |         |                         |
 +-------------------------+         +-------------------------+
 ~~~
-{: #reg-flow title="Registration Flow"}
 
 ## Primary Client - Primary Server Negotiation Phase
 
@@ -417,7 +416,6 @@ Following is the representation of the unencrypted PDMv2 header:
 |   Delta Time Last Received    |     Delta Time Last Sent      |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
-{: #unencrypted-pdmv2-packet title="Unencrypted PDMv2 Packet"}
 
 Following is the representation of the encrypted PDMv2 header:
 ~~~
@@ -432,7 +430,6 @@ Following is the representation of the encrypted PDMv2 header:
 :                          (30 bytes)                           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
-{: #encrypted-pdmv2-packet title="Encrypted PDMv2 Packet"}
 
 {:req5: counter="bar" style="empty"}
 
