@@ -1744,78 +1744,33 @@ the two types of headers is determined from the Options Length value.<a href="#s
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre><a href="#section-6.2.1-3" class="pilcrow">¶</a>
 </div>
-<span class="break"></span><dl class="dlParallel" id="section-6.2.1-4">
-            <dt id="section-6.2.1-4.1">Following is the representation of the encrypted PDMv2 header:</dt>
-            <dd style="margin-left: 1.5em" id="section-6.2.1-4.2">
-              <p id="section-6.2.1-4.2.1"></p><a href="#section-6.2.1-4.2" class="pilcrow">¶</a>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-6.2.1-4.3">~~~</dt>
-            <dd style="margin-left: 1.5em" id="section-6.2.1-4.4">
-              <p id="section-6.2.1-4.4.1"></p><a href="#section-6.2.1-4.4" class="pilcrow">¶</a>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-6.2.1-4.5">   0                   1                   2                   3</dt>
-            <dd style="margin-left: 1.5em" id="section-6.2.1-4.6">
-              <p id="section-6.2.1-4.6.1"></p><a href="#section-6.2.1-4.6" class="pilcrow">¶</a>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-6.2.1-4.7">   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1</dt>
-            <dd style="margin-left: 1.5em" id="section-6.2.1-4.8">
-              <p id="section-6.2.1-4.8.1"></p><a href="#section-6.2.1-4.8" class="pilcrow">¶</a>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-6.2.1-4.9">  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</dt>
-            <dd style="margin-left: 1.5em" id="section-6.2.1-4.10">
-              <p id="section-6.2.1-4.10.1"></p><a href="#section-6.2.1-4.10" class="pilcrow">¶</a>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-6.2.1-4.11">  |  Option Type  | Option Length | Vrsn  |     Reserved Bits     |</dt>
-            <dd style="margin-left: 1.5em" id="section-6.2.1-4.12">
-              <p id="section-6.2.1-4.12.1"></p><a href="#section-6.2.1-4.12" class="pilcrow">¶</a>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-6.2.1-4.13">  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</dt>
-            <dd style="margin-left: 1.5em" id="section-6.2.1-4.14">
-              <p id="section-6.2.1-4.14.1"></p><a href="#section-6.2.1-4.14" class="pilcrow">¶</a>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-6.2.1-4.15">  |      Random Number          |f|                               |</dt>
-            <dd style="margin-left: 1.5em" id="section-6.2.1-4.16">
-              <p id="section-6.2.1-4.16.1"></p><a href="#section-6.2.1-4.16" class="pilcrow">¶</a>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-6.2.1-4.17">  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               :</dt>
-            <dd style="margin-left: 1.5em" id="section-6.2.1-4.18">
-              <p id="section-6.2.1-4.18.1"></p><a href="#section-6.2.1-4.18" class="pilcrow">¶</a>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-6.2.1-4.19">  |                      Encrypted PDM Data                       :</dt>
-            <dd style="margin-left: 1.5em" id="section-6.2.1-4.20">
-              <p id="section-6.2.1-4.20.1">(30 bytes)                           |
+<p id="section-6.2.1-4">Following is the representation of the encrypted PDMv2 header:<a href="#section-6.2.1-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.2.1-5">
+<pre>
+   0                   1                   2                   3
+   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-~~~<a href="#section-6.2.1-4.20.1" class="pilcrow">¶</a></p>
-</dd>
-          <dd class="break"></dd>
-</dl>
+  |  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |      Random Number          |f|                               |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               :
+  |                      Encrypted PDM Data                       :
+  :                          (30 bytes)                           |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</pre><a href="#section-6.2.1-5" class="pilcrow">¶</a>
+</div>
 <ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-6.2.1-5.1">
-              <p id="section-6.2.1-5.1.1">Option Type<a href="#section-6.2.1-5.1.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-6.2.1-5.1.2.1">0x0F<a href="#section-6.2.1-5.1.2.1" class="pilcrow">¶</a>
+<li class="normal ulEmpty" id="section-6.2.1-6.1">Option Type
+  0x0F
+  8-bit unsigned integer.  The Option Type is adopted from RFC 8250 [RFC8250].<a href="#section-6.2.1-6.1" class="pilcrow">¶</a>
 </li>
-                <li class="normal" id="section-6.2.1-5.1.2.2">8-bit unsigned integer.  The Option Type is adopted from RFC
-      8250 [RFC8250].<a href="#section-6.2.1-5.1.2.2" class="pilcrow">¶</a>
+            <li class="normal ulEmpty" id="section-6.2.1-6.2">Option Length<a href="#section-6.2.1-6.2" class="pilcrow">¶</a>
 </li>
-              </ul>
+            <li class="normal ulEmpty" id="section-6.2.1-6.3">Version Number<a href="#section-6.2.1-6.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal ulEmpty" id="section-6.2.1-5.2">Option Length<a href="#section-6.2.1-5.2" class="pilcrow">¶</a>
+            <li class="normal ulEmpty" id="section-6.2.1-6.4">Reserved Bits<a href="#section-6.2.1-6.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal ulEmpty" id="section-6.2.1-5.3">Version Number<a href="#section-6.2.1-5.3" class="pilcrow">¶</a>
-</li>
-            <li class="normal ulEmpty" id="section-6.2.1-5.4">Reserved Bits<a href="#section-6.2.1-5.4" class="pilcrow">¶</a>
-</li>
-            <li class="normal ulEmpty" id="section-6.2.1-5.5">Random Number<a href="#section-6.2.1-5.5" class="pilcrow">¶</a>
+            <li class="normal ulEmpty" id="section-6.2.1-6.5">Random Number<a href="#section-6.2.1-6.5" class="pilcrow">¶</a>
 </li>
           </ul>
 </section>
