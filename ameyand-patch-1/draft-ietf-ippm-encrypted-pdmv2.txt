@@ -199,12 +199,12 @@ Table of Contents
 
    The protocol will proceed in 3 steps.
 
-   Step 1:  Negotiation between Primary Server and Primary Client.
+   1.  Negotiation between Primary Server and Primary Client.
 
-   Step 2:  Registration between Primary Server / Client and Secondary
-            Server / Client
+   2.  Registration between Primary Server / Client and Secondary Server
+       / Client
 
-   Step 3:  PDM data flow between Secondary Client and Secondary Server
+   3.  PDM data flow between Secondary Client and Secondary Server
 
    After-the-fact (or real-time) data analysis of PDM flow may occur by
    network diagnosticians or network devices.  The definition of how
