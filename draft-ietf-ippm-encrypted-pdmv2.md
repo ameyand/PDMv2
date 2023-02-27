@@ -460,7 +460,7 @@ Following is the representation of the encrypted PDMv2 header:
     0x12: Unencrypted PDM
 
     0x22: Encrypted PDM
-    
+
     8-bit unsigned integer.  Length of the option, in octets, excluding the Option
     Type and Option Length fields.  The options length is used for differentiating
     PDM [RFC8250], unencrypted PDMv2 and encrypted PDMv2.
