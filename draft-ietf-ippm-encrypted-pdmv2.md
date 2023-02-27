@@ -281,7 +281,7 @@ by other means, they can be transmitted without encryption or
 authentication.  This includes, but is not limited to, the following
 cases:
 
-{:req2: style="numbers"}
+{:req2: style="format %c)"}
 
 {: req2}
 - PDM is used over an already encrypted medium (For example VPN
@@ -314,7 +314,7 @@ this will be defined in a subsequent document.  Alternatively, if
 authentication is done via any of the following, this requirement may
 be seen to be met.
 
-{:req3: counter="bar" style="format %c:"}
+{:req3: style="format %c)"}
 
 {: req3}
 - PDM is used over an already authenticated medium (For example,
@@ -344,6 +344,7 @@ traditional schemes and thus lead to our choice of this framework.
 
 # PDMv2 Destination Options
 
+
 ## Destinations Option Header
 
 The IPv6 Destination Options extension header [RFC8200] is used to
@@ -358,13 +359,16 @@ Destination Options header.
 
 The IPv6 PDMv2 destination option contains the following base fields:
 
-    SCALEDTLR: Scale for Delta Time Last Received
-    SCALEDTLS: Scale for Delta Time Last Sent
-    GLOBALPTR: Global Pointer
-    PSNTP: Packet Sequence Number This Packet
-    PSNLR: Packet Sequence Number Last Received
-    DELTATLR: Delta Time Last Received
-    DELTATLS: Delta Time Last Sent
+{:req4: style="empty"}
+
+{: req4}
+SCALEDTLR: Scale for Delta Time Last Received
+SCALEDTLS: Scale for Delta Time Last Sent
+GLOBALPTR: Global Pointer
+PSNTP: Packet Sequence Number This Packet
+PSNLR: Packet Sequence Number Last Received
+DELTATLR: Delta Time Last Received
+DELTATLS: Delta Time Last Sent
 
 PDMv2 adds a new metric to the existing PDM [RFC8250] called the
 Global Pointer.  The existing PDM fields are identified with respect
@@ -372,19 +376,22 @@ to the identifying information called a "5-tuple".
 
 The 5-tuple consists of:
 
-    SADDR: IP address of the sender
-    SPORT: Port for the sender
-    DADDR: IP address of the destination
-    DPORT: Port for the destination
-    PROTC: Upper-layer protocol (TCP, UDP, ICMP, etc.)
+{:req5: style="empty"}
+
+{: req5}
+SADDR: IP address of the sender
+SPORT: Port for the sender
+DADDR: IP address of the destination
+DPORT: Port for the destination
+PROTC: Upper-layer protocol (TCP, UDP, ICMP, etc.)
 
 Unlike PDM fields, Global Pointer (GLOBALPTR) field in PDMv2 is
 defined for the SADDR type.  Following are the SADDR address types
 considered:
 
-{:req4: counter="bar" style="format %c:"}
+{:req6: style="format %c)"}
 
-{: req4}
+{: req6}
 - Link-Local
 - Global Unicast
 
@@ -392,6 +399,7 @@ The Global Pointer is treated as a common entity over all the
 5-tuples with the same SADDR type.  It is initialised to the value 1
 and increments for every packet sent.  Global Pointer provides a
 measure of the amount of IPv6 traffic sent by the PDMv2 node.
+
 
 When the SADDR type is Link-Local, the PDMv2 node sends Global
 Pointer defined for Link-Local addresses, and when the SADDR type is
@@ -407,38 +415,40 @@ the two types of headers is determined from the Options Length value.
 Following is the representation of the unencrypted PDMv2 header:
 
 ~~~
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      Random Number          |f|   ScaleDTLR   |   ScaleDTLS   |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                         Global Pointer                        |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      PSN This Packet          |    PSN Last Received          |
-|-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Delta Time Last Received    |     Delta Time Last Sent      |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   0                   1                   2                   3
+   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |      Random Number          |f|   ScaleDTLR   |   ScaleDTLS   |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |                         Global Pointer                        |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |      PSN This Packet          |    PSN Last Received          |
+  |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |   Delta Time Last Received    |     Delta Time Last Sent      |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
+{: #pdmv2-unencrypted-packet title="PDMv2 Unencrypted Packet"}
 
 Following is the representation of the encrypted PDMv2 header:
 ~~~
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      Random Number          |f|                               |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               :
-|                      Encrypted PDM Data                       :
-:                          (30 bytes)                           |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   0                   1                   2                   3
+   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |      Random Number          |f|                               |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               :
+  |                      Encrypted PDM Data                       :
+  :                          (30 bytes)                           |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
+{: #pdmv2-encrypted-packet title="PDMv2 Encrypted Packet"}
 
-{:req5: counter="bar" style="empty"}
+{:req7: style="empty"}
 
-{: req5}
+{: req7}
 - Option Type
 - Option Length
 - Version Number
