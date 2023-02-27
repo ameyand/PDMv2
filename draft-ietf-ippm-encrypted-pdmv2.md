@@ -449,11 +449,23 @@ Following is the representation of the encrypted PDMv2 header:
 
 {: req7}
 - Option Type
-    {:req8: style="empty"}
-    {: req8}
-    - 0x0F
-    - 8-bit unsigned integer.  The Option Type is adopted from RFC 8250 [RFC8250].
+
+    0x0F
+
+    8-bit unsigned integer.  The Option Type is adopted from RFC 8250 [RFC8250].
+
+{: req7}
 - Option Length
+
+    0x12: Unencrypted PDM
+
+    0x22: Encrypted PDM
+    
+    8-bit unsigned integer.  Length of the option, in octets, excluding the Option
+    Type and Option Length fields.  The options length is used for differentiating
+    PDM [RFC8250], unencrypted PDMv2 and encrypted PDMv2.
+
+{: req7}
 - Version Number
 - Reserved Bits
 - Random Number
