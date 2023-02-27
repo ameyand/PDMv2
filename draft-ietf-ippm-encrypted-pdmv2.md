@@ -60,7 +60,7 @@ informative:
 
 RFC8250 describes an optional Destination Option (DO) header embedded
 in each packet to provide sequence numbers and timing information as
-a basis for measurements.  As this data is sent in clear- text, this
+a basis for measurements.  As this data is sent in clear-text, this
 may create an opportunity for malicious actors to get information for
 subsequent attacks.  This document defines PDMv2 which has a
 lightweight handshake (registration procedure) and encryption to
@@ -154,6 +154,7 @@ Note: a client may act as a server (have listening ports).
 -  Session Key: A temporary key which acts as a symmetric key for the
    whole session.
 
+
 # Protocol Flow
 
 The protocol will proceed in 3 steps.
@@ -186,6 +187,7 @@ explanation.
 ### Diagram of Registration Flow
 
 ~~~
+
        +-----------+                      +-----------+
        |Primary    |<====================>|Primary    |
        |Client (PC)|                      |Server (PS)|
@@ -200,6 +202,7 @@ explanation.
 | +----+ +----+   +----+  |         | +----+ +----+   +----+  |
 |                         |         |                         |
 +-------------------------+         +-------------------------+
+
 ~~~
 
 ## Primary Client - Primary Server Negotiation Phase
@@ -250,6 +253,7 @@ Server and Client.  Moreover, the time evolution of the respective
 Kri can be different.  As a consequence, each entity must maintain a
 table with (at least) the following informations:
 
+
 -  Flow 5-tuple, Own Kri, Other Kri
 
 An implementation might optimize this further by caching the
@@ -277,7 +281,7 @@ by other means, they can be transmitted without encryption or
 authentication.  This includes, but is not limited to, the following
 cases:
 
-{:req2: counter="bar" style="format %c:"}
+{:req2: style="format %c)"}
 
 {: req2}
 - PDM is used over an already encrypted medium (For example VPN
@@ -294,6 +298,7 @@ which includes (but is not limited to) the two entities exchanging
 PDM data, and any legitimate party with the proper rights to access
 such data.
 
+
 ## Security Goals for Integrity
 
 PDM data must not be forged or modified by a malicious entity.  In
@@ -309,7 +314,7 @@ this will be defined in a subsequent document.  Alternatively, if
 authentication is done via any of the following, this requirement may
 be seen to be met.
 
-{:req3: counter="bar" style="format %c:"}
+{:req3: style="format %c)"}
 
 {: req3}
 - PDM is used over an already authenticated medium (For example,
@@ -339,6 +344,7 @@ traditional schemes and thus lead to our choice of this framework.
 
 # PDMv2 Destination Options
 
+
 ## Destinations Option Header
 
 The IPv6 Destination Options extension header [RFC8200] is used to
@@ -353,13 +359,16 @@ Destination Options header.
 
 The IPv6 PDMv2 destination option contains the following base fields:
 
-    SCALEDTLR: Scale for Delta Time Last Received
-    SCALEDTLS: Scale for Delta Time Last Sent
-    GLOBALPTR: Global Pointer
-    PSNTP: Packet Sequence Number This Packet
-    PSNLR: Packet Sequence Number Last Received
-    DELTATLR: Delta Time Last Received
-    DELTATLS: Delta Time Last Sent
+{:req4: style="empty"}
+
+{: req4}
+- SCALEDTLR: Scale for Delta Time Last Received
+- SCALEDTLS: Scale for Delta Time Last Sent
+- GLOBALPTR: Global Pointer
+- PSNTP: Packet Sequence Number This Packet
+- PSNLR: Packet Sequence Number Last Received
+- DELTATLR: Delta Time Last Received
+- DELTATLS: Delta Time Last Sent
 
 PDMv2 adds a new metric to the existing PDM [RFC8250] called the
 Global Pointer.  The existing PDM fields are identified with respect
@@ -367,19 +376,22 @@ to the identifying information called a "5-tuple".
 
 The 5-tuple consists of:
 
-    SADDR: IP address of the sender
-    SPORT: Port for the sender
-    DADDR: IP address of the destination
-    DPORT: Port for the destination
-    PROTC: Upper-layer protocol (TCP, UDP, ICMP, etc.)
+{:req5: style="empty"}
+
+{: req5}
+- SADDR: IP address of the sender
+- SPORT: Port for the sender
+- DADDR: IP address of the destination
+- DPORT: Port for the destination
+- PROTC: Upper-layer protocol (TCP, UDP, ICMP, etc.)
 
 Unlike PDM fields, Global Pointer (GLOBALPTR) field in PDMv2 is
 defined for the SADDR type.  Following are the SADDR address types
 considered:
 
-{:req4: counter="bar" style="format %c:"}
+{:req6: style="format %c)"}
 
-{: req4}
+{: req6}
 - Link-Local
 - Global Unicast
 
@@ -387,6 +399,7 @@ The Global Pointer is treated as a common entity over all the
 5-tuples with the same SADDR type.  It is initialised to the value 1
 and increments for every packet sent.  Global Pointer provides a
 measure of the amount of IPv6 traffic sent by the PDMv2 node.
+
 
 When the SADDR type is Link-Local, the PDMv2 node sends Global
 Pointer defined for Link-Local addresses, and when the SADDR type is
@@ -402,43 +415,115 @@ the two types of headers is determined from the Options Length value.
 Following is the representation of the unencrypted PDMv2 header:
 
 ~~~
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      Random Number          |f|   ScaleDTLR   |   ScaleDTLS   |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                         Global Pointer                        |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      PSN This Packet          |    PSN Last Received          |
-|-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Delta Time Last Received    |     Delta Time Last Sent      |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   0                   1                   2                   3
+   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |      Random Number          |f|   ScaleDTLR   |   ScaleDTLS   |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |                         Global Pointer                        |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |      PSN This Packet          |    PSN Last Received          |
+  |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |   Delta Time Last Received    |     Delta Time Last Sent      |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
 
 Following is the representation of the encrypted PDMv2 header:
+
 ~~~
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      Random Number          |f|                               |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               :
-|                      Encrypted PDM Data                       :
-:                          (30 bytes)                           |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   0                   1                   2                   3
+   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |      Random Number          |f|                               |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               :
+  |                      Encrypted PDM Data                       :
+  :                          (30 bytes)                           |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
 
-{:req5: counter="bar" style="empty"}
+{:req7: style="empty"}
 
-{: req5}
+{: req7}
 - Option Type
+
+    0x0F
+
+    8-bit unsigned integer.  The Option Type is adopted from RFC 8250 [RFC8250].
+
+{: req7}
 - Option Length
+
+    0x12: Unencrypted PDM
+
+    0x22: Encrypted PDM
+
+    8-bit unsigned integer.  Length of the option, in octets, excluding the Option
+    Type and Option Length fields.  The options length is used for differentiating
+    PDM [RFC8250], unencrypted PDMv2 and encrypted PDMv2.
+
+{: req7}
 - Version Number
+
+    0x2
+
+    4-bit unsigned number.
+
 - Reserved Bits
+
+    12-bits.
+
+    Reserved bits for future use.  They are initialised to 0 for PDMv2.
 - Random Number
+
+    15-bit unsigned number.
+
+    This is a random number with as much entropy as desired by the
+ 	  implementation.  The level of entropy should be clearly
+ 	  specified to the user.
+
+- Flag Bit
+
+    1-bit field.
+
+    The flag bit indicates that the sender has used a new
+ 	  _SessionTemporaryKey_ and the receiver should increment the Kri
+ 	  of the sender and derive the same new _SessionTemporaryKey_.
+
+- Scale Delta Time Last Received (SCALEDTLR)
+
+    8-bit unsigned number.
+
+    This is the scaling value for the Delta Time Last Sent
+ 	  (DELTATLS) field.
+
+- Scale Delta Time Last Sent (SCALEDTLS)
+
+    8-bit unsigned number.
+
+    Global Pointer is initialized to 1 for the different source
+ 	  address types and incremented monotonically for each packet
+ 	  with the corresponding source address type.
+
+    This field stores the Global Pointer type corresponding to the
+ 	  SADDR type of the packet.
+
+- Packet Sequence Number This Packet (PSNTP)
+
+    16-bit unsigned number.
+
+    This field is initialized at a random number and is incremented
+ 	  monotonically for each packet of the 5-tuple.
+
+- Packet Sequence Number Last Received (PSNLR)
+
+    16-bit unsigned number.
+
+    This field is the PSNTP of the last received packet on the
+ 	  5-tuple.
 
 # Security Considerations
 
