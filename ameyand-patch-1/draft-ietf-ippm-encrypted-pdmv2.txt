@@ -475,12 +475,21 @@ Table of Contents
 
       Option Type
 
-      -  0x0F
+      0x0F
 
-      -  8-bit unsigned integer.  The Option Type is adopted from RFC
-         8250 [RFC8250].
+      8-bit unsigned integer.  The Option Type is adopted from RFC 8250
+      [RFC8250].
 
       Option Length
+
+      0x12: Unencrypted PDM
+
+      0x22: Encrypted PDM
+
+      8-bit unsigned integer.  Length of the option, in octets,
+      excluding the Option Type and Option Length fields.  The options
+      length is used for differentiating PDM [RFC8250], unencrypted
+      PDMv2 and encrypted PDMv2.
 
       Version Number
 

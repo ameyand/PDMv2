@@ -1762,20 +1762,31 @@ the two types of headers is determined from the Options Length value.<a href="#s
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-6.2.1-6.1">
               <p id="section-6.2.1-6.1.1">Option Type<a href="#section-6.2.1-6.1.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-6.2.1-6.1.2.1">0x0F<a href="#section-6.2.1-6.1.2.1" class="pilcrow">¶</a>
+<p id="section-6.2.1-6.1.2">
+0x0F<a href="#section-6.2.1-6.1.2" class="pilcrow">¶</a></p>
+<p id="section-6.2.1-6.1.3">
+8-bit unsigned integer.  The Option Type is adopted from RFC 8250 [RFC8250].<a href="#section-6.2.1-6.1.3" class="pilcrow">¶</a></p>
 </li>
-                <li class="normal" id="section-6.2.1-6.1.2.2">8-bit unsigned integer.  The Option Type is adopted from RFC 8250 [RFC8250].<a href="#section-6.2.1-6.1.2.2" class="pilcrow">¶</a>
+          </ul>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-6.2.1-7.1">
+              <p id="section-6.2.1-7.1.1">Option Length<a href="#section-6.2.1-7.1.1" class="pilcrow">¶</a></p>
+<p id="section-6.2.1-7.1.2">
+0x12: Unencrypted PDM<a href="#section-6.2.1-7.1.2" class="pilcrow">¶</a></p>
+<p id="section-6.2.1-7.1.3">
+0x22: Encrypted PDM<a href="#section-6.2.1-7.1.3" class="pilcrow">¶</a></p>
+<p id="section-6.2.1-7.1.4">
+8-bit unsigned integer.  Length of the option, in octets, excluding the Option
+  Type and Option Length fields.  The options length is used for differentiating
+  PDM [RFC8250], unencrypted PDMv2 and encrypted PDMv2.<a href="#section-6.2.1-7.1.4" class="pilcrow">¶</a></p>
 </li>
-              </ul>
+          </ul>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-6.2.1-8.1">Version Number<a href="#section-6.2.1-8.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal ulEmpty" id="section-6.2.1-6.2">Option Length<a href="#section-6.2.1-6.2" class="pilcrow">¶</a>
+            <li class="normal ulEmpty" id="section-6.2.1-8.2">Reserved Bits<a href="#section-6.2.1-8.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal ulEmpty" id="section-6.2.1-6.3">Version Number<a href="#section-6.2.1-6.3" class="pilcrow">¶</a>
-</li>
-            <li class="normal ulEmpty" id="section-6.2.1-6.4">Reserved Bits<a href="#section-6.2.1-6.4" class="pilcrow">¶</a>
-</li>
-            <li class="normal ulEmpty" id="section-6.2.1-6.5">Random Number<a href="#section-6.2.1-6.5" class="pilcrow">¶</a>
+            <li class="normal ulEmpty" id="section-6.2.1-8.3">Random Number<a href="#section-6.2.1-8.3" class="pilcrow">¶</a>
 </li>
           </ul>
 </section>
