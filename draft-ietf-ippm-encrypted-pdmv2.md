@@ -362,13 +362,13 @@ The IPv6 PDMv2 destination option contains the following base fields:
 {:req4: style="empty"}
 
 {: req4}
-SCALEDTLR: Scale for Delta Time Last Received
-SCALEDTLS: Scale for Delta Time Last Sent
-GLOBALPTR: Global Pointer
-PSNTP: Packet Sequence Number This Packet
-PSNLR: Packet Sequence Number Last Received
-DELTATLR: Delta Time Last Received
-DELTATLS: Delta Time Last Sent
+- SCALEDTLR: Scale for Delta Time Last Received
+- SCALEDTLS: Scale for Delta Time Last Sent
+- GLOBALPTR: Global Pointer
+- PSNTP: Packet Sequence Number This Packet
+- PSNLR: Packet Sequence Number Last Received
+- DELTATLR: Delta Time Last Received
+- DELTATLS: Delta Time Last Sent
 
 PDMv2 adds a new metric to the existing PDM [RFC8250] called the
 Global Pointer.  The existing PDM fields are identified with respect
@@ -379,11 +379,11 @@ The 5-tuple consists of:
 {:req5: style="empty"}
 
 {: req5}
-SADDR: IP address of the sender
-SPORT: Port for the sender
-DADDR: IP address of the destination
-DPORT: Port for the destination
-PROTC: Upper-layer protocol (TCP, UDP, ICMP, etc.)
+- SADDR: IP address of the sender
+- SPORT: Port for the sender
+- DADDR: IP address of the destination
+- DPORT: Port for the destination
+- PROTC: Upper-layer protocol (TCP, UDP, ICMP, etc.)
 
 Unlike PDM fields, Global Pointer (GLOBALPTR) field in PDMv2 is
 defined for the SADDR type.  Following are the SADDR address types
