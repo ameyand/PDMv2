@@ -199,12 +199,12 @@ Table of Contents
 
    The protocol will proceed in 3 steps.
 
-   1.  Negotiation between Primary Server and Primary Client.
+   Step 1:  Negotiation between Primary Server and Primary Client.
 
-   2.  Registration between Primary Server / Client and Secondary Server
-       / Client
+   Step 2:  Registration between Primary Server / Client and Secondary
+            Server / Client
 
-   3.  PDM data flow between Secondary Client and Secondary Server
+   Step 3:  PDM data flow between Secondary Client and Secondary Server
 
    After-the-fact (or real-time) data analysis of PDM flow may occur by
    network diagnosticians or network devices.  The definition of how
@@ -316,12 +316,12 @@ Table of Contents
    authentication.  This includes, but is not limited to, the following
    cases:
 
-   4.  PDM is used over an already encrypted medium (For example VPN
+   1.  PDM is used over an already encrypted medium (For example VPN
        tunnels).
 
-   5.  PDM is used in a link-local scenario.
+   2.  PDM is used in a link-local scenario.
 
-   6.  PDM is used in a corporate network where there are security
+   3.  PDM is used in a corporate network where there are security
        measures strong enough to consider the presence of a malicious
        actor a negligible risk.
 
@@ -347,12 +347,12 @@ Table of Contents
    authentication is done via any of the following, this requirement may
    be seen to be met.
 
-   g:  PDM is used over an already authenticated medium (For example,
+   d:  PDM is used over an already authenticated medium (For example,
        TLS session).
 
-   h:  PDM is used in a link-local scenario.
+   e:  PDM is used in a link-local scenario.
 
-   i:  PDM is used in a corporate network where security measures are
+   f:  PDM is used in a corporate network where security measures are
        strong enough to consider the presence of a malicious actor a
        negligible risk.
 
@@ -414,9 +414,9 @@ Table of Contents
    defined for the SADDR type.  Following are the SADDR address types
    considered:
 
-   j:  Link-Local
+   g:  Link-Local
 
-   k:  Global Unicast
+   h:  Global Unicast
 
    The Global Pointer is treated as a common entity over all the
    5-tuples with the same SADDR type.  It is initialised to the value 1

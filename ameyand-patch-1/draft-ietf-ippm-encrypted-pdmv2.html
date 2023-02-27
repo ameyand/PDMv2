@@ -1394,15 +1394,21 @@ whole session.<a href="#section-3-3.4" class="pilcrow">¶</a>
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-protocol-flow" class="section-name selfRef">Protocol Flow</a>
       </h2>
 <p id="section-4-1">The protocol will proceed in 3 steps.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-4-2">
-<li id="section-4-2.1">Negotiation between Primary Server and Primary Client.<a href="#section-4-2.1" class="pilcrow">¶</a>
-</li>
-        <li id="section-4-2.2">Registration between Primary Server / Client and Secondary
+<span class="break"></span><dl class="olPercent" id="section-4-2">
+<dt>Step 1:</dt>
+<dd id="section-4-2.1">Negotiation between Primary Server and Primary Client.<a href="#section-4-2.1" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt>Step 2:</dt>
+<dd id="section-4-2.2">Registration between Primary Server / Client and Secondary
 Server / Client<a href="#section-4-2.2" class="pilcrow">¶</a>
-</li>
-        <li id="section-4-2.3">PDM data flow between Secondary Client and Secondary Server<a href="#section-4-2.3" class="pilcrow">¶</a>
-</li>
-      </ol>
+</dd>
+        <dd class="break"></dd>
+<dt>Step 3:</dt>
+<dd id="section-4-2.3">PDM data flow between Secondary Client and Secondary Server<a href="#section-4-2.3" class="pilcrow">¶</a>
+</dd>
+      <dd class="break"></dd>
+</dl>
 <p id="section-4-3">After-the-fact (or real-time) data analysis of PDM flow may occur by
 network diagnosticians or network devices.  The definition of how
 this is done is out of scope for this document.<a href="#section-4-3" class="pilcrow">¶</a></p>
@@ -1543,7 +1549,7 @@ scenario where the integrity and confidentiality is already ensured
 by other means, they can be transmitted without encryption or
 authentication.  This includes, but is not limited to, the following
 cases:<a href="#section-5-3" class="pilcrow">¶</a></p>
-<ol start="4" type="1" class="normal type-1" id="section-5-4">
+<ol start="1" type="1" class="normal type-1" id="section-5-4">
 <li id="section-5-4.1">PDM is used over an already encrypted medium (For example VPN
 tunnels).<a href="#section-5-4.1" class="pilcrow">¶</a>
 </li>
@@ -1587,16 +1593,16 @@ this will be defined in a subsequent document.  Alternatively, if
 authentication is done via any of the following, this requirement may
 be seen to be met.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="olPercent" id="section-5.3-2">
-<dt>g:</dt>
+<dt>d:</dt>
 <dd id="section-5.3-2.1">PDM is used over an already authenticated medium (For example,
 TLS session).<a href="#section-5.3-2.1" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
-<dt>h:</dt>
+<dt>e:</dt>
 <dd id="section-5.3-2.2">PDM is used in a link-local scenario.<a href="#section-5.3-2.2" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
-<dt>i:</dt>
+<dt>f:</dt>
 <dd id="section-5.3-2.3">PDM is used in a corporate network where security measures are
 strong enough to consider the presence of a malicious actor a
 negligible risk.<a href="#section-5.3-2.3" class="pilcrow">¶</a>
@@ -1681,11 +1687,11 @@ PROTC: Upper-layer protocol (TCP, UDP, ICMP, etc.)
 defined for the SADDR type.  Following are the SADDR address types
 considered:<a href="#section-6.2-6" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="olPercent" id="section-6.2-7">
-<dt>j:</dt>
+<dt>g:</dt>
 <dd id="section-6.2-7.1">Link-Local<a href="#section-6.2-7.1" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
-<dt>k:</dt>
+<dt>h:</dt>
 <dd id="section-6.2-7.2">Global Unicast<a href="#section-6.2-7.2" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
