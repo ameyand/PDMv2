@@ -431,6 +431,7 @@ Following is the representation of the unencrypted PDMv2 header:
 ~~~
 
 Following is the representation of the encrypted PDMv2 header:
+
 ~~~
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -443,10 +444,12 @@ Following is the representation of the encrypted PDMv2 header:
   :                          (30 bytes)                           |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
+
 {:req7: style="empty"}
 
 {: req7}
 - Option Type
+    {: req7}
     - 0x0F
     - 8-bit unsigned integer.  The Option Type is adopted from RFC
  	    8250 [RFC8250].
