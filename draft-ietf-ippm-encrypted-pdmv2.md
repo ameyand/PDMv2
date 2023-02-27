@@ -467,8 +467,63 @@ Following is the representation of the encrypted PDMv2 header:
 
 {: req7}
 - Version Number
+
+    0x2
+
+    4-bit unsigned number.
+
 - Reserved Bits
+
+    12-bits.
+
+    Reserved bits for future use.  They are initialised to 0 for PDMv2.
 - Random Number
+
+    15-bit unsigned number.
+
+    This is a random number with as much entropy as desired by the
+ 	  implementation.  The level of entropy should be clearly
+ 	  specified to the user.
+
+- Flag Bit
+
+    1-bit field.
+
+    The flag bit indicates that the sender has used a new
+ 	  _SessionTemporaryKey_ and the receiver should increment the Kri
+ 	  of the sender and derive the same new _SessionTemporaryKey_.
+
+- Scale Delta Time Last Received (SCALEDTLR)
+
+    8-bit unsigned number.
+
+    This is the scaling value for the Delta Time Last Sent
+ 	  (DELTATLS) field.
+
+- Scale Delta Time Last Sent (SCALEDTLS)
+
+    8-bit unsigned number.
+
+    Global Pointer is initialized to 1 for the different source
+ 	  address types and incremented monotonically for each packet
+ 	  with the corresponding source address type.
+
+    This field stores the Global Pointer type corresponding to the
+ 	  SADDR type of the packet.
+
+- Packet Sequence Number This Packet (PSNTP)
+
+    16-bit unsigned number.
+
+    This field is initialized at a random number and is incremented
+ 	  monotonically for each packet of the 5-tuple.
+
+- Packet Sequence Number Last Received (PSNLR)
+
+    16-bit unsigned number.
+
+    This field is the PSNTP of the last received packet on the
+ 	  5-tuple.
 
 # Security Considerations
 
