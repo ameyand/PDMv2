@@ -60,7 +60,7 @@ informative:
 
 RFC8250 describes an optional Destination Option (DO) header embedded
 in each packet to provide sequence numbers and timing information as
-a basis for measurements.  As this data is sent in clear- text, this
+a basis for measurements.  As this data is sent in clear-text, this
 may create an opportunity for malicious actors to get information for
 subsequent attacks.  This document defines PDMv2 which has a
 lightweight handshake (registration procedure) and encryption to
@@ -154,6 +154,7 @@ Note: a client may act as a server (have listening ports).
 -  Session Key: A temporary key which acts as a symmetric key for the
    whole session.
 
+
 # Protocol Flow
 
 The protocol will proceed in 3 steps.
@@ -186,6 +187,7 @@ explanation.
 ### Diagram of Registration Flow
 
 ~~~
+
        +-----------+                      +-----------+
        |Primary    |<====================>|Primary    |
        |Client (PC)|                      |Server (PS)|
@@ -200,6 +202,7 @@ explanation.
 | +----+ +----+   +----+  |         | +----+ +----+   +----+  |
 |                         |         |                         |
 +-------------------------+         +-------------------------+
+
 ~~~
 
 ## Primary Client - Primary Server Negotiation Phase
@@ -250,6 +253,7 @@ Server and Client.  Moreover, the time evolution of the respective
 Kri can be different.  As a consequence, each entity must maintain a
 table with (at least) the following informations:
 
+
 -  Flow 5-tuple, Own Kri, Other Kri
 
 An implementation might optimize this further by caching the
@@ -277,7 +281,7 @@ by other means, they can be transmitted without encryption or
 authentication.  This includes, but is not limited to, the following
 cases:
 
-{:req2: counter="bar" style="format %c:"}
+{:req2: counter="bar" style="format %c)"}
 
 {: req2}
 - PDM is used over an already encrypted medium (For example VPN
@@ -286,6 +290,7 @@ cases:
 - PDM is used in a corporate network where there are security
   measures strong enough to consider the presence of a malicious
   actor a negligible risk.
+{: req2}
 
 ## Security Goals for Confidentiality
 
@@ -293,6 +298,7 @@ PDM data must be kept confidential between the intended parties,
 which includes (but is not limited to) the two entities exchanging
 PDM data, and any legitimate party with the proper rights to access
 such data.
+
 
 ## Security Goals for Integrity
 
