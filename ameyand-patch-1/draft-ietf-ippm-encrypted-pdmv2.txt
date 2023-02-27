@@ -316,12 +316,12 @@ Table of Contents
    authentication.  This includes, but is not limited to, the following
    cases:
 
-   d.  PDM is used over an already encrypted medium (For example VPN
+   4.  PDM is used over an already encrypted medium (For example VPN
        tunnels).
 
-   e.  PDM is used in a link-local scenario.
+   5.  PDM is used in a link-local scenario.
 
-   f.  PDM is used in a corporate network where there are security
+   6.  PDM is used in a corporate network where there are security
        measures strong enough to consider the presence of a malicious
        actor a negligible risk.
 
