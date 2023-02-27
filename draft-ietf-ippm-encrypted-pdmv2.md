@@ -166,6 +166,7 @@ The protocol will proceed in 3 steps.
 - Registration between Primary Server / Client and Secondary
   Server / Client
 - PDM data flow between Secondary Client and Secondary Server
+{: req1}
 
 After-the-fact (or real-time) data analysis of PDM flow may occur by
 network diagnosticians or network devices.  The definition of how
