@@ -1549,17 +1549,23 @@ scenario where the integrity and confidentiality is already ensured
 by other means, they can be transmitted without encryption or
 authentication.  This includes, but is not limited to, the following
 cases:<a href="#section-5-3" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-5-4">
-<li id="section-5-4.1">PDM is used over an already encrypted medium (For example VPN
+<span class="break"></span><dl class="olPercent" id="section-5-4">
+<dt>a)</dt>
+<dd id="section-5-4.1">PDM is used over an already encrypted medium (For example VPN
 tunnels).<a href="#section-5-4.1" class="pilcrow">¶</a>
-</li>
-        <li id="section-5-4.2">PDM is used in a link-local scenario.<a href="#section-5-4.2" class="pilcrow">¶</a>
-</li>
-        <li id="section-5-4.3">PDM is used in a corporate network where there are security
+</dd>
+        <dd class="break"></dd>
+<dt>b)</dt>
+<dd id="section-5-4.2">PDM is used in a link-local scenario.<a href="#section-5-4.2" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt>c)</dt>
+<dd id="section-5-4.3">PDM is used in a corporate network where there are security
 measures strong enough to consider the presence of a malicious
 actor a negligible risk.<a href="#section-5-4.3" class="pilcrow">¶</a>
-</li>
-      </ol>
+</dd>
+      <dd class="break"></dd>
+</dl>
 <div id="security-goals-for-confidentiality">
 <section id="section-5.1">
         <h3 id="name-security-goals-for-confiden">
@@ -1593,16 +1599,16 @@ this will be defined in a subsequent document.  Alternatively, if
 authentication is done via any of the following, this requirement may
 be seen to be met.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="olPercent" id="section-5.3-2">
-<dt>d:</dt>
+<dt>a)</dt>
 <dd id="section-5.3-2.1">PDM is used over an already authenticated medium (For example,
 TLS session).<a href="#section-5.3-2.1" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
-<dt>e:</dt>
+<dt>b)</dt>
 <dd id="section-5.3-2.2">PDM is used in a link-local scenario.<a href="#section-5.3-2.2" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
-<dt>f:</dt>
+<dt>c)</dt>
 <dd id="section-5.3-2.3">PDM is used in a corporate network where security measures are
 strong enough to consider the presence of a malicious actor a
 negligible risk.<a href="#section-5.3-2.3" class="pilcrow">¶</a>
@@ -1659,39 +1665,47 @@ Destination Options header.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 <a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-metrics-information-in-pdmv" class="section-name selfRef">Metrics information in PDMv2</a>
         </h3>
 <p id="section-6.2-1">The IPv6 PDMv2 destination option contains the following base fields:<a href="#section-6.2-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.2-2">
-<pre>
-SCALEDTLR: Scale for Delta Time Last Received
-SCALEDTLS: Scale for Delta Time Last Sent
-GLOBALPTR: Global Pointer
-PSNTP: Packet Sequence Number This Packet
-PSNLR: Packet Sequence Number Last Received
-DELTATLR: Delta Time Last Received
-DELTATLS: Delta Time Last Sent
-</pre><a href="#section-6.2-2" class="pilcrow">¶</a>
-</div>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-6.2-2.1">SCALEDTLR: Scale for Delta Time Last Received<a href="#section-6.2-2.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-6.2-2.2">SCALEDTLS: Scale for Delta Time Last Sent<a href="#section-6.2-2.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-6.2-2.3">GLOBALPTR: Global Pointer<a href="#section-6.2-2.3" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-6.2-2.4">PSNTP: Packet Sequence Number This Packet<a href="#section-6.2-2.4" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-6.2-2.5">PSNLR: Packet Sequence Number Last Received<a href="#section-6.2-2.5" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-6.2-2.6">DELTATLR: Delta Time Last Received<a href="#section-6.2-2.6" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-6.2-2.7">DELTATLS: Delta Time Last Sent<a href="#section-6.2-2.7" class="pilcrow">¶</a>
+</li>
+        </ul>
 <p id="section-6.2-3">PDMv2 adds a new metric to the existing PDM [RFC8250] called the
 Global Pointer.  The existing PDM fields are identified with respect
 to the identifying information called a "5-tuple".<a href="#section-6.2-3" class="pilcrow">¶</a></p>
 <p id="section-6.2-4">The 5-tuple consists of:<a href="#section-6.2-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.2-5">
-<pre>
-SADDR: IP address of the sender
-SPORT: Port for the sender
-DADDR: IP address of the destination
-DPORT: Port for the destination
-PROTC: Upper-layer protocol (TCP, UDP, ICMP, etc.)
-</pre><a href="#section-6.2-5" class="pilcrow">¶</a>
-</div>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-6.2-5.1">SADDR: IP address of the sender<a href="#section-6.2-5.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-6.2-5.2">SPORT: Port for the sender<a href="#section-6.2-5.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-6.2-5.3">DADDR: IP address of the destination<a href="#section-6.2-5.3" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-6.2-5.4">DPORT: Port for the destination<a href="#section-6.2-5.4" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-6.2-5.5">PROTC: Upper-layer protocol (TCP, UDP, ICMP, etc.)<a href="#section-6.2-5.5" class="pilcrow">¶</a>
+</li>
+        </ul>
 <p id="section-6.2-6">Unlike PDM fields, Global Pointer (GLOBALPTR) field in PDMv2 is
 defined for the SADDR type.  Following are the SADDR address types
 considered:<a href="#section-6.2-6" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="olPercent" id="section-6.2-7">
-<dt>g:</dt>
+<dt>a)</dt>
 <dd id="section-6.2-7.1">Link-Local<a href="#section-6.2-7.1" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
-<dt>h:</dt>
+<dt>b)</dt>
 <dd id="section-6.2-7.2">Global Unicast<a href="#section-6.2-7.2" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
@@ -1715,19 +1729,19 @@ the two types of headers is determined from the Options Length value.<a href="#s
 <p id="section-6.2.1-2">Following is the representation of the unencrypted PDMv2 header:<a href="#section-6.2.1-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-6.2.1-3">
 <pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      Random Number          |f|   ScaleDTLR   |   ScaleDTLS   |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                         Global Pointer                        |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      PSN This Packet          |    PSN Last Received          |
-|-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Delta Time Last Received    |     Delta Time Last Sent      |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   0                   1                   2                   3
+   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |      Random Number          |f|   ScaleDTLR   |   ScaleDTLS   |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |                         Global Pointer                        |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |      PSN This Packet          |    PSN Last Received          |
+  |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |   Delta Time Last Received    |     Delta Time Last Sent      |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre><a href="#section-6.2.1-3" class="pilcrow">¶</a>
 </div>
 <span class="break"></span><dl class="dlParallel" id="section-6.2.1-4">
@@ -1741,45 +1755,45 @@ the two types of headers is determined from the Options Length value.<a href="#s
               <p id="section-6.2.1-4.4.1"></p><a href="#section-6.2.1-4.4" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
-<dt id="section-6.2.1-4.5"> 0                   1                   2                   3</dt>
+<dt id="section-6.2.1-4.5">   0                   1                   2                   3</dt>
             <dd style="margin-left: 1.5em" id="section-6.2.1-4.6">
               <p id="section-6.2.1-4.6.1"></p><a href="#section-6.2.1-4.6" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
-<dt id="section-6.2.1-4.7"> 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1</dt>
+<dt id="section-6.2.1-4.7">   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1</dt>
             <dd style="margin-left: 1.5em" id="section-6.2.1-4.8">
               <p id="section-6.2.1-4.8.1"></p><a href="#section-6.2.1-4.8" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
-<dt id="section-6.2.1-4.9">+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</dt>
+<dt id="section-6.2.1-4.9">  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</dt>
             <dd style="margin-left: 1.5em" id="section-6.2.1-4.10">
               <p id="section-6.2.1-4.10.1"></p><a href="#section-6.2.1-4.10" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
-<dt id="section-6.2.1-4.11">|  Option Type  | Option Length | Vrsn  |     Reserved Bits     |</dt>
+<dt id="section-6.2.1-4.11">  |  Option Type  | Option Length | Vrsn  |     Reserved Bits     |</dt>
             <dd style="margin-left: 1.5em" id="section-6.2.1-4.12">
               <p id="section-6.2.1-4.12.1"></p><a href="#section-6.2.1-4.12" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
-<dt id="section-6.2.1-4.13">+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</dt>
+<dt id="section-6.2.1-4.13">  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</dt>
             <dd style="margin-left: 1.5em" id="section-6.2.1-4.14">
               <p id="section-6.2.1-4.14.1"></p><a href="#section-6.2.1-4.14" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
-<dt id="section-6.2.1-4.15">|      Random Number          |f|                               |</dt>
+<dt id="section-6.2.1-4.15">  |      Random Number          |f|                               |</dt>
             <dd style="margin-left: 1.5em" id="section-6.2.1-4.16">
               <p id="section-6.2.1-4.16.1"></p><a href="#section-6.2.1-4.16" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
-<dt id="section-6.2.1-4.17">+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               :</dt>
+<dt id="section-6.2.1-4.17">  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               :</dt>
             <dd style="margin-left: 1.5em" id="section-6.2.1-4.18">
               <p id="section-6.2.1-4.18.1"></p><a href="#section-6.2.1-4.18" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
-<dt id="section-6.2.1-4.19">|                      Encrypted PDM Data                       :</dt>
+<dt id="section-6.2.1-4.19">  |                      Encrypted PDM Data                       :</dt>
             <dd style="margin-left: 1.5em" id="section-6.2.1-4.20">
               <p id="section-6.2.1-4.20.1">(30 bytes)                           |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~<a href="#section-6.2.1-4.20.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
