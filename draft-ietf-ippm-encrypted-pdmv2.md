@@ -159,14 +159,13 @@ Note: a client may act as a server (have listening ports).
 
 The protocol will proceed in 3 steps.
 
-{:req: counter="bar" style="format Step %d:"}
+{:req1: counter="bar" style="format Step %d:"}
 
-{: req}
+{: req1}
 - Negotiation between Primary Server and Primary Client.
 - Registration between Primary Server / Client and Secondary
   Server / Client
 - PDM data flow between Secondary Client and Secondary Server
-{: req}
 
 After-the-fact (or real-time) data analysis of PDM flow may occur by
 network diagnosticians or network devices.  The definition of how
@@ -282,16 +281,15 @@ by other means, they can be transmitted without encryption or
 authentication.  This includes, but is not limited to, the following
 cases:
 
-{:req: counter="bar" style="numbers"}
+{:req2: style="numbers"}
 
-{: req}
+{: req2}
 - PDM is used over an already encrypted medium (For example VPN
   tunnels).
 - PDM is used in a link-local scenario.
 - PDM is used in a corporate network where there are security
   measures strong enough to consider the presence of a malicious
   actor a negligible risk.
-{: req}
 
 ## Security Goals for Confidentiality
 
