@@ -429,7 +429,6 @@ Following is the representation of the unencrypted PDMv2 header:
   |   Delta Time Last Received    |     Delta Time Last Sent      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
-{: #pdmv2-unencrypted-packet title="PDMv2 Unencrypted Packet"}
 
 Following is the representation of the encrypted PDMv2 header:
 ~~~
@@ -444,7 +443,6 @@ Following is the representation of the encrypted PDMv2 header:
   :                          (30 bytes)                           |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
-{: #pdmv2-encrypted-packet title="PDMv2 Encrypted Packet"}
 
 {:req7: style="empty"}
 
