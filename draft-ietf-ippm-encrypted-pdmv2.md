@@ -282,7 +282,7 @@ by other means, they can be transmitted without encryption or
 authentication.  This includes, but is not limited to, the following
 cases:
 
-{:req2: counter="bar" style="letters"}
+{:req2: counter="bar" style="numbers"}
 
 {: req2}
 - PDM is used over an already encrypted medium (For example VPN
