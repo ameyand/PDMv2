@@ -443,11 +443,13 @@ Following is the representation of the encrypted PDMv2 header:
   :                          (30 bytes)                           |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
-
 {:req7: style="empty"}
 
 {: req7}
 - Option Type
+    - 0x0F
+    - 8-bit unsigned integer.  The Option Type is adopted from RFC
+ 	    8250 [RFC8250].
 - Option Length
 - Version Number
 - Reserved Bits
