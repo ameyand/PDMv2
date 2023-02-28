@@ -104,7 +104,9 @@ Table of Contents
        6.2.1.  PDMv2 Layout
    7.  Security Considerations
    8.  IANA Considerations
-   9.  Normative References
+   9.  References
+     9.1.  Normative References
+     9.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -531,6 +533,13 @@ Table of Contents
 
       8-bit unsigned number.
 
+      This is the scaling value for the Delta Time Last Sent (DELTATLS)
+      field.
+
+      Global Pointer
+
+      32-bit unsigned number.
+
       Global Pointer is initialized to 1 for the different source
       address types and incremented monotonically for each packet with
       the corresponding source address type.
@@ -551,6 +560,24 @@ Table of Contents
 
       This field is the PSNTP of the last received packet on the
       5-tuple.
+
+      Delta Time Last Received (DELTATLR)
+
+      16-bit unsigned integer.
+
+      The value is set according to the scale in SCALEDTLR.
+
+      Delta Time Last Received = (send time packet n - receive time
+      packet (n - 1))
+
+      Delta Time Last Sent (DELTATLS)
+
+      16-bit unsigned integer.
+
+      The value is set according to the scale in SCALEDTLS.
+
+      Delta Time Last Sent = (receive time packet n - send time packet
+      (n - 1))
 
 7.  Security Considerations
 
@@ -620,20 +647,128 @@ Table of Contents
    the authorization to enable PDMv2 DOH on a set of devices under their
    responsibility: Secondary Servers (SS) and Secondary Clients (SC).
 
+   PS-PC
+
+   *  Perform a HPKE KEM and obtain a PairMasterSecret (PMS).
+
+   *  The PMS is stored securely in both PS and PC, and is NOT to be
+      leaked.
+
+   *  The PMS is valid only for the PC-PS pair.
+
+   In other terms, if a PS would want to establish a pair with two PCs,
+   it will have two different PMSs.  PMS might be re-negotiated after a
+   given amount of time [renegotiation TBD]
+
+   *  PS and PC exchange respectively the list of the SS and SC enabled
+      to use PDMv2.  The list can be:
+
+      -  A range of IP addresses, e.g.: 2001:db8:food:beef:cafe::0/80
+
+      -  A list of IP addresses, e.g., [2001:db8:food::1/128,
+         2001:db8:food::1/128]
+
+      Note:
+
+      1)  How to represent the list in a compact way is out of scope of
+          the present document,
+
+      2)  The list could be dynamically updated.
+
+      3)  Inside OrgB (i.e., a Client), either because it is a
+          legitimate-but-curious device, or as a consequence of an
+          attack to a device
+
+   *  PS sends to the PC the Security Mode of Operation (SecMoP) to be
+      used, see below.
+
+   PS-SS and PC-SC
+
+   *  Each Secondary Sever (or Client) MUST authenticate itself with the
+      Primary Server (or Client).  This is out of scope of the present
+      specification.
+
+   *  Each SS receives a PairServerSecret (PSS), derived using HPKE KDF,
+      and valid for the specific SS and the list of SCs defined above.
+
+   *  Each SC receives a PairClientSecret (PCS), derived using HPKE KDF,
+      and valid for the specific SC and the list of SSs defined above.
+
+   Since there are multiple use-cases, we define 4 modes of operations:
+
+   *  *No Protection*: The Secrets are discarded (or not even created),
+      and the flows do not use PDMv2.  The scheme above is used only to
+      disseminate the list of Secondary Clients and Secondary Servers.
+      By sharing lists, this mode act as ACL (Access Control List) or
+      authorization of the secondaries.
+
+   *  *TrustedServers*: The Secondary Servers are trusted, and they do
+      know a secret derived by the PMS.
+
+   *  *AsymmetricPoll*: One Secondary (Server or Client) must acquire a
+      secret from the respective Primary.
+
+   *  *Identity Based Cryptography (IBC)*: IBC (RFC5091) is used to
+      generate a shared secret between the SS and the SC.
+
+   The *TrustedServers* MoP has the benefit of requiring no additional
+   steps to send and receive PDMv2 DOH, because each flow is protected
+   by a SessionKey that can be derived autonomously by both the SC and
+   the SS, without any interaction with the PS and PC, or any
+   negotiation between the SS and the SC.
+
+   The possible vulnerabilities of the *TrustedServers* MoP are the
+   following:
+
+   *  Any SS can inspect the flows directed to a different SS in the
+      same group.
+
+   *  An attack to a SS might result in compromising the security of all
+      the flows between all the clients and the Secondary Servers
+      belonging to the same group.
+
 8.  IANA Considerations
 
    This document has no IANA actions.
 
-9.  Normative References
+9.  References
+
+9.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
 
+   [RFC2780]  Bradner, S. and V. Paxson, "IANA Allocation Guidelines For
+              Values In the Internet Protocol and Related Headers",
+              BCP 37, RFC 2780, DOI 10.17487/RFC2780, March 2000,
+              <https://www.rfc-editor.org/rfc/rfc2780>.
+
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC8200]  Deering, S. and R. Hinden, "Internet Protocol, Version 6
+              (IPv6) Specification", STD 86, RFC 8200,
+              DOI 10.17487/RFC8200, July 2017,
+              <https://www.rfc-editor.org/rfc/rfc8200>.
+
+   [RFC8250]  Elkins, N., Hamilton, R., and M. Ackermann, "IPv6
+              Performance and Diagnostic Metrics (PDM) Destination
+              Option", RFC 8250, DOI 10.17487/RFC8250, September 2017,
+              <https://www.rfc-editor.org/rfc/rfc8250>.
+
+9.2.  Informative References
+
+   [RFC1421]  Linn, J., "Privacy Enhancement for Internet Electronic
+              Mail: Part I: Message Encryption and Authentication
+              Procedures", RFC 1421, DOI 10.17487/RFC1421, February
+              1993, <https://www.rfc-editor.org/rfc/rfc1421>.
+
+   [RFC9180]  Barnes, R., Bhargavan, K., Lipp, B., and C. Wood, "Hybrid
+              Public Key Encryption", RFC 9180, DOI 10.17487/RFC9180,
+              February 2022, <https://www.rfc-editor.org/rfc/rfc9180>.
 
 Acknowledgments
 
