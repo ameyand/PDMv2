@@ -693,10 +693,43 @@ following:
   the flows between all the clients and the Secondary Servers
   belonging to the same group.
 
+A possible mitigation is to split the Secondary Servers in different
+sub-groups.  This is a scenario similar to the one of a PC
+negotiating PDMv2 access with different PSs.
+
+The **AsymmetricPoll** MoP has the benefit of isolating each SS and
+each SC.  Only the SS and SC involved in a communication can decrypt
+their flows.
+
+The **IBC** MoP has the same security properties of the
+**AsymmetricPoll** MoP, and the advantage of not requiring any
+interaction between the Primary and the Secondary.  The disadvantage
+is the requirement of performing a "pairing" session negotiation
+between the Secondaries.
+
+It must be considered that, while secure, this MoP could be used to
+perform a resource exhaustion attack on the PairDeviceKey
+establishment.  Hence, a device MUST NOT reply to an IP address that
+is not in the Secondary[client, server] list, and MUST NOT reply with
+negative acknowledgments (e.g., in case of an incorrect decoding).
+
+# Privacy Considerations
+
+PDMv2 greatly improves the privacy aspects of PDM by providing
+encryption.
+
 # IANA Considerations
 
-This document has no IANA actions.
+Option Type to be assigned by IANA [RFC2780].
 
+# Contributors
+
+The authors wish to thank NITK Surathkal for their support and
+assistance in coding and review.  In particular Dr. Mohit Tahiliani
+and Abhishek Kumar (now with Google).  Thanks also to Priyanka Sinha
+for her comments.  Thanks to the India Internet Engineering Society
+(iiesoc.in), in particular Dhruv Dhody, for providing the funding for
+servers needed for protocol development.
 
 --- back
 
