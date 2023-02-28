@@ -120,7 +120,6 @@ Table of Contents
      B.3.  Commands used
    Appendix C.  Change Log
    Appendix D.  Open Issues
-   Acknowledgments
    Authors' Addresses
 
 1.  Introduction
@@ -948,10 +947,6 @@ Appendix D.  Open Issues
 
    Note to RFC Editor: please remove this appendix before publication as
    an RFC.
-
-Acknowledgments
-
-   TODO acknowledge.
 
 Authors' Addresses
 
