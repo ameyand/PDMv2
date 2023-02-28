@@ -1268,7 +1268,15 @@ are also defined.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
+                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="auto internal xref">9.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
+                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="auto internal xref">9.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
             <p id="section-toc.1-1.10.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
@@ -1624,11 +1632,11 @@ negligible risk.<a href="#section-5.3-2.3" class="pilcrow">¶</a>
         </h3>
 <p id="section-5.4-1">Symmetric key cryptography has performance benefits over asymmetric
 cryptography; asymmetric cryptography is better for key management.
-Encryption schemes that unite both have been specified in [RFC1421],
+Encryption schemes that unite both have been specified in <span>[<a href="#RFC1421" class="cite xref">RFC1421</a>]</span>,
 and have been participating practically since the early days of
 public-key cryptography.  The basic mechanism is to encrypt the
 symmetric key with the public key by joining both yields.  Hybrid
-public-key encryption schemes (HPKE) [RFC9180] used a different
+public-key encryption schemes (HPKE) <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span> used a different
 approach that generates the symmetric key and its encapsulation with
 the public key of the receiver.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
 <p id="section-5.4-2">Our choice is to use the HPKE framework that incorporates key
@@ -1650,11 +1658,11 @@ traditional schemes and thus lead to our choice of this framework.<a href="#sect
         <h3 id="name-destinations-option-header">
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-destinations-option-header" class="section-name selfRef">Destinations Option Header</a>
         </h3>
-<p id="section-6.1-1">The IPv6 Destination Options extension header [RFC8200] is used to
+<p id="section-6.1-1">The IPv6 Destination Options extension header <span>[<a href="#RFC8200" class="cite xref">RFC8200</a>]</span> is used to
 carry optional information that needs to be examined only by a
 packet's destination node(s).  The Destination Options header is
 identified by a Next Header value of 60 in the immediately preceding
-header and is defined in RFC 8200 [RFC8200].  The IPv6 PDMv2
+header and is defined in RFC 8200 <span>[<a href="#RFC8200" class="cite xref">RFC8200</a>]</span>.  The IPv6 PDMv2
 destination option is implemented as an IPv6 Option carried in the
 Destination Options header.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 </section>
@@ -1681,7 +1689,7 @@ Destination Options header.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
           <li class="normal ulEmpty" id="section-6.2-2.7">DELTATLS: Delta Time Last Sent<a href="#section-6.2-2.7" class="pilcrow">¶</a>
 </li>
         </ul>
-<p id="section-6.2-3">PDMv2 adds a new metric to the existing PDM [RFC8250] called the
+<p id="section-6.2-3">PDMv2 adds a new metric to the existing PDM <span>[<a href="#RFC8250" class="cite xref">RFC8250</a>]</span> called the
 Global Pointer.  The existing PDM fields are identified with respect
 to the identifying information called a "5-tuple".<a href="#section-6.2-3" class="pilcrow">¶</a></p>
 <p id="section-6.2-4">The 5-tuple consists of:<a href="#section-6.2-4" class="pilcrow">¶</a></p>
@@ -1765,7 +1773,7 @@ the two types of headers is determined from the Options Length value.<a href="#s
 <p id="section-6.2.1-6.1.2">
 0x0F<a href="#section-6.2.1-6.1.2" class="pilcrow">¶</a></p>
 <p id="section-6.2.1-6.1.3">
-8-bit unsigned integer.  The Option Type is adopted from RFC 8250 [RFC8250].<a href="#section-6.2.1-6.1.3" class="pilcrow">¶</a></p>
+8-bit unsigned integer.  The Option Type is adopted from RFC 8250 <span>[<a href="#RFC8250" class="cite xref">RFC8250</a>]</span>.<a href="#section-6.2.1-6.1.3" class="pilcrow">¶</a></p>
 </li>
             <li class="normal ulEmpty" id="section-6.2.1-6.2">
               <p id="section-6.2.1-6.2.1">Option Length<a href="#section-6.2.1-6.2.1" class="pilcrow">¶</a></p>
@@ -1776,7 +1784,7 @@ the two types of headers is determined from the Options Length value.<a href="#s
 <p id="section-6.2.1-6.2.4">
 8-bit unsigned integer.  Length of the option, in octets, excluding the Option
   Type and Option Length fields.  The options length is used for differentiating
-  PDM [RFC8250], unencrypted PDMv2 and encrypted PDMv2.<a href="#section-6.2.1-6.2.4" class="pilcrow">¶</a></p>
+  PDM <span>[<a href="#RFC8250" class="cite xref">RFC8250</a>]</span>, unencrypted PDMv2 and encrypted PDMv2.<a href="#section-6.2.1-6.2.4" class="pilcrow">¶</a></p>
 </li>
             <li class="normal ulEmpty" id="section-6.2.1-6.3">
               <p id="section-6.2.1-6.3.1">Version Number<a href="#section-6.2.1-6.3.1" class="pilcrow">¶</a></p>
@@ -1823,28 +1831,56 @@ This is the scaling value for the Delta Time Last Sent
 <p id="section-6.2.1-6.8.2">
 8-bit unsigned number.<a href="#section-6.2.1-6.8.2" class="pilcrow">¶</a></p>
 <p id="section-6.2.1-6.8.3">
-Global Pointer is initialized to 1 for the different source
-        address types and incremented monotonically for each packet
-        with the corresponding source address type.<a href="#section-6.2.1-6.8.3" class="pilcrow">¶</a></p>
-<p id="section-6.2.1-6.8.4">
-This field stores the Global Pointer type corresponding to the
-        SADDR type of the packet.<a href="#section-6.2.1-6.8.4" class="pilcrow">¶</a></p>
+This is the scaling value for the Delta Time Last Sent
+  (DELTATLS) field.<a href="#section-6.2.1-6.8.3" class="pilcrow">¶</a></p>
 </li>
             <li class="normal ulEmpty" id="section-6.2.1-6.9">
-              <p id="section-6.2.1-6.9.1">Packet Sequence Number This Packet (PSNTP)<a href="#section-6.2.1-6.9.1" class="pilcrow">¶</a></p>
+              <p id="section-6.2.1-6.9.1">Global Pointer<a href="#section-6.2.1-6.9.1" class="pilcrow">¶</a></p>
 <p id="section-6.2.1-6.9.2">
-16-bit unsigned number.<a href="#section-6.2.1-6.9.2" class="pilcrow">¶</a></p>
+32-bit unsigned number.<a href="#section-6.2.1-6.9.2" class="pilcrow">¶</a></p>
 <p id="section-6.2.1-6.9.3">
-This field is initialized at a random number and is incremented
-        monotonically for each packet of the 5-tuple.<a href="#section-6.2.1-6.9.3" class="pilcrow">¶</a></p>
+Global Pointer is initialized to 1 for the different source
+        address types and incremented monotonically for each packet
+        with the corresponding source address type.<a href="#section-6.2.1-6.9.3" class="pilcrow">¶</a></p>
+<p id="section-6.2.1-6.9.4">
+This field stores the Global Pointer type corresponding to the
+        SADDR type of the packet.<a href="#section-6.2.1-6.9.4" class="pilcrow">¶</a></p>
 </li>
             <li class="normal ulEmpty" id="section-6.2.1-6.10">
-              <p id="section-6.2.1-6.10.1">Packet Sequence Number Last Received (PSNLR)<a href="#section-6.2.1-6.10.1" class="pilcrow">¶</a></p>
+              <p id="section-6.2.1-6.10.1">Packet Sequence Number This Packet (PSNTP)<a href="#section-6.2.1-6.10.1" class="pilcrow">¶</a></p>
 <p id="section-6.2.1-6.10.2">
 16-bit unsigned number.<a href="#section-6.2.1-6.10.2" class="pilcrow">¶</a></p>
 <p id="section-6.2.1-6.10.3">
+This field is initialized at a random number and is incremented
+        monotonically for each packet of the 5-tuple.<a href="#section-6.2.1-6.10.3" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal ulEmpty" id="section-6.2.1-6.11">
+              <p id="section-6.2.1-6.11.1">Packet Sequence Number Last Received (PSNLR)<a href="#section-6.2.1-6.11.1" class="pilcrow">¶</a></p>
+<p id="section-6.2.1-6.11.2">
+16-bit unsigned number.<a href="#section-6.2.1-6.11.2" class="pilcrow">¶</a></p>
+<p id="section-6.2.1-6.11.3">
 This field is the PSNTP of the last received packet on the
-        5-tuple.<a href="#section-6.2.1-6.10.3" class="pilcrow">¶</a></p>
+        5-tuple.<a href="#section-6.2.1-6.11.3" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal ulEmpty" id="section-6.2.1-6.12">
+              <p id="section-6.2.1-6.12.1">Delta Time Last Received (DELTATLR)<a href="#section-6.2.1-6.12.1" class="pilcrow">¶</a></p>
+<p id="section-6.2.1-6.12.2">
+16-bit unsigned integer.<a href="#section-6.2.1-6.12.2" class="pilcrow">¶</a></p>
+<p id="section-6.2.1-6.12.3">
+The value is set according to the scale in SCALEDTLR.<a href="#section-6.2.1-6.12.3" class="pilcrow">¶</a></p>
+<p id="section-6.2.1-6.12.4">
+Delta Time Last Received =
+  (send time packet n - receive time packet (n - 1))<a href="#section-6.2.1-6.12.4" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal ulEmpty" id="section-6.2.1-6.13">
+              <p id="section-6.2.1-6.13.1">Delta Time Last Sent (DELTATLS)<a href="#section-6.2.1-6.13.1" class="pilcrow">¶</a></p>
+<p id="section-6.2.1-6.13.2">
+16-bit unsigned integer.<a href="#section-6.2.1-6.13.2" class="pilcrow">¶</a></p>
+<p id="section-6.2.1-6.13.3">
+The value is set according to the scale in SCALEDTLS.<a href="#section-6.2.1-6.13.3" class="pilcrow">¶</a></p>
+<p id="section-6.2.1-6.13.4">
+Delta Time Last Sent =
+  (receive time packet n - send time packet (n - 1))<a href="#section-6.2.1-6.13.4" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -1931,6 +1967,105 @@ the PDMv2 DOH.<a href="#section-7-14" class="pilcrow">¶</a></p>
 <p id="section-7-15">We assume that PS and PC have verified the respective identities and
 the authorization to enable PDMv2 DOH on a set of devices under their
 responsibility: Secondary Servers (SS) and Secondary Clients (SC).<a href="#section-7-15" class="pilcrow">¶</a></p>
+<p id="section-7-16">PS-PC<a href="#section-7-16" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7-17.1">Perform a HPKE KEM and obtain a PairMasterSecret (PMS).<a href="#section-7-17.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-17.2">The PMS is stored securely in both PS and PC, and is NOT to be
+leaked.<a href="#section-7-17.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-17.3">The PMS is valid only for the PC-PS pair.<a href="#section-7-17.3" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-7-18">In other terms, if a PS would want to establish a pair with two PCs,
+it will have two different PMSs. PMS might be re-negotiated after a given amount of time
+[renegotiation TBD]<a href="#section-7-18" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7-19.1">
+          <p id="section-7-19.1.1">PS and PC exchange respectively the list of the SS and SC enabled
+to use PDMv2.  The list can be:<a href="#section-7-19.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7-19.1.2.1">A range of IP addresses, e.g.: 2001:db8:food:beef:cafe::0/80<a href="#section-7-19.1.2.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-7-19.1.2.2">A list of IP addresses, e.g., [2001:db8:food::1/128,
+2001:db8:food::1/128]<a href="#section-7-19.1.2.2" class="pilcrow">¶</a>
+</li>
+          </ul>
+<p id="section-7-19.1.3">
+Note:<a href="#section-7-19.1.3" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="olPercent" id="section-7-19.1.4">
+<dt>1)</dt>
+<dd id="section-7-19.1.4.1">How to represent the list in a compact way is out of scope of
+the present document,<a href="#section-7-19.1.4.1" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt>2)</dt>
+<dd id="section-7-19.1.4.2">The list could be dynamically updated.<a href="#section-7-19.1.4.2" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt>3)</dt>
+<dd id="section-7-19.1.4.3">Inside OrgB (i.e., a Client), either because it is a
+legitimate-but-curious device, or as a consequence of an
+attack to a device<a href="#section-7-19.1.4.3" class="pilcrow">¶</a>
+</dd>
+          <dd class="break"></dd>
+</dl>
+</li>
+        <li class="normal" id="section-7-19.2">PS sends to the PC the Security Mode of Operation (SecMoP) to be
+used, see below.<a href="#section-7-19.2" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-7-20">PS-SS and PC-SC<a href="#section-7-20" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7-21.1">Each Secondary Sever (or Client) <span class="bcp14">MUST</span> authenticate itself with the
+Primary Server (or Client).  This is out of scope of the present
+specification.<a href="#section-7-21.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-21.2">Each SS receives a PairServerSecret (PSS), derived using HPKE KDF,
+and valid for the specific SS and the list of SCs defined above.<a href="#section-7-21.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-21.3">Each SC receives a PairClientSecret (PCS), derived using HPKE KDF,
+and valid for the specific SC and the list of SSs defined above.<a href="#section-7-21.3" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-7-22">Since there are multiple use-cases, we define 4 modes of operations:<a href="#section-7-22" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7-23.1">
+          <strong>No Protection</strong>: The Secrets are discarded (or not even created),
+and the flows do not use PDMv2.  The scheme above is used only to
+disseminate the list of Secondary Clients and Secondary Servers.
+By sharing lists, this mode act as ACL (Access Control List) or
+authorization of the secondaries.<a href="#section-7-23.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-23.2">
+          <strong>TrustedServers</strong>: The Secondary Servers are trusted, and they do
+know a secret derived by the PMS.<a href="#section-7-23.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-23.3">
+          <strong>AsymmetricPoll</strong>: One Secondary (Server or Client) must acquire a
+secret from the respective Primary.<a href="#section-7-23.3" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-23.4">
+          <strong>Identity Based Cryptography (IBC)</strong>: IBC (RFC5091) is used to
+generate a shared secret between the SS and the SC.<a href="#section-7-23.4" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-7-24">The <strong>TrustedServers</strong> MoP has the benefit of requiring no additional
+steps to send and receive PDMv2 DOH, because each flow is protected
+by a SessionKey that can be derived autonomously by both the SC and
+the SS, without any interaction with the PS and PC, or any
+negotiation between the SS and the SC.<a href="#section-7-24" class="pilcrow">¶</a></p>
+<p id="section-7-25">The possible vulnerabilities of the <strong>TrustedServers</strong> MoP are the
+following:<a href="#section-7-25" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7-26.1">Any SS can inspect the flows directed to a different SS in the
+same group.<a href="#section-7-26.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-26.2">An attack to a SS might result in compromising the security of all
+the flows between all the clients and the Secondary Servers
+belonging to the same group.<a href="#section-7-26.2" class="pilcrow">¶</a>
+</li>
+      </ul>
 </section>
 </div>
 <div id="iana-considerations">
@@ -1942,19 +2077,51 @@ responsibility: Secondary Servers (SS) and Secondary Clients (SC).<a href="#sect
 </section>
 </div>
 <section id="section-9">
-      <h2 id="name-normative-references">
-<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+      <h2 id="name-references">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
+<section id="section-9.1">
+        <h3 id="name-normative-references">
+<a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
 <dl class="references">
 <dt id="RFC2119">[RFC2119]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC2780">[RFC2780]</dt>
+        <dd>
+<span class="refAuthor">Bradner, S.</span> and <span class="refAuthor">V. Paxson</span>, <span class="refTitle">"IANA Allocation Guidelines For Values In the Internet Protocol and Related Headers"</span>, <span class="seriesInfo">BCP 37</span>, <span class="seriesInfo">RFC 2780</span>, <span class="seriesInfo">DOI 10.17487/RFC2780</span>, <time datetime="2000-03" class="refDate">March 2000</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2780">https://www.rfc-editor.org/rfc/rfc2780</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-    <dd>
+        <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC8200">[RFC8200]</dt>
+        <dd>
+<span class="refAuthor">Deering, S.</span> and <span class="refAuthor">R. Hinden</span>, <span class="refTitle">"Internet Protocol, Version 6 (IPv6) Specification"</span>, <span class="seriesInfo">STD 86</span>, <span class="seriesInfo">RFC 8200</span>, <span class="seriesInfo">DOI 10.17487/RFC8200</span>, <time datetime="2017-07" class="refDate">July 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8200">https://www.rfc-editor.org/rfc/rfc8200</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8250">[RFC8250]</dt>
+      <dd>
+<span class="refAuthor">Elkins, N.</span>, <span class="refAuthor">Hamilton, R.</span>, and <span class="refAuthor">M. Ackermann</span>, <span class="refTitle">"IPv6 Performance and Diagnostic Metrics (PDM) Destination Option"</span>, <span class="seriesInfo">RFC 8250</span>, <span class="seriesInfo">DOI 10.17487/RFC8250</span>, <time datetime="2017-09" class="refDate">September 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8250">https://www.rfc-editor.org/rfc/rfc8250</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 </dl>
+</section>
+<section id="section-9.2">
+        <h3 id="name-informative-references">
+<a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="RFC1421">[RFC1421]</dt>
+        <dd>
+<span class="refAuthor">Linn, J.</span>, <span class="refTitle">"Privacy Enhancement for Internet Electronic Mail: Part I: Message Encryption and Authentication Procedures"</span>, <span class="seriesInfo">RFC 1421</span>, <span class="seriesInfo">DOI 10.17487/RFC1421</span>, <time datetime="1993-02" class="refDate">February 1993</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc1421">https://www.rfc-editor.org/rfc/rfc1421</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9180">[RFC9180]</dt>
+      <dd>
+<span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Bhargavan, K.</span>, <span class="refAuthor">Lipp, B.</span>, and <span class="refAuthor">C. Wood</span>, <span class="refTitle">"Hybrid Public Key Encryption"</span>, <span class="seriesInfo">RFC 9180</span>, <span class="seriesInfo">DOI 10.17487/RFC9180</span>, <time datetime="2022-02" class="refDate">February 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9180">https://www.rfc-editor.org/rfc/rfc9180</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
 </section>
 <div id="acknowledgments">
 <section id="appendix-A">
