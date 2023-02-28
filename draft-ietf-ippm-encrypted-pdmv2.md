@@ -845,7 +845,7 @@ The following steps describe the protocol flow:
   help of KDF by using the info parameter as the Client IP address.
   The primary client shares these keys with the corresponding
   secondary clients over TLS.
-  
+
 ## B.3.  Commands used
 
 Two commands are used between the primary client and the primary
