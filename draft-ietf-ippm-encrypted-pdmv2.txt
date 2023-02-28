@@ -4,7 +4,7 @@
 
 IP Performance Measurement                                     N. Elkins
 Internet-Draft                                     Inside Products, Inc.
-Intended status: Informational                              M. Ackermann
+Intended status: Standards Track                            M. Ackermann
 Expires: 1 September 2023                                  BCBS Michigan
                                                             A. Deshpande
                                                    NITK Surathkal/Google
