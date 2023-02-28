@@ -864,8 +864,3 @@ RFC, please remove this appendix before publication as an RFC.
 
 Note to RFC Editor: please remove this appendix before publication as
 an RFC.
-
-# Acknowledgments
-{:numbered="false"}
-
-TODO acknowledge.
