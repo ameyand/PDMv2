@@ -454,7 +454,6 @@ Following is the representation of the encrypted PDMv2 header:
 
     8-bit unsigned integer.  The Option Type is adopted from RFC 8250 [RFC8250].
 
-{: req7}
 - Option Length
 
     0x12: Unencrypted PDM
@@ -465,7 +464,6 @@ Following is the representation of the encrypted PDMv2 header:
     Type and Option Length fields.  The options length is used for differentiating
     PDM [RFC8250], unencrypted PDMv2 and encrypted PDMv2.
 
-{: req7}
 - Version Number
 
     0x2
@@ -527,8 +525,75 @@ Following is the representation of the encrypted PDMv2 header:
 
 # Security Considerations
 
-TODO Security
+PDMv2 DOH can be used by an attacker to gather information about a
+victim (passive attack) or to force the victim to modify its
+operational parameters to comply with forged data (active attacks).
 
+In order to mitigate these, it is important that the PDMv2 DOH is
+subject to:
+{:req8: style="format %d)"}
+
+{: req8}
+- Confidentiality and
+- Integrity
+
+with respect to an attacker.
+
+In the following we will refer to two different "groups", that can or
+cannot belong to the same operational and management domain:
+
+{:req9: style="format %d)"}
+
+{: req9}
+- Servers - implementing services.
+
+- Clients-devices willing to interact with the services offered by Servers.
+
+We will assume, for the sake of generalization, that the Servers are
+managed by an Organization (OrgA) implementing management procedures
+over them, and the Clients by a different Organization (OrgB).
+
+An attacker could be in the following positions:
+
+{:req10: style="format %d)"}
+
+{: req10}
+- External to OrgA or OrgB.
+- Inside OrgA (i.e., a Server), either because it is a legitimate-but-curious
+  device, or as a consequence of an attack to a device.
+- Inside OrgB (i.e., a Client), either because it is a legitimate-
+  but-curious device, or as a consequence of an attack to a device
+
+Furthermore, since PDMv2 DOH encryption could consume resources
+(albeit limited), it is possible to foresee a call of DoS by resource
+exhaustion.  Hence, it is relevant to consider a form of access
+control to verify that the Server and Client belong to OrgA and OrgB
+respectively.  This could be a _delegated trust_.
+
+In other terms, a Client could just want to verify that the Server
+belongs to OrgA, without actually verifying the identity of the
+Server.
+
+The Authentication and Authorization of Clients and Servers is thus
+delegated to the respective Organizations.  In other terms, we do not
+expect, or want, that a Client and a Server should be forced to
+verify the respective identities (Authentication) or the permissions
+to use PDMv2 (Authorization).
+
+The simple knowledge of the secrets required by the flow is
+considered sufficient to enable PDMv2.  On the opposite, an
+unsuccessful decryption MUST result in dropping the PDMv2 DOH without
+further processing or, if configured to do so, might lead to
+throttling, filtering, and/or logging the activity of the other
+entity (Client or Server).
+
+The present document specifies a methodology to enable this delegated
+trust, along with the Confidentiality and Integrity requirements, in
+the PDMv2 DOH.
+
+We assume that PS and PC have verified the respective identities and
+the authorization to enable PDMv2 DOH on a set of devices under their
+responsibility: Secondary Servers (SS) and Secondary Clients (SC).
 
 # IANA Considerations
 
