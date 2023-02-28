@@ -52,9 +52,13 @@ author:
     email: "adnan.rashid@poliba.it"
 
 normative:
+ RFC2780:
+ RFC8250:
+ RFC8200:
 
 informative:
-
+ RFC9180:
+ RFC1421:
 
 --- abstract
 
@@ -502,6 +506,13 @@ Following is the representation of the encrypted PDMv2 header:
 
     8-bit unsigned number.
 
+    This is the scaling value for the Delta Time Last Sent
+    (DELTATLS) field.
+
+- Global Pointer
+
+    32-bit unsigned number.
+
     Global Pointer is initialized to 1 for the different source
  	  address types and incremented monotonically for each packet
  	  with the corresponding source address type.
@@ -522,6 +533,24 @@ Following is the representation of the encrypted PDMv2 header:
 
     This field is the PSNTP of the last received packet on the
  	  5-tuple.
+
+- Delta Time Last Received (DELTATLR)
+
+    16-bit unsigned integer.
+
+    The value is set according to the scale in SCALEDTLR.
+
+    Delta Time Last Received =
+    (send time packet n - receive time packet (n - 1))
+
+- Delta Time Last Sent (DELTATLS)
+
+    16-bit unsigned integer.
+
+    The value is set according to the scale in SCALEDTLS.
+
+    Delta Time Last Sent =
+    (receive time packet n - send time packet (n - 1))
 
 # Security Considerations
 
@@ -594,6 +623,75 @@ the PDMv2 DOH.
 We assume that PS and PC have verified the respective identities and
 the authorization to enable PDMv2 DOH on a set of devices under their
 responsibility: Secondary Servers (SS) and Secondary Clients (SC).
+
+PS-PC
+
+- Perform a HPKE KEM and obtain a PairMasterSecret (PMS).
+- The PMS is stored securely in both PS and PC, and is NOT to be
+  leaked.
+- The PMS is valid only for the PC-PS pair.
+
+In other terms, if a PS would want to establish a pair with two PCs,
+it will have two different PMSs. PMS might be re-negotiated after a given amount of time
+[renegotiation TBD]
+
+- PS and PC exchange respectively the list of the SS and SC enabled
+  to use PDMv2.  The list can be:
+    - A range of IP addresses, e.g.: 2001:db8:food:beef:cafe::0/80
+    - A list of IP addresses, e.g., [2001:db8:food::1/128,
+      2001:db8:food::1/128]
+
+    Note:
+    {:req11: style="format %d)"}
+
+    {: req11}
+    - How to represent the list in a compact way is out of scope of
+      the present document,
+    - The list could be dynamically updated.
+    - Inside OrgB (i.e., a Client), either because it is a
+      legitimate-but-curious device, or as a consequence of an
+      attack to a device
+- PS sends to the PC the Security Mode of Operation (SecMoP) to be
+  used, see below.
+
+PS-SS and PC-SC
+
+- Each Secondary Sever (or Client) MUST authenticate itself with the
+  Primary Server (or Client).  This is out of scope of the present
+  specification.
+- Each SS receives a PairServerSecret (PSS), derived using HPKE KDF,
+  and valid for the specific SS and the list of SCs defined above.
+- Each SC receives a PairClientSecret (PCS), derived using HPKE KDF,
+  and valid for the specific SC and the list of SSs defined above.
+
+Since there are multiple use-cases, we define 4 modes of operations:
+
+- **No Protection**: The Secrets are discarded (or not even created),
+  and the flows do not use PDMv2.  The scheme above is used only to
+  disseminate the list of Secondary Clients and Secondary Servers.
+  By sharing lists, this mode act as ACL (Access Control List) or
+  authorization of the secondaries.
+- **TrustedServers**: The Secondary Servers are trusted, and they do
+  know a secret derived by the PMS.
+- **AsymmetricPoll**: One Secondary (Server or Client) must acquire a
+  secret from the respective Primary.
+- **Identity Based Cryptography (IBC)**: IBC (RFC5091) is used to
+  generate a shared secret between the SS and the SC.
+
+The **TrustedServers** MoP has the benefit of requiring no additional
+steps to send and receive PDMv2 DOH, because each flow is protected
+by a SessionKey that can be derived autonomously by both the SC and
+the SS, without any interaction with the PS and PC, or any
+negotiation between the SS and the SC.
+
+The possible vulnerabilities of the **TrustedServers** MoP are the
+following:
+
+- Any SS can inspect the flows directed to a different SS in the
+  same group.
+- An attack to a SS might result in compromising the security of all
+  the flows between all the clients and the Secondary Servers
+  belonging to the same group.
 
 # IANA Considerations
 
