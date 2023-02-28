@@ -109,18 +109,17 @@ Table of Contents
    11. References
      11.1.  Normative References
      11.2.  Informative References
-   Appendix A.  Appendix A.  Rationale for Primary Server / Primary
-           Client
-     A.1.  A.1.  One Client / One Server
-     A.2.  A.2.  Multiple Clients / One Server
-     A.3.  A.3.  Multiple Clients / Multiple Servers
-     A.4.  A.4.  Primary Client / Primary Server
-   Appendix B.  Appendix B.  Sample Implementation of Registration
-     B.1.  B.1.  Overall summary
-     B.2.  B.2.  High level flow
-     B.3.  B.3.  Commands used
-   Appendix C.  Appendix C.  Change Log
-   Appendix D.  Appendix D.  Open Issues
+   Appendix A.  Rationale for Primary Server / Primary Client
+     A.1.  One Client / One Server
+     A.2.  Multiple Clients / One Server
+     A.3.  Multiple Clients / Multiple Servers
+     A.4.  Primary Client / Primary Server
+   Appendix B.  Sample Implementation of Registration
+     B.1.  Overall summary
+     B.2.  High level flow
+     B.3.  Commands used
+   Appendix C.  Change Log
+   Appendix D.  Open Issues
    Acknowledgments
    Authors' Addresses
 
@@ -818,9 +817,9 @@ Table of Contents
               Public Key Encryption", RFC 9180, DOI 10.17487/RFC9180,
               February 2022, <https://www.rfc-editor.org/rfc/rfc9180>.
 
-Appendix A.  Appendix A.  Rationale for Primary Server / Primary Client
+Appendix A.  Rationale for Primary Server / Primary Client
 
-A.1.  A.1.  One Client / One Server
+A.1.  One Client / One Server
 
       +------------+  Derived Shared Secret  +------------+
       |   Client   |    ----------------->   |   Server   |
@@ -843,7 +842,7 @@ A.1.  A.1.  One Client / One Server
    Of course, this is a ludicrous scenario since no real organization of
    interest has only one server and one client.
 
-A.2.  A.2.  Multiple Clients / One Server
+A.2.  Multiple Clients / One Server
 
    So, let's try with multiple clients and one Primary server
 
@@ -877,21 +876,21 @@ A.2.  A.2.  Multiple Clients / One Server
    But, this also is a ludicrous scenario since no real organization of
    interest has only one server.
 
-A.3.  A.3.  Multiple Clients / Multiple Servers
+A.3.  Multiple Clients / Multiple Servers
 
    When we have multiple clients and multiple servers, then each not
    only does the Server need to know which key to use for which Client,
    but the Client needs to know which private key to use for which
    Server.
 
-A.4.  A.4.  Primary Client / Primary Server
+A.4.  Primary Client / Primary Server
 
    Based on this rationale, we have chosen a Primary Server / Primary
    Client topology.
 
-Appendix B.  Appendix B.  Sample Implementation of Registration
+Appendix B.  Sample Implementation of Registration
 
-B.1.  B.1.  Overall summary
+B.1.  Overall summary
 
    In the Registration phase, the objective is to generate a shared
    secret that will be used in encryption and decryption during the Data
@@ -905,7 +904,7 @@ B.1.  B.1.  Overall summary
    Transfer phase, the secondary servers generate the client-specific
    secrets on the arrival of the first packet from the secondary client.
 
-B.2.  B.2.  High level flow
+B.2.  High level flow
 
    The following steps describe the protocol flow:
 
@@ -931,7 +930,7 @@ B.2.  B.2.  High level flow
       primary client shares these keys with the corresponding secondary
       clients over TLS.
 
-B.3.  B.3.  Commands used
+B.3.  Commands used
 
    Two commands are used between the primary client and the primary
    server to denote the setup and KEM phases.  Along with this, we have
@@ -940,12 +939,12 @@ B.3.  B.3.  Commands used
    Between primary and secondary entities, we have one command to denote
    the sharing of the secret keys.
 
-Appendix C.  Appendix C.  Change Log
+Appendix C.  Change Log
 
    Note to RFC Editor: if this document does not obsolete an existing
    RFC, please remove this appendix before publication as an RFC.
 
-Appendix D.  Appendix D.  Open Issues
+Appendix D.  Open Issues
 
    Note to RFC Editor: please remove this appendix before publication as
    an RFC.
