@@ -1285,10 +1285,47 @@ are also defined.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-appendix-a-rationale-for-pr" class="internal xref">Appendix A.  Rationale for Primary Server / Primary Client</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.1">
+                <p id="section-toc.1-1.12.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-a1-one-client-one-server" class="internal xref">A.1.  One Client / One Server</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2">
+                <p id="section-toc.1-1.12.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-a2-multiple-clients-one-ser" class="internal xref">A.2.  Multiple Clients / One Server</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3">
+                <p id="section-toc.1-1.12.2.3.1"><a href="#appendix-A.3" class="auto internal xref">A.3</a>.  <a href="#name-a3-multiple-clients-multipl" class="internal xref">A.3.  Multiple Clients / Multiple Servers</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.4">
+                <p id="section-toc.1-1.12.2.4.1"><a href="#appendix-A.4" class="auto internal xref">A.4</a>.  <a href="#name-a4-primary-client-primary-s" class="internal xref">A.4.  Primary Client / Primary Server</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.13.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-appendix-b-sample-implement" class="internal xref">Appendix B.  Sample Implementation of Registration</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.1">
+                <p id="section-toc.1-1.13.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-b1-overall-summary" class="internal xref">B.1.  Overall summary</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2">
+                <p id="section-toc.1-1.13.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-b2-high-level-flow" class="internal xref">B.2.  High level flow</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.3">
+                <p id="section-toc.1-1.13.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-b3-commands-used" class="internal xref">B.3.  Commands used</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
+            <p id="section-toc.1-1.14.1"><a href="#appendix-C" class="auto internal xref">Appendix C</a>.  <a href="#name-appendix-c-change-log" class="internal xref">Appendix C.  Change Log</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15">
+            <p id="section-toc.1-1.15.1"><a href="#appendix-D" class="auto internal xref">Appendix D</a>.  <a href="#name-appendix-d-open-issues" class="internal xref">Appendix D.  Open Issues</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16">
+            <p id="section-toc.1-1.16.1"><a href="#appendix-E" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.17">
+            <p id="section-toc.1-1.17.1"><a href="#appendix-F" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -2167,16 +2204,193 @@ servers needed for protocol development.<a href="#section-10-1" class="pilcrow">
 </dl>
 </section>
 </section>
-<div id="acknowledgments">
+<div id="appendix-a-rationale-for-primary-server-primary-client">
 <section id="appendix-A">
+      <h2 id="name-appendix-a-rationale-for-pr">
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-appendix-a-rationale-for-pr" class="section-name selfRef">Appendix A.  Rationale for Primary Server / Primary Client</a>
+      </h2>
+<div id="a1-one-client-one-server">
+<section id="appendix-A.1">
+        <h3 id="name-a1-one-client-one-server">
+<a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-a1-one-client-one-server" class="section-name selfRef">A.1.  One Client / One Server</a>
+        </h3>
+<div class="alignLeft art-text artwork" id="appendix-A.1-1">
+<pre>
+   +------------+  Derived Shared Secret  +------------+
+   |   Client   |    -----------------&gt;   |   Server   |
+   +------+-----+                         +------+-----+
+          |                                      |
+          V                                      V
+    Client Secret                          Server Secret
+</pre><a href="#appendix-A.1-1" class="pilcrow">¶</a>
+</div>
+<p id="appendix-A.1-2">The Client and Server create public / private keys and derive a
+shared secret.  Let's not consider Authentication or Certificates at
+this point.<a href="#appendix-A.1-2" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-3">What is stored at the Client and Server to be able to encrypt and
+decrypt packets?  The shared secret or private key.<a href="#appendix-A.1-3" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-4">Since we only have one Server and one Client, then we don't need to
+have any kind of identifier for which private key to use for which
+Server or Client because there is only one of each.<a href="#appendix-A.1-4" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-5">Of course, this is a ludicrous scenario since no real organization of
+interest has only one server and one client.<a href="#appendix-A.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="a2-multiple-clients-one-server">
+<section id="appendix-A.2">
+        <h3 id="name-a2-multiple-clients-one-ser">
+<a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-a2-multiple-clients-one-ser" class="section-name selfRef">A.2.  Multiple Clients / One Server</a>
+        </h3>
+<p id="appendix-A.2-1">So, let's try with multiple clients and one Primary server<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.2-2">
+<pre>
+   +------------+
+   |  Client 1  |  --------+
+   +------------+          |
+   +------------+          +---&gt;
+   |  Client 2  |    ----------&gt;    +------------+
+   +------+-----+         :         |   Server   |
+          :               :         +------+-----+
+          :               +----&gt;
+   +------------+         |
+   |  Client n  |  -------+
+   +------+-----+
+</pre><a href="#appendix-A.2-2" class="pilcrow">¶</a>
+</div>
+<p id="appendix-A.2-3">The Clients and Server create public / private keys and derive a
+shared secret.  Each Client has a unique private key.<a href="#appendix-A.2-3" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-4">What is stored at the Client and Server to be able to encrypt and
+decrypt packets?<a href="#appendix-A.2-4" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-5">Clients each store a private key.  Server stores: Client Identifier
+and Private Key.<a href="#appendix-A.2-5" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-6">Since we only have one Server and multiple Clients, then the Clients
+don't need to have any kind of identifier for which private key to
+use for which Server but the Server needs to know which private key
+to use for which Client.  So, the Server has to store an identifier
+as well as the Key.<a href="#appendix-A.2-6" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-7">But, this also is a ludicrous scenario since no real organization of
+interest has only one server.<a href="#appendix-A.2-7" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="a3-multiple-clients-multiple-servers">
+<section id="appendix-A.3">
+        <h3 id="name-a3-multiple-clients-multipl">
+<a href="#appendix-A.3" class="section-number selfRef">A.3. </a><a href="#name-a3-multiple-clients-multipl" class="section-name selfRef">A.3.  Multiple Clients / Multiple Servers</a>
+        </h3>
+<p id="appendix-A.3-1">When we have multiple clients and multiple servers, then each not
+only does the Server need to know which key to use for which Client,
+but the Client needs to know which private key to use for which
+Server.<a href="#appendix-A.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="a4-primary-client-primary-server">
+<section id="appendix-A.4">
+        <h3 id="name-a4-primary-client-primary-s">
+<a href="#appendix-A.4" class="section-number selfRef">A.4. </a><a href="#name-a4-primary-client-primary-s" class="section-name selfRef">A.4.  Primary Client / Primary Server</a>
+        </h3>
+<p id="appendix-A.4-1">Based on this rationale, we have chosen a Primary Server / Primary
+Client topology.<a href="#appendix-A.4-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="appendix-b-sample-implementation-of-registration">
+<section id="appendix-B">
+      <h2 id="name-appendix-b-sample-implement">
+<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-appendix-b-sample-implement" class="section-name selfRef">Appendix B.  Sample Implementation of Registration</a>
+      </h2>
+<div id="b1-overall-summary">
+<section id="appendix-B.1">
+        <h3 id="name-b1-overall-summary">
+<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-b1-overall-summary" class="section-name selfRef">B.1.  Overall summary</a>
+        </h3>
+<p id="appendix-B.1-1">In the Registration phase, the objective is to generate a shared
+secret that will be used in encryption and decryption during the Data
+Transfer phase.  We have adopted a Primary-Secondary architecture to
+represent the clients and servers (see Section 4.1.1).  The primary
+server and primary client perform Key Encapsulation Mechanism (KEM)
+<span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span> to generate a primary shared secret.  The primary server
+shares this secret with secondary servers, whereas the primary client
+performs Key Derivation Function (KDF) <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span> to share client-
+specific secrets to corresponding secondary clients.  During the Data
+Transfer phase, the secondary servers generate the client-specific
+secrets on the arrival of the first packet from the secondary client.<a href="#appendix-B.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="b2-high-level-flow">
+<section id="appendix-B.2">
+        <h3 id="name-b2-high-level-flow">
+<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-b2-high-level-flow" class="section-name selfRef">B.2.  High level flow</a>
+        </h3>
+<p id="appendix-B.2-1">The following steps describe the protocol flow:<a href="#appendix-B.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-B.2-2.1">Primary client initiates a request to the primary server.  The
+request contains a list of available ciphersuites for KEM, KDF,
+and AEAD.<a href="#appendix-B.2-2.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="appendix-B.2-2.2">Primary server responds to the primary client with one of the
+available ciphersuites and shares its public key.<a href="#appendix-B.2-2.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="appendix-B.2-2.3">Primary client generates a secret and its encapsulation.  The
+primary client sends the encapsulation and a salt to the primary
+server.  The salt is required during KDF in the Data Transfer
+phase.<a href="#appendix-B.2-2.3" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="appendix-B.2-2.4">Primary Server generates the secret with the help of the
+encapsulation and responds with a status message.<a href="#appendix-B.2-2.4" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="appendix-B.2-2.5">Primary server shares this key with secondary servers over TLS.<a href="#appendix-B.2-2.5" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="appendix-B.2-2.6">Primary client generates the client-specific secrets with the
+help of KDF by using the info parameter as the Client IP address.
+The primary client shares these keys with the corresponding
+secondary clients over TLS.<a href="#appendix-B.2-2.6" class="pilcrow">¶</a>
+</li>
+        </ul>
+</section>
+</div>
+<div id="b3-commands-used">
+<section id="appendix-B.3">
+        <h3 id="name-b3-commands-used">
+<a href="#appendix-B.3" class="section-number selfRef">B.3. </a><a href="#name-b3-commands-used" class="section-name selfRef">B.3.  Commands used</a>
+        </h3>
+<p id="appendix-B.3-1">Two commands are used between the primary client and the primary
+server to denote the setup and KEM phases.  Along with this, we have
+a "req / resp" to indicate whether it's a request or response.<a href="#appendix-B.3-1" class="pilcrow">¶</a></p>
+<p id="appendix-B.3-2">Between primary and secondary entities, we have one command to denote
+the sharing of the secret keys.<a href="#appendix-B.3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="appendix-c-change-log">
+<section id="appendix-C">
+      <h2 id="name-appendix-c-change-log">
+<a href="#appendix-C" class="section-number selfRef">Appendix C. </a><a href="#name-appendix-c-change-log" class="section-name selfRef">Appendix C.  Change Log</a>
+      </h2>
+<p id="appendix-C-1">Note to RFC Editor: if this document does not obsolete an existing
+RFC, please remove this appendix before publication as an RFC.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="appendix-d-open-issues">
+<section id="appendix-D">
+      <h2 id="name-appendix-d-open-issues">
+<a href="#appendix-D" class="section-number selfRef">Appendix D. </a><a href="#name-appendix-d-open-issues" class="section-name selfRef">Appendix D.  Open Issues</a>
+      </h2>
+<p id="appendix-D-1">Note to RFC Editor: please remove this appendix before publication as
+an RFC.<a href="#appendix-D-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="acknowledgments">
+<section id="appendix-E">
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-A-1">TODO acknowledge.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-E-1">TODO acknowledge.<a href="#appendix-E-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
-<section id="appendix-B">
+<section id="appendix-F">
       <h2 id="name-authors-addresses">
 <a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
