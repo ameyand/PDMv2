@@ -734,9 +734,9 @@ servers needed for protocol development.
 --- back
 
 
-# Appendix A.  Rationale for Primary Server / Primary Client
+# Rationale for Primary Server / Primary Client
 
-## A.1.  One Client / One Server
+## One Client / One Server
 
 ~~~
    +------------+  Derived Shared Secret  +------------+
@@ -761,7 +761,7 @@ Server or Client because there is only one of each.
 Of course, this is a ludicrous scenario since no real organization of
 interest has only one server and one client.
 
-## A.2.  Multiple Clients / One Server
+## Multiple Clients / One Server
 
 So, let's try with multiple clients and one Primary server
 
@@ -797,21 +797,21 @@ as well as the Key.
 But, this also is a ludicrous scenario since no real organization of
 interest has only one server.
 
-## A.3.  Multiple Clients / Multiple Servers
+## Multiple Clients / Multiple Servers
 
 When we have multiple clients and multiple servers, then each not
 only does the Server need to know which key to use for which Client,
 but the Client needs to know which private key to use for which
 Server.
 
-## A.4.  Primary Client / Primary Server
+## Primary Client / Primary Server
 
 Based on this rationale, we have chosen a Primary Server / Primary
 Client topology.
 
-# Appendix B.  Sample Implementation of Registration
+# Sample Implementation of Registration
 
-## B.1.  Overall summary
+## Overall summary
 
 In the Registration phase, the objective is to generate a shared
 secret that will be used in encryption and decryption during the Data
@@ -825,7 +825,7 @@ specific secrets to corresponding secondary clients.  During the Data
 Transfer phase, the secondary servers generate the client-specific
 secrets on the arrival of the first packet from the secondary client.
 
-## B.2.  High level flow
+## High level flow
 
 The following steps describe the protocol flow:
 
@@ -846,7 +846,7 @@ The following steps describe the protocol flow:
   The primary client shares these keys with the corresponding
   secondary clients over TLS.
 
-## B.3.  Commands used
+## Commands used
 
 Two commands are used between the primary client and the primary
 server to denote the setup and KEM phases.  Along with this, we have
@@ -855,12 +855,12 @@ a "req / resp" to indicate whether it's a request or response.
 Between primary and secondary entities, we have one command to denote
 the sharing of the secret keys.
 
-# Appendix C.  Change Log
+# Change Log
 
 Note to RFC Editor: if this document does not obsolete an existing
 RFC, please remove this appendix before publication as an RFC.
 
-# Appendix D.  Open Issues
+# Open Issues
 
 Note to RFC Editor: please remove this appendix before publication as
 an RFC.
