@@ -3,7 +3,7 @@ title: "IPv6 Performance and Diagnostic Metrics Version 2 (PDMv2) Destination Op
 abbrev: "TODO - Abbreviation"
 category: std
 
-docname: draft-ietf-ippm-encrypted-pdmv2-latest
+docname: draft-ietf-ippm-encrypted-pdmv2-03
 submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
 number:
 date:
