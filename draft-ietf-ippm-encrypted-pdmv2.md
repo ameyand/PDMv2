@@ -10,7 +10,7 @@ date:
 consensus: true
 v: 3
 area: "Transport"
-workgroup: "IP Performance Measurement"
+workgroup: "Internet Engineering Task Force"
 keyword:
  - Extension Headers
  - IPv6
@@ -410,7 +410,7 @@ Pointer defined for Link-Local addresses, and when the SADDR type is
 Global Unicast, it sends the one defined for Global Unicast
 addresses.
 
-### PDMv2 Layout
+## PDMv2 Layout
 
 PDMv2 has two different header formats corresponding to whether the
 metric contents are encrypted or unencrypted.  The difference between
@@ -738,6 +738,8 @@ servers needed for protocol development.
 
 ## One Client / One Server
 
+Let's start with one client and one server.
+
 ~~~
    +------------+  Derived Shared Secret  +------------+
    |   Client   |    ----------------->   |   Server   |
@@ -828,7 +830,9 @@ secrets on the arrival of the first packet from the secondary client.
 ## High level flow
 
 The following steps describe the protocol flow:
+{:req12: style="format %d."}
 
+{: req12}
 - Primary client initiates a request to the primary server.  The
   request contains a list of available ciphersuites for KEM, KDF,
   and AEAD.
