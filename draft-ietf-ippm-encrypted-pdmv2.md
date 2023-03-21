@@ -10,7 +10,7 @@ date:
 consensus: true
 v: 3
 area: "Transport"
-workgroup: "IP Performance Measurement"
+workgroup: "Internet Engineering Task Force"
 keyword:
  - Extension Headers
  - IPv6
