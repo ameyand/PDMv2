@@ -1,6 +1,6 @@
 ---
 title: "IPv6 Performance and Diagnostic Metrics Version 2 (PDMv2) Destination Option"
-abbrev: "TODO - Abbreviation"
+abbrev: "draft-ietf-ippm-encrypted-pdmv2"
 category: std
 
 docname: draft-ietf-ippm-encrypted-pdmv2-latest
