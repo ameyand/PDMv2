@@ -65,10 +65,10 @@ informative:
 RFC8250 describes an optional Destination Option (DO) header embedded
 in each packet to provide sequence numbers and timing information as
 a basis for measurements.  As this data is sent in clear-text, this
-MAY create an opportunity for malicious actors to get information for
+may create an opportunity for malicious actors to get information for
 subsequent attacks.  This document defines PDMv2 which has a
 lightweight handshake (registration procedure) and encryption to
-secure this data.  Additional performance metrics which MAY be of use
+secure this data.  Additional performance metrics which may be of use
 are also defined.
 
 --- middle
@@ -541,7 +541,7 @@ reordering, etc.), and it is left to the implementation.
  		
 Replay attacks, performed by inserting a valid PDMv2 header sniffed
 from an existing session in a bogus packet, SHOULD NOT be considered
-a threat, as the offline decryption and analysis SHOULD be able to
+a threat, as the offline decryption and analysis should be able to
 find and eliminate out-of-order data.  Hence, we do not consider this	
 as a threat.
  		
