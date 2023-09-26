@@ -100,21 +100,6 @@ unusual server delays.
 
 PDMv2 adds confidentiality, integrity and authentication to PDM.
 
-PDMv2 consists of three kinds of flows:
-
-- Primary to Primary
-
-- Primary to Secondary
-
-- Secondary to Secondary
-
-These terms are defined in Section 3.  Sample topologies may be found
-in Appendix 1.
-
-This document describes the Secondary to Secondary protocol and
-security requirements.  The Primary to Primary and Primary to
-Secondary protocol will be described in a subsequent document.
-
 
 # Conventions used in this document
 
@@ -122,25 +107,19 @@ Secondary protocol will be described in a subsequent document.
 
 # Terminology
 
--  Primary Client (PC): An authoritative node that creates
-   cryptographic keys for multiple Secondary clients.
-
--  Primary Server (PS): An authoritative node that creates
-   cryptographic keys for multiple Secondary servers.
-
--  Secondary Client (SC): An endpoint node which initiates a session
-   with a listening port and sends PDM data.  Connects to the Primary
-   Client to get cryptographic key material.
-
--  Secondary Server (SS): An endpoint node which has a listening port
-   and sends PDM data.  Connects to the Primary Server to get
-   cryptographic key material.
+-  Client: An endpoint node which initiates a session with a
+   listening port and sends PDM data.  Creates cryptographic keys in
+   collaboration with the Server.	 		
+ 		
+-  Server: An endpoint node which has a listening port and sends PDM
+   data.  Creates cryptographic keys in collaboration with the
+   Client.
 
 Note: a client may act as a server (have listening ports).
 
 -  Symmetric Key (K): A uniformly random bitstring as an input to the
-   encryption algorithm, known only to Secondary Clients and
-   Secondary Servers, to establish a secure communication.
+   encryption algorithm, known only to Clients and Servers.  Used to
+   establish a secure communication.
 
 -  Public and Private Keys: A pair of keys that is used in asymmetric
    cryptography.  If one is used for encryption, the other is used
@@ -150,7 +129,7 @@ Note: a client may act as a server (have listening ports).
    any server.
 
 -  Pre-shared Key (PSK): A symmetric key.  Uniformly random
-   bitstring, shared between any client or any server or a key shared
+   bitstring, shared between any Client or any Server or a key shared
    between an entity that forms client-server relationship.  This
    could happen through an out-of band mechanism: e.g., a physical
    meeting or use of another protocol.
@@ -161,74 +140,30 @@ Note: a client may act as a server (have listening ports).
 
 # Protocol Flow
 
-The protocol will proceed in 3 steps.
+The protocol will proceed in 2 steps.
 
 {:req1: counter="bar" style="format Step %d:"}
 
 {: req1}
-- Negotiation between Primary Server and Primary Client.
-- Registration between Primary Server / Client and Secondary
-  Server / Client
-- PDM data flow between Secondary Client and Secondary Server
+- Creation of cryptographic secrets between Server and Client.
+- PDM data flow between Client and Server.
+
+These steps may be in the same session or in separate sessions.  That
+is, the cryptographic secrets may be created beforehand and used in	 		
+the PDM data flow at the time of the "real" data session.
 
 After-the-fact (or real-time) data analysis of PDM flow may occur by
 network diagnosticians or network devices.  The definition of how
 this is done is out of scope for this document.
 
-## Registration Phase
+## Cryptographic Phase
 
-### Rationale of Primary and Secondary Roles
-
-Enterprises have many servers and many clients.  These clients and
-servers may be in multiple locations.  It may be less overhead to
-have a secure location (ex.  Shared database) for servers and clients
-to share keys.  Otherwise, each client needs to keep track of the
-keys for each server.
-
-Please view Appendix 1 for some sample topologies and further
-explanation.
-
-### Diagram of Registration Flow
-
-~~~
-
-       +-----------+                      +-----------+
-       |Primary    |<====================>|Primary    |
-       |Client (PC)|                      |Server (PS)|
-       +-----+-----+                      +-----+-----+
-            ||                                  ||
-            ||                                  ||
-+-------------------------+         +-------------------------+
-| Secondary Clients(SC's) |         | Secondary Servers (SS's)|
-|                         |         |                         |
-| +----+ +----+   +----+  |         | +----+ +----+   +----+  |
-| |SC1 | |SC2 |.. |SC N|  |<=======>| |SS 1| |SS 2|.. |SS N|  |
-| +----+ +----+   +----+  |         | +----+ +----+   +----+  |
-|                         |         |                         |
-+-------------------------+         +-------------------------+
-
-~~~
-
-## Primary Client - Primary Server Negotiation Phase
+## Client - Server Negotiation
 
 The two entities exchange a set of data to ensure the respective
 identities.
 
 They use HPKE KEM to negotiate a "SharedSecret".
-
-## Primary Server / Client - Secondary Server / Client Registration Phase
-
-The "SharedSecret" is shared securely:
-
--  By the Primary Client to all the Secondary Clients under its
-   control.  The protocol to define this will be defined in a
-   subsequent document.
-
--  By the Primary Server to all the Secondary Servers under its
-   control.  The protocol to define this will be defined in a
-   subsequent document.
-
-## Secondary Client - Secondary Server communication
 
 Each Client and Server derive a "SessionTemporaryKey" by using HPKE
 KDF, using the following inputs:
@@ -242,7 +177,7 @@ KDF, using the following inputs:
 
 The Kri SHOULD be initialized to zero.
 
-The server and client initialize (separately) a pseudo-random non-
+The Server and Client initialize (separately) a pseudo-random non-
 repeating sequence between 1 and 2^15-1.  How to generate this
 sequence is beyond the scope of this document, and does not affect
 the rest of the specification.  When the sequence is used fully, or
@@ -568,150 +503,68 @@ subject to:
 
 with respect to an attacker.
 
-In the following we will refer to two different "groups", that can or
-cannot belong to the same operational and management domain:
+As outlined in Section 4.1, the Client and the Server share a
+"SharedSecret", which can be used to decrypt the data.  A leakage of
+this secret can lead to a confidentiality and integrity violation.	 		
+It is advised to avoid using the same "SharedSecret" in different	 		
+Clients and Server pairs.
 
-{:req9: style="format %d)"}
+Assuming that the "SharedSecret" is not compromised, an attacker will
+not be able to recover it even in the case of a brute-force attack to	 		
+the _SessionTemporaryKey_. Moreover, the key rotation of the	 		
+_SessionTemporaryKey_ ensures a forward secrecy.
 
-{: req9}
-- Servers - implementing services.
+## Resource exhaustion attacks	
+ 		
+The present document does not covers online decryption.  Hence, it is	 	
+not foreseen a computation resource exhaustion attack due to bogus
+PDMv2 header insertion by an attacker.
+ 		
+However, logging any incoming PDMv2 header might lead to a storage
+resource exhaustion.  Hence, it is suggested to not log PDMv2 headers	 		
+incoming from an unknown party.	 		
+ 		
+In other terms, PDMv2 logging should be enabled only for sessions
+that have PDMv2 enabled.  The simple fact that a packet contains a	 		
+PDMv2 header should not result in a logging event.	 		
+ 		
+An attacker can still inject bogus packets with PDMv2 headers for a	
+valid PDMv2-enabled session.  This, to a lesser extent, can cause an
+increase in resource utilization.  However, these bogus headers will	 		
+be found at decryption time.  To further mitigate this attack, it is	 		
+advised to log the PDMv2 headers only for packets with expected Epoch	 		
+and/or PSNTP.	 		
+ 		
+The definition of "expected" is dependent on the traffic flow type	
+and the network characteristics (e.g., bandwidth, delay, loss,
+reordering, etc.), and it is left to the implementation.	 		
+ 		
+Replay attacks, performed by inserting a valid PDMv2 header sniffed
+from an existing session in a bogus packet, should not be considered
+a threat, as the offline decryption and analysis should be able to
+find and eliminate out-of-order data.  Hence, we do not consider this	
+as a threat.
+ 		
+##  Effects of a Client or Server Compromise
 
-- Clients-devices willing to interact with the services offered by Servers.
+If a Client or a Server is compromised, i.e., an attacker takes
+control of the device, the attacker can leverage the knowledge of the	
+"SharedSecret" to encrypt (and, potentially, decrypt) the PDMv2 data.	
 
-We will assume, for the sake of generalization, that the Servers are
-managed by an Organization (OrgA) implementing management procedures
-over them, and the Clients by a different Organization (OrgB).
+To mitigate this event, we suggest:
 
-An attacker could be in the following positions:
-
-{:req10: style="format %d)"}
-
-{: req10}
-- External to OrgA or OrgB.
-- Inside OrgA (i.e., a Server), either because it is a legitimate-but-curious
-  device, or as a consequence of an attack to a device.
-- Inside OrgB (i.e., a Client), either because it is a legitimate-
-  but-curious device, or as a consequence of an attack to a device
-
-Furthermore, since PDMv2 DOH encryption could consume resources
-(albeit limited), it is possible to foresee a call of DoS by resource
-exhaustion.  Hence, it is relevant to consider a form of access
-control to verify that the Server and Client belong to OrgA and OrgB
-respectively.  This could be a _delegated trust_.
-
-In other terms, a Client could just want to verify that the Server
-belongs to OrgA, without actually verifying the identity of the
-Server.
-
-The Authentication and Authorization of Clients and Servers is thus
-delegated to the respective Organizations.  In other terms, we do not
-expect, or want, that a Client and a Server should be forced to
-verify the respective identities (Authentication) or the permissions
-to use PDMv2 (Authorization).
-
-The simple knowledge of the secrets required by the flow is
-considered sufficient to enable PDMv2.  On the opposite, an
-unsuccessful decryption MUST result in dropping the PDMv2 DOH without
-further processing or, if configured to do so, might lead to
-throttling, filtering, and/or logging the activity of the other
-entity (Client or Server).
-
-The present document specifies a methodology to enable this delegated
-trust, along with the Confidentiality and Integrity requirements, in
-the PDMv2 DOH.
-
-We assume that PS and PC have verified the respective identities and
-the authorization to enable PDMv2 DOH on a set of devices under their
-responsibility: Secondary Servers (SS) and Secondary Clients (SC).
-
-PS-PC
-
-- Perform a HPKE KEM and obtain a PairMasterSecret (PMS).
-- The PMS is stored securely in both PS and PC, and is NOT to be
-  leaked.
-- The PMS is valid only for the PC-PS pair.
-
-In other terms, if a PS would want to establish a pair with two PCs,
-it will have two different PMSs. PMS might be re-negotiated after a given amount of time
-[renegotiation TBD]
-
-- PS and PC exchange respectively the list of the SS and SC enabled
-  to use PDMv2.  The list can be:
-    - A range of IP addresses, e.g.: 2001:db8:food:beef:cafe::0/80
-    - A list of IP addresses, e.g., [2001:db8:food::1/128,
-      2001:db8:food::1/128]
-
-    Note:
-    {:req11: style="format %d)"}
-
-    {: req11}
-    - How to represent the list in a compact way is out of scope of
-      the present document,
-    - The list could be dynamically updated.
-    - Inside OrgB (i.e., a Client), either because it is a
-      legitimate-but-curious device, or as a consequence of an
-      attack to a device
-- PS sends to the PC the Security Mode of Operation (SecMoP) to be
-  used, see below.
-
-PS-SS and PC-SC
-
-- Each Secondary Sever (or Client) MUST authenticate itself with the
-  Primary Server (or Client).  This is out of scope of the present
-  specification.
-- Each SS receives a PairServerSecret (PSS), derived using HPKE KDF,
-  and valid for the specific SS and the list of SCs defined above.
-- Each SC receives a PairClientSecret (PCS), derived using HPKE KDF,
-  and valid for the specific SC and the list of SSs defined above.
-
-Since there are multiple use-cases, we define 4 modes of operations:
-
-- **No Protection**: The Secrets are discarded (or not even created),
-  and the flows do not use PDMv2.  The scheme above is used only to
-  disseminate the list of Secondary Clients and Secondary Servers.
-  By sharing lists, this mode act as ACL (Access Control List) or
-  authorization of the secondaries.
-- **TrustedServers**: The Secondary Servers are trusted, and they do
-  know a secret derived by the PMS.
-- **AsymmetricPoll**: One Secondary (Server or Client) must acquire a
-  secret from the respective Primary.
-- **Identity Based Cryptography (IBC)**: IBC (RFC5091) is used to
-  generate a shared secret between the SS and the SC.
-
-The **TrustedServers** MoP has the benefit of requiring no additional
-steps to send and receive PDMv2 DOH, because each flow is protected
-by a SessionKey that can be derived autonomously by both the SC and
-the SS, without any interaction with the PS and PC, or any
-negotiation between the SS and the SC.
-
-The possible vulnerabilities of the **TrustedServers** MoP are the
-following:
-
-- Any SS can inspect the flows directed to a different SS in the
-  same group.
-- An attack to a SS might result in compromising the security of all
-  the flows between all the clients and the Secondary Servers
-  belonging to the same group.
-
-A possible mitigation is to split the Secondary Servers in different
-sub-groups.  This is a scenario similar to the one of a PC
-negotiating PDMv2 access with different PSs.
-
-The **AsymmetricPoll** MoP has the benefit of isolating each SS and
-each SC.  Only the SS and SC involved in a communication can decrypt
-their flows.
-
-The **IBC** MoP has the same security properties of the
-**AsymmetricPoll** MoP, and the advantage of not requiring any
-interaction between the Primary and the Secondary.  The disadvantage
-is the requirement of performing a "pairing" session negotiation
-between the Secondaries.
-
-It must be considered that, while secure, this MoP could be used to
-perform a resource exhaustion attack on the PairDeviceKey
-establishment.  Hence, a device MUST NOT reply to an IP address that
-is not in the Secondary[client, server] list, and MUST NOT reply with
-negative acknowledgments (e.g., in case of an incorrect decoding).
+-  The "SharedSecret" should not be shared by different Clients or
+   Servers, unless all of them are trusted, or unless the risk of a
+   "SecretKey" violation has been evaluated and considered
+   acceptable.	
+ 		
+-  The "SharedSecret" could be stored in a secure, tamper-resistant
+   memory area capable of deriving the _SessionTemporaryKey_ without
+   disclosing the "SharedSecret".
+ 		
+   Note that the second point is only necessary for cases where device
+   tampering is very likely, and the security of the system has to be
+   guaranteed.
 
 # Privacy Considerations
 
@@ -732,84 +585,6 @@ for her comments.  Thanks to the India Internet Engineering Society
 servers needed for protocol development.
 
 --- back
-
-
-# Rationale for Primary Server / Primary Client
-
-## One Client / One Server
-
-Let's start with one client and one server.
-
-~~~
-   +------------+  Derived Shared Secret  +------------+
-   |   Client   |    ----------------->   |   Server   |
-   +------+-----+                         +------+-----+
-          |                                      |
-          V                                      V
-    Client Secret                          Server Secret
-~~~
-
-The Client and Server create public / private keys and derive a
-shared secret.  Let's not consider Authentication or Certificates at
-this point.
-
-What is stored at the Client and Server to be able to encrypt and
-decrypt packets?  The shared secret or private key.
-
-Since we only have one Server and one Client, then we don't need to
-have any kind of identifier for which private key to use for which
-Server or Client because there is only one of each.
-
-Of course, this is a ludicrous scenario since no real organization of
-interest has only one server and one client.
-
-## Multiple Clients / One Server
-
-So, let's try with multiple clients and one Primary server
-
-~~~
-   +------------+
-   |  Client 1  |  --------+
-   +------------+          |
-   +------------+          +--->
-   |  Client 2  |    ---------->    +------------+
-   +------+-----+         :         |   Server   |
-          :               :         +------+-----+
-          :               +---->
-   +------------+         |
-   |  Client n  |  -------+
-   +------+-----+
-~~~
-
-The Clients and Server create public / private keys and derive a
-shared secret.  Each Client has a unique private key.
-
-What is stored at the Client and Server to be able to encrypt and
-decrypt packets?
-
-Clients each store a private key.  Server stores: Client Identifier
-and Private Key.
-
-Since we only have one Server and multiple Clients, then the Clients
-don't need to have any kind of identifier for which private key to
-use for which Server but the Server needs to know which private key
-to use for which Client.  So, the Server has to store an identifier
-as well as the Key.
-
-But, this also is a ludicrous scenario since no real organization of
-interest has only one server.
-
-## Multiple Clients / Multiple Servers
-
-When we have multiple clients and multiple servers, then each not
-only does the Server need to know which key to use for which Client,
-but the Client needs to know which private key to use for which
-Server.
-
-## Primary Client / Primary Server
-
-Based on this rationale, we have chosen a Primary Server / Primary
-Client topology.
 
 # Sample Implementation of Registration
 
@@ -833,31 +608,17 @@ The following steps describe the protocol flow:
 {:req12: style="format %d."}
 
 {: req12}
-- Primary client initiates a request to the primary server.  The
+- Client initiates a request to the Server.  The
   request contains a list of available ciphersuites for KEM, KDF,
   and AEAD.
-- Primary server responds to the primary client with one of the
+- Server responds to the Client with one of the
   available ciphersuites and shares its public key.
-- Primary client generates a secret and its encapsulation.  The
-  primary client sends the encapsulation and a salt to the primary
-  server.  The salt is required during KDF in the Data Transfer
+- Client generates a secret and its encapsulation.  The
+  Client sends the encapsulation and a salt to the
+  Server.  The salt is required during KDF in the Data Transfer
   phase.
-- Primary Server generates the secret with the help of the
+- Server generates the secret with the help of the
   encapsulation and responds with a status message.
-- Primary server shares this key with secondary servers over TLS.
-- Primary client generates the client-specific secrets with the
-  help of KDF by using the info parameter as the Client IP address.
-  The primary client shares these keys with the corresponding
-  secondary clients over TLS.
-
-## Commands used
-
-Two commands are used between the primary client and the primary
-server to denote the setup and KEM phases.  Along with this, we have
-a "req / resp" to indicate whether it's a request or response.
-
-Between primary and secondary entities, we have one command to denote
-the sharing of the secret keys.
 
 # Change Log
 
