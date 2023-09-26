@@ -65,10 +65,10 @@ informative:
 RFC8250 describes an optional Destination Option (DO) header embedded
 in each packet to provide sequence numbers and timing information as
 a basis for measurements.  As this data is sent in clear-text, this
-may create an opportunity for malicious actors to get information for
+MAY create an opportunity for malicious actors to get information for
 subsequent attacks.  This document defines PDMv2 which has a
 lightweight handshake (registration procedure) and encryption to
-secure this data.  Additional performance metrics which may be of use
+secure this data.  Additional performance metrics which MAY be of use
 are also defined.
 
 --- middle
@@ -86,7 +86,7 @@ risks involved transmitting PDM data during a diagnostics session.
 PDM metrics can help an attacker understand about the type of machine
 and its processing capabilities.  Inferring from the PDM data, the
 attack can launch a timing attack.  For example, if a cryptographic
-protocol is used, a timing attack may be launched against the keying
+protocol is used, a timing attack MAY be launched against the keying
 material to obtain the secret.
 
 Along with this, PDM does not provide integrity.  It is possible for
@@ -115,7 +115,7 @@ PDMv2 adds confidentiality, integrity and authentication to PDM.
    data.  Creates cryptographic keys in collaboration with the
    Client.
 
-Note: a client may act as a server (have listening ports).
+Note: a client MAY act as a server (have listening ports).
 
 -  Symmetric Key (K): A uniformly random bitstring as an input to the
    encryption algorithm, known only to Clients and Servers.  Used to
@@ -148,11 +148,11 @@ The protocol will proceed in 2 steps.
 - Creation of cryptographic secrets between Server and Client.
 - PDM data flow between Client and Server.
 
-These steps may be in the same session or in separate sessions.  That
-is, the cryptographic secrets may be created beforehand and used in	 		
+These steps MAY be in the same session or in separate sessions.  That
+is, the cryptographic secrets MAY be created beforehand and used in	 		
 the PDM data flow at the time of the "real" data session.
 
-After-the-fact (or real-time) data analysis of PDM flow may occur by
+After-the-fact (or real-time) data analysis of PDM flow MAY occur by
 network diagnosticians or network devices.  The definition of how
 this is done is out of scope for this document.
 
@@ -189,7 +189,7 @@ and derives another SessionTemporaryKey to be used for decryption.
 It shall be stressed that the two SessionTemporaryKeys used in the
 communication are never the same, as the 5-tuple is reversed for the
 Server and Client.  Moreover, the time evolution of the respective
-Kri can be different.  As a consequence, each entity must maintain a
+Kri can be different.  As a consequence, each entity MUST maintain a
 table with (at least) the following informations:
 
 
@@ -232,7 +232,7 @@ cases:
 
 ## Security Goals for Confidentiality
 
-PDM data must be kept confidential between the intended parties,
+PDM data MUST be kept confidential between the intended parties,
 which includes (but is not limited to) the two entities exchanging
 PDM data, and any legitimate party with the proper rights to access
 such data.
@@ -240,17 +240,17 @@ such data.
 
 ## Security Goals for Integrity
 
-PDM data must not be forged or modified by a malicious entity.  In
-other terms, a malicious entity must not be able to generate a valid
-PDM header impersonating an endpoint, and must not be able to modify
+PDM data MUST NOT be forged or modified by a malicious entity.  In
+other terms, a malicious entity MUST NOT be able to generate a valid
+PDM header impersonating an endpoint, and MUST NOT be able to modify
 a valid PDM header.
 
 ## Security Goals for Authentication
 
-An unauthorized party must not be able to send PDM data and must not
+An unauthorized party MUST NOT be able to send PDM data and MUST NOT
 be able to authorize another entity to do so.  The protocol to define
 this will be defined in a subsequent document.  Alternatively, if
-authentication is done via any of the following, this requirement may
+authentication is done via any of the following, this requirement MAY
 be seen to be met.
 
 {:req3: style="format %c)"}
@@ -419,7 +419,7 @@ Following is the representation of the encrypted PDMv2 header:
     15-bit unsigned number.
 
     This is a random number with as much entropy as desired by the
- 	  implementation.  The level of entropy should be clearly
+ 	  implementation.  The level of entropy SHOULD be clearly
  	  specified to the user.
 
 - Flag Bit
@@ -427,7 +427,7 @@ Following is the representation of the encrypted PDMv2 header:
     1-bit field.
 
     The flag bit indicates that the sender has used a new
- 	  _SessionTemporaryKey_ and the receiver should increment the Kri
+ 	  _SessionTemporaryKey_ and the receiver SHOULD increment the Kri
  	  of the sender and derive the same new _SessionTemporaryKey_.
 
 - Scale Delta Time Last Received (SCALEDTLR)
@@ -524,9 +524,9 @@ However, logging any incoming PDMv2 header might lead to a storage
 resource exhaustion.  Hence, it is suggested to not log PDMv2 headers	 		
 incoming from an unknown party.	 		
  		
-In other terms, PDMv2 logging should be enabled only for sessions
+In other terms, PDMv2 logging SHOULD be enabled only for sessions
 that have PDMv2 enabled.  The simple fact that a packet contains a	 		
-PDMv2 header should not result in a logging event.	 		
+PDMv2 header SHOULD NOT result in a logging event.	 		
  		
 An attacker can still inject bogus packets with PDMv2 headers for a	
 valid PDMv2-enabled session.  This, to a lesser extent, can cause an
@@ -540,8 +540,8 @@ and the network characteristics (e.g., bandwidth, delay, loss,
 reordering, etc.), and it is left to the implementation.	 		
  		
 Replay attacks, performed by inserting a valid PDMv2 header sniffed
-from an existing session in a bogus packet, should not be considered
-a threat, as the offline decryption and analysis should be able to
+from an existing session in a bogus packet, SHOULD NOT be considered
+a threat, as the offline decryption and analysis SHOULD be able to
 find and eliminate out-of-order data.  Hence, we do not consider this	
 as a threat.
  		
@@ -553,7 +553,7 @@ control of the device, the attacker can leverage the knowledge of the
 
 To mitigate this event, we suggest:
 
--  The "SharedSecret" should not be shared by different Clients or
+-  The "SharedSecret" SHOULD NOT be shared by different Clients or
    Servers, unless all of them are trusted, or unless the risk of a
    "SecretKey" violation has been evaluated and considered
    acceptable.	
