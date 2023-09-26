@@ -14,10 +14,10 @@
        RFC8250 describes an optional Destination Option (DO) header embedded
 in each packet to provide sequence numbers and timing information as
 a basis for measurements.  As this data is sent in clear-text, this
-may create an opportunity for malicious actors to get information for
+ MAY  create an opportunity for malicious actors to get information for
 subsequent attacks.  This document defines PDMv2 which has a
 lightweight handshake (registration procedure) and encryption to
-secure this data.  Additional performance metrics which may be of use
+secure this data.  Additional performance metrics which  MAY  be of use
 are also defined. 
     " name="description">
 <meta content="xml2rfc 3.18.0" name="generator">
@@ -1094,10 +1094,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <p id="section-abstract-1">RFC8250 describes an optional Destination Option (DO) header embedded
 in each packet to provide sequence numbers and timing information as
 a basis for measurements.  As this data is sent in clear-text, this
-may create an opportunity for malicious actors to get information for
+<span class="bcp14">MAY</span> create an opportunity for malicious actors to get information for
 subsequent attacks.  This document defines PDMv2 which has a
 lightweight handshake (registration procedure) and encryption to
-secure this data.  Additional performance metrics which may be of use
+secure this data.  Additional performance metrics which <span class="bcp14">MAY</span> be of use
 are also defined.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
@@ -1296,7 +1296,7 @@ risks involved transmitting PDM data during a diagnostics session.<a href="#sect
 <p id="section-1.1-2">PDM metrics can help an attacker understand about the type of machine
 and its processing capabilities.  Inferring from the PDM data, the
 attack can launch a timing attack.  For example, if a cryptographic
-protocol is used, a timing attack may be launched against the keying
+protocol is used, a timing attack <span class="bcp14">MAY</span> be launched against the keying
 material to obtain the secret.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
 <p id="section-1.1-3">Along with this, PDM does not provide integrity.  It is possible for
 a Man-In-The-Middle (MITM) node to modify PDM headers leading to
@@ -1341,7 +1341,7 @@ data.  Creates cryptographic keys in collaboration with the
 Client.<a href="#section-3-1.2" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="section-3-2">Note: a client may act as a server (have listening ports).<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-2">Note: a client <span class="bcp14">MAY</span> act as a server (have listening ports).<a href="#section-3-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3-3.1">Symmetric Key (K): A uniformly random bitstring as an input to the
 encryption algorithm, known only to Clients and Servers.  Used to
@@ -1382,10 +1382,10 @@ whole session.<a href="#section-3-3.4" class="pilcrow">¶</a>
 </dd>
       <dd class="break"></dd>
 </dl>
-<p id="section-4-3">These steps may be in the same session or in separate sessions.  That
-is, the cryptographic secrets may be created beforehand and used in                   <br>
+<p id="section-4-3">These steps <span class="bcp14">MAY</span> be in the same session or in separate sessions.  That
+is, the cryptographic secrets <span class="bcp14">MAY</span> be created beforehand and used in                   <br>
 the PDM data flow at the time of the "real" data session.<a href="#section-4-3" class="pilcrow">¶</a></p>
-<p id="section-4-4">After-the-fact (or real-time) data analysis of PDM flow may occur by
+<p id="section-4-4">After-the-fact (or real-time) data analysis of PDM flow <span class="bcp14">MAY</span> occur by
 network diagnosticians or network devices.  The definition of how
 this is done is out of scope for this document.<a href="#section-4-4" class="pilcrow">¶</a></p>
 <div id="cryptographic-phase">
@@ -1426,7 +1426,7 @@ and derives another SessionTemporaryKey to be used for decryption.<a href="#sect
 <p id="section-4.2-7">It shall be stressed that the two SessionTemporaryKeys used in the
 communication are never the same, as the 5-tuple is reversed for the
 Server and Client.  Moreover, the time evolution of the respective
-Kri can be different.  As a consequence, each entity must maintain a
+Kri can be different.  As a consequence, each entity <span class="bcp14">MUST</span> maintain a
 table with (at least) the following informations:<a href="#section-4.2-7" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.2-8.1">Flow 5-tuple, Own Kri, Other Kri<a href="#section-4.2-8.1" class="pilcrow">¶</a>
@@ -1482,7 +1482,7 @@ actor a negligible risk.<a href="#section-5-4.3" class="pilcrow">¶</a>
         <h3 id="name-security-goals-for-confiden">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-security-goals-for-confiden" class="section-name selfRef">Security Goals for Confidentiality</a>
         </h3>
-<p id="section-5.1-1">PDM data must be kept confidential between the intended parties,
+<p id="section-5.1-1">PDM data <span class="bcp14">MUST</span> be kept confidential between the intended parties,
 which includes (but is not limited to) the two entities exchanging
 PDM data, and any legitimate party with the proper rights to access
 such data.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
@@ -1493,9 +1493,9 @@ such data.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
         <h3 id="name-security-goals-for-integrit">
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-security-goals-for-integrit" class="section-name selfRef">Security Goals for Integrity</a>
         </h3>
-<p id="section-5.2-1">PDM data must not be forged or modified by a malicious entity.  In
-other terms, a malicious entity must not be able to generate a valid
-PDM header impersonating an endpoint, and must not be able to modify
+<p id="section-5.2-1">PDM data <span class="bcp14">MUST NOT</span> be forged or modified by a malicious entity.  In
+other terms, a malicious entity <span class="bcp14">MUST NOT</span> be able to generate a valid
+PDM header impersonating an endpoint, and <span class="bcp14">MUST NOT</span> be able to modify
 a valid PDM header.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1504,10 +1504,10 @@ a valid PDM header.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
         <h3 id="name-security-goals-for-authenti">
 <a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-security-goals-for-authenti" class="section-name selfRef">Security Goals for Authentication</a>
         </h3>
-<p id="section-5.3-1">An unauthorized party must not be able to send PDM data and must not
+<p id="section-5.3-1">An unauthorized party <span class="bcp14">MUST NOT</span> be able to send PDM data and <span class="bcp14">MUST NOT</span>
 be able to authorize another entity to do so.  The protocol to define
 this will be defined in a subsequent document.  Alternatively, if
-authentication is done via any of the following, this requirement may
+authentication is done via any of the following, this requirement <span class="bcp14">MAY</span>
 be seen to be met.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="olPercent" id="section-5.3-2">
 <dt>a)</dt>
@@ -1711,7 +1711,7 @@ Reserved bits for future use.  They are initialised to 0 for PDMv2.<a href="#sec
 15-bit unsigned number.<a href="#section-6.3-6.5.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.5.3">
 This is a random number with as much entropy as desired by the
-        implementation.  The level of entropy should be clearly
+        implementation.  The level of entropy <span class="bcp14">SHOULD</span> be clearly
         specified to the user.<a href="#section-6.3-6.5.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.6">
@@ -1720,7 +1720,7 @@ This is a random number with as much entropy as desired by the
 1-bit field.<a href="#section-6.3-6.6.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.6.3">
 The flag bit indicates that the sender has used a new
-        <em>SessionTemporaryKey</em> and the receiver should increment the Kri
+        <em>SessionTemporaryKey</em> and the receiver <span class="bcp14">SHOULD</span> increment the Kri
         of the sender and derive the same new <em>SessionTemporaryKey</em>.<a href="#section-6.3-6.6.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.7">
@@ -1833,9 +1833,9 @@ PDMv2 header insertion by an attacker.<a href="#section-7.1-1" class="pilcrow">�
 <p id="section-7.1-2">However, logging any incoming PDMv2 header might lead to a storage
 resource exhaustion.  Hence, it is suggested to not log PDMv2 headers                 <br>
 incoming from an unknown party.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
-<p id="section-7.1-3">In other terms, PDMv2 logging should be enabled only for sessions
+<p id="section-7.1-3">In other terms, PDMv2 logging <span class="bcp14">SHOULD</span> be enabled only for sessions
 that have PDMv2 enabled.  The simple fact that a packet contains a                    <br>
-PDMv2 header should not result in a logging event.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
+PDMv2 header <span class="bcp14">SHOULD NOT</span> result in a logging event.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
 <p id="section-7.1-4">An attacker can still inject bogus packets with PDMv2 headers for a   <br>
 valid PDMv2-enabled session.  This, to a lesser extent, can cause an
 increase in resource utilization.  However, these bogus headers will                  <br>
@@ -1846,8 +1846,8 @@ and/or PSNTP.<a href="#section-7.1-4" class="pilcrow">¶</a></p>
 and the network characteristics (e.g., bandwidth, delay, loss,
 reordering, etc.), and it is left to the implementation.<a href="#section-7.1-5" class="pilcrow">¶</a></p>
 <p id="section-7.1-6">Replay attacks, performed by inserting a valid PDMv2 header sniffed
-from an existing session in a bogus packet, should not be considered
-a threat, as the offline decryption and analysis should be able to
+from an existing session in a bogus packet, <span class="bcp14">SHOULD NOT</span> be considered
+a threat, as the offline decryption and analysis <span class="bcp14">SHOULD</span> be able to
 find and eliminate out-of-order data.  Hence, we do not consider this <br>
 as a threat.<a href="#section-7.1-6" class="pilcrow">¶</a></p>
 </section>
@@ -1862,7 +1862,7 @@ control of the device, the attacker can leverage the knowledge of the <br>
 "SharedSecret" to encrypt (and, potentially, decrypt) the PDMv2 data.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
 <p id="section-7.2-2">To mitigate this event, we suggest:<a href="#section-7.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-7.2-3.1">The "SharedSecret" should not be shared by different Clients or
+<li class="normal" id="section-7.2-3.1">The "SharedSecret" <span class="bcp14">SHOULD NOT</span> be shared by different Clients or
 Servers, unless all of them are trusted, or unless the risk of a
 "SecretKey" violation has been evaluated and considered
 acceptable.<a href="#section-7.2-3.1" class="pilcrow">¶</a>
