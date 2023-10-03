@@ -5,14 +5,14 @@
 Internet Engineering Task Force                                N. Elkins
 Internet-Draft                                     Inside Products, Inc.
 Intended status: Standards Track                            M. Ackermann
-Expires: 29 March 2024                                     BCBS Michigan
+Expires: 5 April 2024                                      BCBS Michigan
                                                             A. Deshpande
                                                    NITK Surathkal/Google
                                                             T. Pecorella
                                                   University of Florence
                                                                A. Rashid
                                                      Politecnico di Bari
-                                                       26 September 2023
+                                                          3 October 2023
 
 
  IPv6 Performance and Diagnostic Metrics Version 2 (PDMv2) Destination
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 March 2024.
+   This Internet-Draft will expire on 5 April 2024.
 
 Copyright Notice
 
@@ -481,7 +481,7 @@ Table of Contents
       32-bit unsigned number.
 
       Global Pointer is initialized to 1 for the different source
-      address types and incremented monotonically for each packet with
+      address types and incremented sequentially for each packet with
       the corresponding source address type.
 
       This field stores the Global Pointer type corresponding to the
@@ -492,7 +492,7 @@ Table of Contents
       16-bit unsigned number.
 
       This field is initialized at a random number and is incremented
-      monotonically for each packet of the 5-tuple.
+      sequentially for each packet of the 5-tuple.
 
       Packet Sequence Number Last Received (PSNLR)
 
@@ -521,12 +521,13 @@ Table of Contents
 
 7.  Security Considerations
 
-   PDMv2 DOH can be used by an attacker to gather information about a
-   victim (passive attack) or to force the victim to modify its
-   operational parameters to comply with forged data (active attacks).
+   PDMv2 Destination Options header can be used by an attacker to gather
+   information about a victim (passive attack) or to force the victim to
+   modify its operational parameters to comply with forged data (active
+   attacks).
 
-   In order to mitigate these, it is important that the PDMv2 DOH is
-   subject to:
+   In order to mitigate these, it is important that the PDMv2
+   Destination Options header is subject to:
 
    1)  Confidentiality and
 
