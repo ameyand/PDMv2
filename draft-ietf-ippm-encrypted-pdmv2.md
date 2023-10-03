@@ -449,7 +449,7 @@ Following is the representation of the encrypted PDMv2 header:
     32-bit unsigned number.
 
     Global Pointer is initialized to 1 for the different source
- 	  address types and incremented monotonically for each packet
+ 	  address types and incremented sequentially for each packet
  	  with the corresponding source address type.
 
     This field stores the Global Pointer type corresponding to the
@@ -460,7 +460,7 @@ Following is the representation of the encrypted PDMv2 header:
     16-bit unsigned number.
 
     This field is initialized at a random number and is incremented
- 	  monotonically for each packet of the 5-tuple.
+ 	  sequentially for each packet of the 5-tuple.
 
 - Packet Sequence Number Last Received (PSNLR)
 
@@ -489,11 +489,11 @@ Following is the representation of the encrypted PDMv2 header:
 
 # Security Considerations
 
-PDMv2 DOH can be used by an attacker to gather information about a
+PDMv2 Destination Options header can be used by an attacker to gather information about a
 victim (passive attack) or to force the victim to modify its
 operational parameters to comply with forged data (active attacks).
 
-In order to mitigate these, it is important that the PDMv2 DOH is
+In order to mitigate these, it is important that the PDMv2 Destination Options header is
 subject to:
 {:req8: style="format %d)"}
 
