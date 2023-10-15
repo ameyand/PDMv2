@@ -357,13 +357,13 @@ Following is the representation of the unencrypted PDMv2 header:
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
+  |  Option Type  | Option Length | Vrsn  |         Epoch         |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |      Random Number          |f|   ScaleDTLR   |   ScaleDTLS   |
+  |      PSN This Packet          |         Reserved Bits         |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                         Global Pointer                        |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |      PSN This Packet          |    PSN Last Received          |
+  |   ScaleDTLR   |   ScaleDTLS   |    PSN Last Received          |
   |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |   Delta Time Last Received    |     Delta Time Last Sent      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -375,9 +375,9 @@ Following is the representation of the encrypted PDMv2 header:
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
+  |  Option Type  | Option Length | Vrsn  |         Epoch         |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |      Random Number          |f|                               |
+  |      PSN This Packet          |                               |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               :
   |                      Encrypted PDM Data                       :
   :                          (30 bytes)                           |
@@ -409,26 +409,24 @@ Following is the representation of the encrypted PDMv2 header:
 
     4-bit unsigned number.
 
+- Epoche
+
+  12-bit unsigned number.
+
+  Epoche field is used to indicate the roll-over of PSNTP counter.
+
+- Packet Sequence Number This Packet (PSNTP)
+
+    16-bit unsigned number.
+
+    This field is initialized at a random number and is incremented
+ 	  sequentially for each packet of the 5-tuple.
+
 - Reserved Bits
 
-    12-bits.
+    16-bits.
 
     Reserved bits for future use.  They are initialised to 0 for PDMv2.
-- Random Number
-
-    15-bit unsigned number.
-
-    This is a random number with as much entropy as desired by the
- 	  implementation.  The level of entropy SHOULD be clearly
- 	  specified to the user.
-
-- Flag Bit
-
-    1-bit field.
-
-    The flag bit indicates that the sender has used a new
- 	  _SessionTemporaryKey_ and the receiver SHOULD increment the Kri
- 	  of the sender and derive the same new _SessionTemporaryKey_.
 
 - Scale Delta Time Last Received (SCALEDTLR)
 
@@ -454,13 +452,6 @@ Following is the representation of the encrypted PDMv2 header:
 
     This field stores the Global Pointer type corresponding to the
  	  SADDR type of the packet.
-
-- Packet Sequence Number This Packet (PSNTP)
-
-    16-bit unsigned number.
-
-    This field is initialized at a random number and is incremented
- 	  sequentially for each packet of the 5-tuple.
 
 - Packet Sequence Number Last Received (PSNLR)
 
