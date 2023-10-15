@@ -1677,13 +1677,13 @@ the two types of headers is determined from the Options Length value.<a href="#s
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
+  |  Option Type  | Option Length | Vrsn  |         Epoch         |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |      Random Number          |f|   ScaleDTLR   |   ScaleDTLS   |
+  |      PSN This Packet          |         Reserved Bits         |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                         Global Pointer                        |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |      PSN This Packet          |    PSN Last Received          |
+  |   ScaleDTLR   |   ScaleDTLS   |    PSN Last Received          |
   |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |   Delta Time Last Received    |     Delta Time Last Sent      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1695,9 +1695,9 @@ the two types of headers is determined from the Options Length value.<a href="#s
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
+  |  Option Type  | Option Length | Vrsn  |         Epoch         |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |      Random Number          |f|                               |
+  |      PSN This Packet          |                               |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               :
   |                      Encrypted PDM Data                       :
   :                          (30 bytes)                           |
@@ -1731,29 +1731,26 @@ the two types of headers is determined from the Options Length value.<a href="#s
 4-bit unsigned number.<a href="#section-6.3-6.3.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.4">
-            <p id="section-6.3-6.4.1">Reserved Bits<a href="#section-6.3-6.4.1" class="pilcrow">¶</a></p>
+            <p id="section-6.3-6.4.1">Epoche<a href="#section-6.3-6.4.1" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.4.2">
-12-bits.<a href="#section-6.3-6.4.2" class="pilcrow">¶</a></p>
+12-bit unsigned number.<a href="#section-6.3-6.4.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.4.3">
-Reserved bits for future use.  They are initialised to 0 for PDMv2.<a href="#section-6.3-6.4.3" class="pilcrow">¶</a></p>
+Epoche field is used to indicate the roll-over of PSNTP counter.<a href="#section-6.3-6.4.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.5">
-            <p id="section-6.3-6.5.1">Random Number<a href="#section-6.3-6.5.1" class="pilcrow">¶</a></p>
+            <p id="section-6.3-6.5.1">Packet Sequence Number This Packet (PSNTP)<a href="#section-6.3-6.5.1" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.5.2">
-15-bit unsigned number.<a href="#section-6.3-6.5.2" class="pilcrow">¶</a></p>
+16-bit unsigned number.<a href="#section-6.3-6.5.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.5.3">
-This is a random number with as much entropy as desired by the
-        implementation.  The level of entropy <span class="bcp14">SHOULD</span> be clearly
-        specified to the user.<a href="#section-6.3-6.5.3" class="pilcrow">¶</a></p>
+This field is initialized at a random number and is incremented
+        sequentially for each packet of the 5-tuple.<a href="#section-6.3-6.5.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.6">
-            <p id="section-6.3-6.6.1">Flag Bit<a href="#section-6.3-6.6.1" class="pilcrow">¶</a></p>
+            <p id="section-6.3-6.6.1">Reserved Bits<a href="#section-6.3-6.6.1" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.6.2">
-1-bit field.<a href="#section-6.3-6.6.2" class="pilcrow">¶</a></p>
+16-bits.<a href="#section-6.3-6.6.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.6.3">
-The flag bit indicates that the sender has used a new
-        <em>SessionTemporaryKey</em> and the receiver <span class="bcp14">SHOULD</span> increment the Kri
-        of the sender and derive the same new <em>SessionTemporaryKey</em>.<a href="#section-6.3-6.6.3" class="pilcrow">¶</a></p>
+Reserved bits for future use.  They are initialised to 0 for PDMv2.<a href="#section-6.3-6.6.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.7">
             <p id="section-6.3-6.7.1">Scale Delta Time Last Received (SCALEDTLR)<a href="#section-6.3-6.7.1" class="pilcrow">¶</a></p>
@@ -1784,40 +1781,32 @@ This field stores the Global Pointer type corresponding to the
         SADDR type of the packet.<a href="#section-6.3-6.9.4" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.10">
-            <p id="section-6.3-6.10.1">Packet Sequence Number This Packet (PSNTP)<a href="#section-6.3-6.10.1" class="pilcrow">¶</a></p>
+            <p id="section-6.3-6.10.1">Packet Sequence Number Last Received (PSNLR)<a href="#section-6.3-6.10.1" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.10.2">
 16-bit unsigned number.<a href="#section-6.3-6.10.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.10.3">
-This field is initialized at a random number and is incremented
-        sequentially for each packet of the 5-tuple.<a href="#section-6.3-6.10.3" class="pilcrow">¶</a></p>
+This field is the PSNTP of the last received packet on the
+        5-tuple.<a href="#section-6.3-6.10.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.11">
-            <p id="section-6.3-6.11.1">Packet Sequence Number Last Received (PSNLR)<a href="#section-6.3-6.11.1" class="pilcrow">¶</a></p>
+            <p id="section-6.3-6.11.1">Delta Time Last Received (DELTATLR)<a href="#section-6.3-6.11.1" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.11.2">
-16-bit unsigned number.<a href="#section-6.3-6.11.2" class="pilcrow">¶</a></p>
+16-bit unsigned integer.<a href="#section-6.3-6.11.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.11.3">
-This field is the PSNTP of the last received packet on the
-        5-tuple.<a href="#section-6.3-6.11.3" class="pilcrow">¶</a></p>
+The value is set according to the scale in SCALEDTLR.<a href="#section-6.3-6.11.3" class="pilcrow">¶</a></p>
+<p id="section-6.3-6.11.4">
+Delta Time Last Received =
+  (send time packet n - receive time packet (n - 1))<a href="#section-6.3-6.11.4" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.12">
-            <p id="section-6.3-6.12.1">Delta Time Last Received (DELTATLR)<a href="#section-6.3-6.12.1" class="pilcrow">¶</a></p>
+            <p id="section-6.3-6.12.1">Delta Time Last Sent (DELTATLS)<a href="#section-6.3-6.12.1" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.12.2">
 16-bit unsigned integer.<a href="#section-6.3-6.12.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.12.3">
-The value is set according to the scale in SCALEDTLR.<a href="#section-6.3-6.12.3" class="pilcrow">¶</a></p>
+The value is set according to the scale in SCALEDTLS.<a href="#section-6.3-6.12.3" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.12.4">
-Delta Time Last Received =
-  (send time packet n - receive time packet (n - 1))<a href="#section-6.3-6.12.4" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal ulEmpty" id="section-6.3-6.13">
-            <p id="section-6.3-6.13.1">Delta Time Last Sent (DELTATLS)<a href="#section-6.3-6.13.1" class="pilcrow">¶</a></p>
-<p id="section-6.3-6.13.2">
-16-bit unsigned integer.<a href="#section-6.3-6.13.2" class="pilcrow">¶</a></p>
-<p id="section-6.3-6.13.3">
-The value is set according to the scale in SCALEDTLS.<a href="#section-6.3-6.13.3" class="pilcrow">¶</a></p>
-<p id="section-6.3-6.13.4">
 Delta Time Last Sent =
-  (receive time packet n - send time packet (n - 1))<a href="#section-6.3-6.13.4" class="pilcrow">¶</a></p>
+  (receive time packet n - send time packet (n - 1))<a href="#section-6.3-6.12.4" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
