@@ -568,8 +568,34 @@ To mitigate this event, we suggest:
 
 # Privacy Considerations
 
-PDMv2 greatly improves the privacy aspects of PDM by providing
-encryption.
+Encryption plays a crucial role in providing privacy as defined by RFC 6973, especially when metadata sniffing is a concern. RFC 6973, titled "Privacy Considerations for Internet Protocols," outlines the importance of protecting users' privacy in the context of various Internet protocols, including IPv6. When metadata like network and end-to-end response time is at risk of being observed by attackers, eavesdroppers, or observers, encryption can help mitigate the privacy risks. Here's how encryption achieves this:
+
+{:req12: style="format %c)"}
+
+{: req12}
+-  Confidentiality: Encryption ensures that the actual content of the
+   communication remains confidential. Even if attackers or observers
+   intercept the data packets, they won't be able to decipher the
+   information without the encryption key. In the case of IPv6
+   Performance and Destination Option (PDM), the metadata is still
+   visible, but the actual payload remains encrypted.
+
+-  Content Protection: Metadata, such as network and end-to-end
+   response time, may reveal sensitive information about the
+   communication. By encrypting the content, encryption mechanisms
+   help protect this sensitive data from being exposed. Observers may
+   still see that communication is happening, but they won't be able
+   to glean meaningful information from the metadata.
+
+-  Integrity: Encryption often includes mechanisms to ensure data
+   integrity. It allows the recipient to verify that the received data
+   has not been tampered with during transit. This helps protect
+   against attackers who might try to manipulate the metadata or the
+   encrypted payload.
+
+It's important to note that while encryption enhances privacy by protecting the content of communication, metadata still poses some challenges. Metadata, such as the fact that communication is occurring and the parties involved, can be revealing. To address this, additional techniques, like traffic obfuscation, may be used to hide metadata patterns. However, complete metadata privacy can be challenging to achieve, especially when communication protocols inherently require some level of metadata exchange.
+
+In summary, encryption provides privacy by safeguarding the confidentiality, integrity, and authenticity of the communication content, even in situations where metadata is at risk of being observed by attackers, eavesdroppers, or observers. However, protecting metadata itself often requires additional measures beyond encryption.
 
 # IANA Considerations
 
@@ -605,9 +631,9 @@ secrets on the arrival of the first packet from the secondary client.
 ## High level flow
 
 The following steps describe the protocol flow:
-{:req12: style="format %d."}
+{:req13: style="format %d."}
 
-{: req12}
+{: req13}
 - Client initiates a request to the Server.  The
   request contains a list of available ciphersuites for KEM, KDF,
   and AEAD.
