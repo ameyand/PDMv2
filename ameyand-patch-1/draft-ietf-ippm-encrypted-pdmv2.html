@@ -1044,7 +1044,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Elkins, et al.</td>
-<td class="center">Expires 5 April 2024</td>
+<td class="center">Expires 17 April 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1057,12 +1057,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ippm-encrypted-pdmv2-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-10-03" class="published">3 October 2023</time>
+<time datetime="2023-10-15" class="published">15 October 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-04-05">5 April 2024</time></dd>
+<dd class="expires"><time datetime="2024-04-17">17 April 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1135,7 +1135,7 @@ are also defined.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 5 April 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 17 April 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1921,8 +1921,40 @@ guaranteed.<a href="#section-7.2-3.2.2" class="pilcrow">¶</a></p>
       <h2 id="name-privacy-considerations">
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-privacy-considerations" class="section-name selfRef">Privacy Considerations</a>
       </h2>
-<p id="section-8-1">PDMv2 greatly improves the privacy aspects of PDM by providing
-encryption.<a href="#section-8-1" class="pilcrow">¶</a></p>
+<p id="section-8-1">Encryption plays a crucial role in providing privacy as defined by RFC 6973, especially when metadata sniffing is a concern. RFC 6973, titled "Privacy Considerations for Internet Protocols," outlines the importance of protecting users' privacy in the context of various Internet protocols, including IPv6. When metadata like network and end-to-end response time is at risk of being observed by attackers, eavesdroppers, or observers, encryption can help mitigate the privacy risks. Here's how encryption achieves this:<a href="#section-8-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="olPercent" id="section-8-2">
+<dt>a)</dt>
+<dd id="section-8-2.1">
+          <p id="section-8-2.1.1">Confidentiality: Encryption ensures that the actual content of the
+communication remains confidential. Even if attackers or observers
+intercept the data packets, they won't be able to decipher the
+information without the encryption key. In the case of IPv6
+Performance and Destination Option (PDM), the metadata is still
+visible, but the actual payload remains encrypted.<a href="#section-8-2.1.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt>b)</dt>
+<dd id="section-8-2.2">
+          <p id="section-8-2.2.1">Content Protection: Metadata, such as network and end-to-end
+response time, may reveal sensitive information about the
+communication. By encrypting the content, encryption mechanisms
+help protect this sensitive data from being exposed. Observers may
+still see that communication is happening, but they won't be able
+to glean meaningful information from the metadata.<a href="#section-8-2.2.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt>c)</dt>
+<dd id="section-8-2.3">
+          <p id="section-8-2.3.1">Integrity: Encryption often includes mechanisms to ensure data
+integrity. It allows the recipient to verify that the received data
+has not been tampered with during transit. This helps protect
+against attackers who might try to manipulate the metadata or the
+encrypted payload.<a href="#section-8-2.3.1" class="pilcrow">¶</a></p>
+</dd>
+      <dd class="break"></dd>
+</dl>
+<p id="section-8-3">It's important to note that while encryption enhances privacy by protecting the content of communication, metadata still poses some challenges. Metadata, such as the fact that communication is occurring and the parties involved, can be revealing. To address this, additional techniques, like traffic obfuscation, may be used to hide metadata patterns. However, complete metadata privacy can be challenging to achieve, especially when communication protocols inherently require some level of metadata exchange.<a href="#section-8-3" class="pilcrow">¶</a></p>
+<p id="section-8-4">In summary, encryption provides privacy by safeguarding the confidentiality, integrity, and authenticity of the communication content, even in situations where metadata is at risk of being observed by attackers, eavesdroppers, or observers. However, protecting metadata itself often requires additional measures beyond encryption.<a href="#section-8-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
