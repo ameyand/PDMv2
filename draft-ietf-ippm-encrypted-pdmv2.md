@@ -53,6 +53,8 @@ author:
 
 normative:
  RFC2780:
+ RFC3552:
+ RFC6973:
  RFC8250:
  RFC8200:
 
@@ -559,7 +561,7 @@ To mitigate this event, we suggest:
 
 # Privacy Considerations
 
-Encryption plays a crucial role in providing privacy as defined by RFC 6973, especially when metadata sniffing is a concern. RFC 6973, titled "Privacy Considerations for Internet Protocols," outlines the importance of protecting users' privacy in the context of various Internet protocols, including IPv6. When metadata like network and end-to-end response time is at risk of being observed by attackers, eavesdroppers, or observers, encryption can help mitigate the privacy risks. Here's how encryption achieves this:
+Encryption plays a crucial role in providing privacy as defined by [RFC6973], especially when metadata sniffing is a concern. [RFC6973], titled "Privacy Considerations for Internet Protocols," outlines the importance of protecting users' privacy in the context of various Internet protocols, including IPv6. When metadata like network and end-to-end response time is at risk of being observed by attackers, eavesdroppers, or observers, encryption can help mitigate the privacy risks. Here's how encryption achieves this:
 
 {:req12: style="format %c)"}
 
