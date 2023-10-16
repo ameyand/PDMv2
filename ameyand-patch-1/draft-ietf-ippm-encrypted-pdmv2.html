@@ -1296,7 +1296,7 @@ risks involved transmitting PDM data during a diagnostics session.<a href="#sect
 <p id="section-1.1-2">PDM metrics can help an attacker understand about the type of machine
 and its processing capabilities.  Inferring from the PDM data, the
 attack can launch a timing attack.  For example, if a cryptographic
-protocol is used, a timing attack <span class="bcp14">MAY</span> be launched against the keying
+protocol is used, a timing attack may be launched against the keying
 material to obtain the secret.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
 <p id="section-1.1-3">Along with this, PDM does not provide integrity.  It is possible for
 a Man-In-The-Middle (MITM) node to modify PDM headers leading to
@@ -1390,8 +1390,8 @@ whole session.<a href="#section-3-3.4.1" class="pilcrow">¶</a></p>
 </dd>
       <dd class="break"></dd>
 </dl>
-<p id="section-4-3">These steps <span class="bcp14">MAY</span> be in the same session or in separate sessions.  That
-is, the cryptographic secrets <span class="bcp14">MAY</span> be created beforehand and used in                   <br>
+<p id="section-4-3">These steps may be in the same session or in separate sessions.  That
+is, the cryptographic secrets may be created beforehand and used in                   <br>
 the PDM data flow at the time of the "real" data session.<a href="#section-4-3" class="pilcrow">¶</a></p>
 <p id="section-4-4">After-the-fact (or real-time) data analysis of PDM flow may occur by
 network diagnosticians or network devices.  The definition of how
@@ -1409,8 +1409,7 @@ this is done is out of scope for this document.<a href="#section-4-4" class="pil
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-client-server-negotiation" class="section-name selfRef">Client - Server Negotiation</a>
         </h3>
 <p id="section-4.2-1">The two entities exchange a set of data to ensure the respective
-identities. This could be done via a TLS or other session.  The
-exact nature of the identity verification is out-of-scope for this document.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+identities.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.2-2">They use HPKE KEM to negotiate a "SharedSecret".<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.2-3">Each Client and Server derive a "SessionTemporaryKey" by using HPKE
 KDF, using the following inputs:<a href="#section-4.2-3" class="pilcrow">¶</a></p>
@@ -1438,7 +1437,7 @@ and derives another SessionTemporaryKey to be used for decryption.<a href="#sect
 <p id="section-4.2-7">It shall be stressed that the two SessionTemporaryKeys used in the
 communication are never the same, as the 5-tuple is reversed for the
 Server and Client.  Moreover, the time evolution of the respective
-Kri can be different.  As a consequence, each entity <span class="bcp14">MUST</span> maintain a
+Kri can be different.  As a consequence, each entity must maintain a
 table with (at least) the following informations:<a href="#section-4.2-7" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.2-8.1">
@@ -1498,7 +1497,7 @@ actor a negligible risk.<a href="#section-5-4.3.1" class="pilcrow">¶</a></p>
         <h3 id="name-security-goals-for-confiden">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-security-goals-for-confiden" class="section-name selfRef">Security Goals for Confidentiality</a>
         </h3>
-<p id="section-5.1-1">PDM data <span class="bcp14">MUST</span> be kept confidential between the intended parties,
+<p id="section-5.1-1">PDM data must be kept confidential between the intended parties,
 which includes (but is not limited to) the two entities exchanging
 PDM data, and any legitimate party with the proper rights to access
 such data.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
@@ -1509,9 +1508,9 @@ such data.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
         <h3 id="name-security-goals-for-integrit">
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-security-goals-for-integrit" class="section-name selfRef">Security Goals for Integrity</a>
         </h3>
-<p id="section-5.2-1">PDM data <span class="bcp14">MUST NOT</span> be forged or modified by a malicious entity.  In
-other terms, a malicious entity <span class="bcp14">MUST NOT</span> be able to generate a valid
-PDM header impersonating an endpoint, and <span class="bcp14">MUST NOT</span> be able to modify
+<p id="section-5.2-1">PDM data must not be forged or modified by a malicious entity.  In
+other terms, a malicious entity must not be able to generate a valid
+PDM header impersonating an endpoint, and must not be able to modify
 a valid PDM header.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1520,10 +1519,10 @@ a valid PDM header.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
         <h3 id="name-security-goals-for-authenti">
 <a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-security-goals-for-authenti" class="section-name selfRef">Security Goals for Authentication</a>
         </h3>
-<p id="section-5.3-1">An unauthorized party <span class="bcp14">MUST NOT</span> be able to send PDM data and <span class="bcp14">MUST NOT</span>
+<p id="section-5.3-1">An unauthorized party must not be able to send PDM data and must not
 be able to authorize another entity to do so.  The protocol to define
 this will be defined in a subsequent document.  Alternatively, if
-authentication is done via any of the following, this requirement <span class="bcp14">MAY</span>
+authentication is done via any of the following, this requirement may
 be seen to be met.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="olPercent" id="section-5.3-2">
 <dt>a)</dt>
@@ -1678,13 +1677,13 @@ the two types of headers is determined from the Options Length value.<a href="#s
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |  Option Type  | Option Length | Vrsn  |         Epoch         |
+  |  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |      PSN This Packet          |         Reserved Bits         |
+  |      Random Number          |f|   ScaleDTLR   |   ScaleDTLS   |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                         Global Pointer                        |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |   ScaleDTLR   |   ScaleDTLS   |    PSN Last Received          |
+  |      PSN This Packet          |    PSN Last Received          |
   |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |   Delta Time Last Received    |     Delta Time Last Sent      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1696,9 +1695,9 @@ the two types of headers is determined from the Options Length value.<a href="#s
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |  Option Type  | Option Length | Vrsn  |         Epoch         |
+  |  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |      PSN This Packet          |                               |
+  |      Random Number          |f|                               |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               :
   |                      Encrypted PDM Data                       :
   :                          (30 bytes)                           |
@@ -1732,26 +1731,29 @@ the two types of headers is determined from the Options Length value.<a href="#s
 4-bit unsigned number.<a href="#section-6.3-6.3.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.4">
-            <p id="section-6.3-6.4.1">Epoche<a href="#section-6.3-6.4.1" class="pilcrow">¶</a></p>
+            <p id="section-6.3-6.4.1">Reserved Bits<a href="#section-6.3-6.4.1" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.4.2">
-12-bit unsigned number.<a href="#section-6.3-6.4.2" class="pilcrow">¶</a></p>
+12-bits.<a href="#section-6.3-6.4.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.4.3">
-Epoche field is used to indicate the roll-over of PSNTP counter.<a href="#section-6.3-6.4.3" class="pilcrow">¶</a></p>
+Reserved bits for future use.  They are initialised to 0 for PDMv2.<a href="#section-6.3-6.4.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.5">
-            <p id="section-6.3-6.5.1">Packet Sequence Number This Packet (PSNTP)<a href="#section-6.3-6.5.1" class="pilcrow">¶</a></p>
+            <p id="section-6.3-6.5.1">Random Number<a href="#section-6.3-6.5.1" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.5.2">
-16-bit unsigned number.<a href="#section-6.3-6.5.2" class="pilcrow">¶</a></p>
+15-bit unsigned number.<a href="#section-6.3-6.5.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.5.3">
-This field is initialized at a random number and is incremented
-        sequentially for each packet of the 5-tuple.<a href="#section-6.3-6.5.3" class="pilcrow">¶</a></p>
+This is a random number with as much entropy as desired by the
+        implementation.  The level of entropy should be clearly
+        specified to the user.<a href="#section-6.3-6.5.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.6">
-            <p id="section-6.3-6.6.1">Reserved Bits<a href="#section-6.3-6.6.1" class="pilcrow">¶</a></p>
+            <p id="section-6.3-6.6.1">Flag Bit<a href="#section-6.3-6.6.1" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.6.2">
-16-bits.<a href="#section-6.3-6.6.2" class="pilcrow">¶</a></p>
+1-bit field.<a href="#section-6.3-6.6.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.6.3">
-Reserved bits for future use.  They are initialised to 0 for PDMv2.<a href="#section-6.3-6.6.3" class="pilcrow">¶</a></p>
+The flag bit indicates that the sender has used a new
+        <em>SessionTemporaryKey</em> and the receiver should increment the Kri
+        of the sender and derive the same new <em>SessionTemporaryKey</em>.<a href="#section-6.3-6.6.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.7">
             <p id="section-6.3-6.7.1">Scale Delta Time Last Received (SCALEDTLR)<a href="#section-6.3-6.7.1" class="pilcrow">¶</a></p>
@@ -1775,39 +1777,47 @@ This is the scaling value for the Delta Time Last Sent
 32-bit unsigned number.<a href="#section-6.3-6.9.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.9.3">
 Global Pointer is initialized to 1 for the different source
-        address types and incremented sequentially for each packet
+        address types and incremented monotonically for each packet
         with the corresponding source address type.<a href="#section-6.3-6.9.3" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.9.4">
 This field stores the Global Pointer type corresponding to the
         SADDR type of the packet.<a href="#section-6.3-6.9.4" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.10">
-            <p id="section-6.3-6.10.1">Packet Sequence Number Last Received (PSNLR)<a href="#section-6.3-6.10.1" class="pilcrow">¶</a></p>
+            <p id="section-6.3-6.10.1">Packet Sequence Number This Packet (PSNTP)<a href="#section-6.3-6.10.1" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.10.2">
 16-bit unsigned number.<a href="#section-6.3-6.10.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.10.3">
-This field is the PSNTP of the last received packet on the
-        5-tuple.<a href="#section-6.3-6.10.3" class="pilcrow">¶</a></p>
+This field is initialized at a random number and is incremented
+        monotonically for each packet of the 5-tuple.<a href="#section-6.3-6.10.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.11">
-            <p id="section-6.3-6.11.1">Delta Time Last Received (DELTATLR)<a href="#section-6.3-6.11.1" class="pilcrow">¶</a></p>
+            <p id="section-6.3-6.11.1">Packet Sequence Number Last Received (PSNLR)<a href="#section-6.3-6.11.1" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.11.2">
-16-bit unsigned integer.<a href="#section-6.3-6.11.2" class="pilcrow">¶</a></p>
+16-bit unsigned number.<a href="#section-6.3-6.11.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.11.3">
-The value is set according to the scale in SCALEDTLR.<a href="#section-6.3-6.11.3" class="pilcrow">¶</a></p>
-<p id="section-6.3-6.11.4">
-Delta Time Last Received =
-  (send time packet n - receive time packet (n - 1))<a href="#section-6.3-6.11.4" class="pilcrow">¶</a></p>
+This field is the PSNTP of the last received packet on the
+        5-tuple.<a href="#section-6.3-6.11.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.12">
-            <p id="section-6.3-6.12.1">Delta Time Last Sent (DELTATLS)<a href="#section-6.3-6.12.1" class="pilcrow">¶</a></p>
+            <p id="section-6.3-6.12.1">Delta Time Last Received (DELTATLR)<a href="#section-6.3-6.12.1" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.12.2">
 16-bit unsigned integer.<a href="#section-6.3-6.12.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.12.3">
-The value is set according to the scale in SCALEDTLS.<a href="#section-6.3-6.12.3" class="pilcrow">¶</a></p>
+The value is set according to the scale in SCALEDTLR.<a href="#section-6.3-6.12.3" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.12.4">
+Delta Time Last Received =
+  (send time packet n - receive time packet (n - 1))<a href="#section-6.3-6.12.4" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal ulEmpty" id="section-6.3-6.13">
+            <p id="section-6.3-6.13.1">Delta Time Last Sent (DELTATLS)<a href="#section-6.3-6.13.1" class="pilcrow">¶</a></p>
+<p id="section-6.3-6.13.2">
+16-bit unsigned integer.<a href="#section-6.3-6.13.2" class="pilcrow">¶</a></p>
+<p id="section-6.3-6.13.3">
+The value is set according to the scale in SCALEDTLS.<a href="#section-6.3-6.13.3" class="pilcrow">¶</a></p>
+<p id="section-6.3-6.13.4">
 Delta Time Last Sent =
-  (receive time packet n - send time packet (n - 1))<a href="#section-6.3-6.12.4" class="pilcrow">¶</a></p>
+  (receive time packet n - send time packet (n - 1))<a href="#section-6.3-6.13.4" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1819,10 +1829,10 @@ Delta Time Last Sent =
       <h2 id="name-security-considerations">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-7-1">PDMv2 Destination Options header can be used by an attacker to gather information about a
+<p id="section-7-1">PDMv2 DOH can be used by an attacker to gather information about a
 victim (passive attack) or to force the victim to modify its
 operational parameters to comply with forged data (active attacks).<a href="#section-7-1" class="pilcrow">¶</a></p>
-<p id="section-7-2">In order to mitigate these, it is important that the PDMv2 Destination Options header is
+<p id="section-7-2">In order to mitigate these, it is important that the PDMv2 DOH is
 subject to:<a href="#section-7-2" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="olPercent" id="section-7-3">
 <dt>1)</dt>
@@ -1857,9 +1867,9 @@ PDMv2 header insertion by an attacker.<a href="#section-7.1-1" class="pilcrow">�
 <p id="section-7.1-2">However, logging any incoming PDMv2 header might lead to a storage
 resource exhaustion.  Hence, it is suggested to not log PDMv2 headers                 <br>
 incoming from an unknown party.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
-<p id="section-7.1-3">In other terms, PDMv2 logging <span class="bcp14">SHOULD</span> be enabled only for sessions
+<p id="section-7.1-3">In other terms, PDMv2 logging should be enabled only for sessions
 that have PDMv2 enabled.  The simple fact that a packet contains a                    <br>
-PDMv2 header <span class="bcp14">SHOULD NOT</span> result in a logging event.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
+PDMv2 header should not result in a logging event.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
 <p id="section-7.1-4">An attacker can still inject bogus packets with PDMv2 headers for a   <br>
 valid PDMv2-enabled session.  This, to a lesser extent, can cause an
 increase in resource utilization.  However, these bogus headers will                  <br>
@@ -1870,7 +1880,7 @@ and/or PSNTP.<a href="#section-7.1-4" class="pilcrow">¶</a></p>
 and the network characteristics (e.g., bandwidth, delay, loss,
 reordering, etc.), and it is left to the implementation.<a href="#section-7.1-5" class="pilcrow">¶</a></p>
 <p id="section-7.1-6">Replay attacks, performed by inserting a valid PDMv2 header sniffed
-from an existing session in a bogus packet, <span class="bcp14">SHOULD NOT</span> be considered
+from an existing session in a bogus packet, should not be considered
 a threat, as the offline decryption and analysis should be able to
 find and eliminate out-of-order data.  Hence, we do not consider this <br>
 as a threat.<a href="#section-7.1-6" class="pilcrow">¶</a></p>
@@ -1887,7 +1897,7 @@ control of the device, the attacker can leverage the knowledge of the <br>
 <p id="section-7.2-2">To mitigate this event, we suggest:<a href="#section-7.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-7.2-3.1">
-            <p id="section-7.2-3.1.1">The "SharedSecret" <span class="bcp14">SHOULD NOT</span> be shared by different Clients or
+            <p id="section-7.2-3.1.1">The "SharedSecret" should not be shared by different Clients or
 Servers, unless all of them are trusted, or unless the risk of a
 "SecretKey" violation has been evaluated and considered
 acceptable.<a href="#section-7.2-3.1.1" class="pilcrow">¶</a></p>
@@ -1911,43 +1921,8 @@ guaranteed.<a href="#section-7.2-3.2.2" class="pilcrow">¶</a></p>
       <h2 id="name-privacy-considerations">
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-privacy-considerations" class="section-name selfRef">Privacy Considerations</a>
       </h2>
-<p id="section-8-1">Encryption plays a crucial role in providing privacy as defined by <span>[<a href="#RFC6973" class="cite xref">RFC6973</a>]</span>, especially when metadata sniffing is a concern. <span>[<a href="#RFC6973" class="cite xref">RFC6973</a>]</span>, titled "Privacy Considerations for Internet Protocols," outlines the importance of protecting users' privacy in the context of various Internet protocols, including IPv6. When metadata like network and end-to-end response time is at risk of being observed by attackers, eavesdroppers, or observers, encryption can help mitigate the privacy risks. Here's how encryption achieves this:<a href="#section-8-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="olPercent" id="section-8-2">
-<dt>a)</dt>
-<dd id="section-8-2.1">
-          <p id="section-8-2.1.1">Confidentiality: Encryption ensures that the actual content of the
-communication remains confidential. Even if attackers or observers
-intercept the data packets, they won't be able to decipher the
-information without the encryption key. In the case of IPv6
-Performance and Destination Option (PDM), the still-visible,
-non-encrypted metadata is still visiblenegligible, and does not
-poses confidentiality<a href="#section-8-2.1.1" class="pilcrow">¶</a></p>
-</dd>
-        <dd class="break"></dd>
-<dt>b)</dt>
-<dd id="section-8-2.2">
-          <p id="section-8-2.2.1">Content Protection: Metadata, such as network and end-to-end
-response time, may reveal sensitive information about the
-communication. By encrypting the content, encryption mechanisms
-help protect this sensitive data from being exposed. Observers may
-still see that communication is happening, but they won't be able
-to glean meaningful information from the metadata.<a href="#section-8-2.2.1" class="pilcrow">¶</a></p>
-</dd>
-        <dd class="break"></dd>
-<dt>c)</dt>
-<dd id="section-8-2.3">
-          <p id="section-8-2.3.1">Integrity: Encryption often includes mechanisms to ensure data
-integrity. It allows the recipient to verify that the received data
-has not been tampered with during transit. This helps protect
-against attackers who might try to manipulate the metadata.<a href="#section-8-2.3.1" class="pilcrow">¶</a></p>
-</dd>
-      <dd class="break"></dd>
-</dl>
-<p id="section-8-3">It's important to note that while encryption enhances privacy by protecting the content of communication, metadata still poses some challenges. Metadata, such as the fact that communication is occurring and the parties involved, can be revealing. To address this, additional techniques, like traffic obfuscation, may be used to hide metadata patterns. However, complete metadata privacy can be challenging to achieve, especially when communication protocols inherently require some level of metadata exchange.<a href="#section-8-3" class="pilcrow">¶</a></p>
-<p id="section-8-4">Specifically, enabling PDM only for a specific set of flows can pose a risk of
-highlighting their presence between two parties. As a mitigation technique, it is
-suggested to obfuscate the events, for example by enabling PDM on more flows
-than strictly necessary.<a href="#section-8-4" class="pilcrow">¶</a></p>
+<p id="section-8-1">PDMv2 greatly improves the privacy aspects of PDM by providing
+encryption.<a href="#section-8-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
@@ -1988,14 +1963,6 @@ servers needed for protocol development.<a href="#section-10-1" class="pilcrow">
 <dt id="RFC2780">[RFC2780]</dt>
         <dd>
 <span class="refAuthor">Bradner, S.</span> and <span class="refAuthor">V. Paxson</span>, <span class="refTitle">"IANA Allocation Guidelines For Values In the Internet Protocol and Related Headers"</span>, <span class="seriesInfo">BCP 37</span>, <span class="seriesInfo">RFC 2780</span>, <span class="seriesInfo">DOI 10.17487/RFC2780</span>, <time datetime="2000-03" class="refDate">March 2000</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2780">https://www.rfc-editor.org/rfc/rfc2780</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC3552">[RFC3552]</dt>
-        <dd>
-<span class="refAuthor">Rescorla, E.</span> and <span class="refAuthor">B. Korver</span>, <span class="refTitle">"Guidelines for Writing RFC Text on Security Considerations"</span>, <span class="seriesInfo">BCP 72</span>, <span class="seriesInfo">RFC 3552</span>, <span class="seriesInfo">DOI 10.17487/RFC3552</span>, <time datetime="2003-07" class="refDate">July 2003</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc3552">https://www.rfc-editor.org/rfc/rfc3552</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC6973">[RFC6973]</dt>
-        <dd>
-<span class="refAuthor">Cooper, A.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Aboba, B.</span>, <span class="refAuthor">Peterson, J.</span>, <span class="refAuthor">Morris, J.</span>, <span class="refAuthor">Hansen, M.</span>, and <span class="refAuthor">R. Smith</span>, <span class="refTitle">"Privacy Considerations for Internet Protocols"</span>, <span class="seriesInfo">RFC 6973</span>, <span class="seriesInfo">DOI 10.17487/RFC6973</span>, <time datetime="2013-07" class="refDate">July 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6973">https://www.rfc-editor.org/rfc/rfc6973</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
         <dd>

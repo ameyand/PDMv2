@@ -126,7 +126,7 @@ Table of Contents
    PDM metrics can help an attacker understand about the type of machine
    and its processing capabilities.  Inferring from the PDM data, the
    attack can launch a timing attack.  For example, if a cryptographic
-   protocol is used, a timing attack MAY be launched against the keying
+   protocol is used, a timing attack may be launched against the keying
    material to obtain the secret.
 
    Along with this, PDM does not provide integrity.  It is possible for
@@ -187,8 +187,8 @@ Table of Contents
 
    Step 2:  PDM data flow between Client and Server.
 
-   These steps MAY be in the same session or in separate sessions.  That
-   is, the cryptographic secrets MAY be created beforehand and used in
+   These steps may be in the same session or in separate sessions.  That
+   is, the cryptographic secrets may be created beforehand and used in
    the PDM data flow at the time of the "real" data session.
 
    After-the-fact (or real-time) data analysis of PDM flow may occur by
@@ -200,9 +200,7 @@ Table of Contents
 4.2.  Client - Server Negotiation
 
    The two entities exchange a set of data to ensure the respective
-   identities.  This could be done via a TLS or other session.  The
-   exact nature of the identity verification is out-of-scope for this
-   document.
+   identities.
 
    They use HPKE KEM to negotiate a "SharedSecret".
 
@@ -230,7 +228,7 @@ Table of Contents
    It shall be stressed that the two SessionTemporaryKeys used in the
    communication are never the same, as the 5-tuple is reversed for the
    Server and Client.  Moreover, the time evolution of the respective
-   Kri can be different.  As a consequence, each entity MUST maintain a
+   Kri can be different.  As a consequence, each entity must maintain a
    table with (at least) the following informations:
 
    *  Flow 5-tuple, Own Kri, Other Kri
@@ -271,24 +269,24 @@ Table of Contents
 
 5.1.  Security Goals for Confidentiality
 
-   PDM data MUST be kept confidential between the intended parties,
+   PDM data must be kept confidential between the intended parties,
    which includes (but is not limited to) the two entities exchanging
    PDM data, and any legitimate party with the proper rights to access
    such data.
 
 5.2.  Security Goals for Integrity
 
-   PDM data MUST NOT be forged or modified by a malicious entity.  In
-   other terms, a malicious entity MUST NOT be able to generate a valid
-   PDM header impersonating an endpoint, and MUST NOT be able to modify
+   PDM data must not be forged or modified by a malicious entity.  In
+   other terms, a malicious entity must not be able to generate a valid
+   PDM header impersonating an endpoint, and must not be able to modify
    a valid PDM header.
 
 5.3.  Security Goals for Authentication
 
-   An unauthorized party MUST NOT be able to send PDM data and MUST NOT
+   An unauthorized party must not be able to send PDM data and must not
    be able to authorize another entity to do so.  The protocol to define
    this will be defined in a subsequent document.  Alternatively, if
-   authentication is done via any of the following, this requirement MAY
+   authentication is done via any of the following, this requirement may
    be seen to be met.
 
    a)  PDM is used over an already authenticated medium (For example,
@@ -393,13 +391,13 @@ Table of Contents
       0                   1                   2                   3
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |  Option Type  | Option Length | Vrsn  |         Epoch         |
+     |  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |      PSN This Packet          |         Reserved Bits         |
+     |      Random Number          |f|   ScaleDTLR   |   ScaleDTLS   |
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      |                         Global Pointer                        |
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |   ScaleDTLR   |   ScaleDTLS   |    PSN Last Received          |
+     |      PSN This Packet          |    PSN Last Received          |
      |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      |   Delta Time Last Received    |     Delta Time Last Sent      |
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -409,9 +407,9 @@ Table of Contents
       0                   1                   2                   3
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |  Option Type  | Option Length | Vrsn  |         Epoch         |
+     |  Option Type  | Option Length | Vrsn  |     Reserved Bits     |
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |      PSN This Packet          |                               |
+     |      Random Number          |f|                               |
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               :
      |                      Encrypted PDM Data                       :
      :                          (30 bytes)                           |
@@ -441,25 +439,28 @@ Table of Contents
 
       4-bit unsigned number.
 
-      Epoche
-
-      12-bit unsigned number.
-
-      Epoche field is used to indicate the roll-over of PSNTP counter.
-
-      Packet Sequence Number This Packet (PSNTP)
-
-      16-bit unsigned number.
-
-      This field is initialized at a random number and is incremented
-      sequentially for each packet of the 5-tuple.
-
       Reserved Bits
 
-      16-bits.
+      12-bits.
 
       Reserved bits for future use.  They are initialised to 0 for
       PDMv2.
+
+      Random Number
+
+      15-bit unsigned number.
+
+      This is a random number with as much entropy as desired by the
+      implementation.  The level of entropy should be clearly specified
+      to the user.
+
+      Flag Bit
+
+      1-bit field.
+
+      The flag bit indicates that the sender has used a new
+      _SessionTemporaryKey_ and the receiver should increment the Kri of
+      the sender and derive the same new _SessionTemporaryKey_.
 
       Scale Delta Time Last Received (SCALEDTLR)
 
@@ -480,11 +481,18 @@ Table of Contents
       32-bit unsigned number.
 
       Global Pointer is initialized to 1 for the different source
-      address types and incremented sequentially for each packet with
+      address types and incremented monotonically for each packet with
       the corresponding source address type.
 
       This field stores the Global Pointer type corresponding to the
       SADDR type of the packet.
+
+      Packet Sequence Number This Packet (PSNTP)
+
+      16-bit unsigned number.
+
+      This field is initialized at a random number and is incremented
+      monotonically for each packet of the 5-tuple.
 
       Packet Sequence Number Last Received (PSNLR)
 
@@ -513,13 +521,12 @@ Table of Contents
 
 7.  Security Considerations
 
-   PDMv2 Destination Options header can be used by an attacker to gather
-   information about a victim (passive attack) or to force the victim to
-   modify its operational parameters to comply with forged data (active
-   attacks).
+   PDMv2 DOH can be used by an attacker to gather information about a
+   victim (passive attack) or to force the victim to modify its
+   operational parameters to comply with forged data (active attacks).
 
-   In order to mitigate these, it is important that the PDMv2
-   Destination Options header is subject to:
+   In order to mitigate these, it is important that the PDMv2 DOH is
+   subject to:
 
    1)  Confidentiality and
 
@@ -548,9 +555,9 @@ Table of Contents
    resource exhaustion.  Hence, it is suggested to not log PDMv2 headers
    incoming from an unknown party.
 
-   In other terms, PDMv2 logging SHOULD be enabled only for sessions
+   In other terms, PDMv2 logging should be enabled only for sessions
    that have PDMv2 enabled.  The simple fact that a packet contains a
-   PDMv2 header SHOULD NOT result in a logging event.
+   PDMv2 header should not result in a logging event.
 
    An attacker can still inject bogus packets with PDMv2 headers for a
    valid PDMv2-enabled session.  This, to a lesser extent, can cause an
@@ -564,7 +571,7 @@ Table of Contents
    reordering, etc.), and it is left to the implementation.
 
    Replay attacks, performed by inserting a valid PDMv2 header sniffed
-   from an existing session in a bogus packet, SHOULD NOT be considered
+   from an existing session in a bogus packet, should not be considered
    a threat, as the offline decryption and analysis should be able to
    find and eliminate out-of-order data.  Hence, we do not consider this
    as a threat.
@@ -577,7 +584,7 @@ Table of Contents
 
    To mitigate this event, we suggest:
 
-   *  The "SharedSecret" SHOULD NOT be shared by different Clients or
+   *  The "SharedSecret" should not be shared by different Clients or
       Servers, unless all of them are trusted, or unless the risk of a
       "SecretKey" violation has been evaluated and considered
       acceptable.
@@ -592,49 +599,8 @@ Table of Contents
 
 8.  Privacy Considerations
 
-   Encryption plays a crucial role in providing privacy as defined by
-   [RFC6973], especially when metadata sniffing is a concern.
-   [RFC6973], titled "Privacy Considerations for Internet Protocols,"
-   outlines the importance of protecting users' privacy in the context
-   of various Internet protocols, including IPv6.  When metadata like
-   network and end-to-end response time is at risk of being observed by
-   attackers, eavesdroppers, or observers, encryption can help mitigate
-   the privacy risks.  Here's how encryption achieves this:
-
-   a)  Confidentiality: Encryption ensures that the actual content of
-       the communication remains confidential.  Even if attackers or
-       observers intercept the data packets, they won't be able to
-       decipher the information without the encryption key.  In the case
-       of IPv6 Performance and Destination Option (PDM), the still-
-       visible, non-encrypted metadata is still visiblenegligible, and
-       does not poses confidentiality
-
-   b)  Content Protection: Metadata, such as network and end-to-end
-       response time, may reveal sensitive information about the
-       communication.  By encrypting the content, encryption mechanisms
-       help protect this sensitive data from being exposed.  Observers
-       may still see that communication is happening, but they won't be
-       able to glean meaningful information from the metadata.
-
-   c)  Integrity: Encryption often includes mechanisms to ensure data
-       integrity.  It allows the recipient to verify that the received
-       data has not been tampered with during transit.  This helps
-       protect against attackers who might try to manipulate the
-       metadata.
-
-   It's important to note that while encryption enhances privacy by
-   protecting the content of communication, metadata still poses some
-   challenges.  Metadata, such as the fact that communication is
-   occurring and the parties involved, can be revealing.  To address
-   this, additional techniques, like traffic obfuscation, may be used to
-   hide metadata patterns.  However, complete metadata privacy can be
-   challenging to achieve, especially when communication protocols
-   inherently require some level of metadata exchange.
-
-   Specifically, enabling PDM only for a specific set of flows can pose
-   a risk of highlighting their presence between two parties.  As a
-   mitigation technique, it is suggested to obfuscate the events, for
-   example by enabling PDM on more flows than strictly necessary.
+   PDMv2 greatly improves the privacy aspects of PDM by providing
+   encryption.
 
 9.  IANA Considerations
 
@@ -662,17 +628,6 @@ Table of Contents
               Values In the Internet Protocol and Related Headers",
               BCP 37, RFC 2780, DOI 10.17487/RFC2780, March 2000,
               <https://www.rfc-editor.org/rfc/rfc2780>.
-
-   [RFC3552]  Rescorla, E. and B. Korver, "Guidelines for Writing RFC
-              Text on Security Considerations", BCP 72, RFC 3552,
-              DOI 10.17487/RFC3552, July 2003,
-              <https://www.rfc-editor.org/rfc/rfc3552>.
-
-   [RFC6973]  Cooper, A., Tschofenig, H., Aboba, B., Peterson, J.,
-              Morris, J., Hansen, M., and R. Smith, "Privacy
-              Considerations for Internet Protocols", RFC 6973,
-              DOI 10.17487/RFC6973, July 2013,
-              <https://www.rfc-editor.org/rfc/rfc6973>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
