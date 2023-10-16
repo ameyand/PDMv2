@@ -117,7 +117,7 @@ PDMv2 adds confidentiality, integrity and authentication to PDM.
    data.  Creates cryptographic keys in collaboration with the
    Client.
 
-Note: a client MAY act as a server (have listening ports).
+Note: a client may act as a server (have listening ports).
 
 -  Symmetric Key (K): A uniformly random bitstring as an input to the
    encryption algorithm, known only to Clients and Servers.  Used to
@@ -154,7 +154,7 @@ These steps MAY be in the same session or in separate sessions.  That
 is, the cryptographic secrets MAY be created beforehand and used in	 		
 the PDM data flow at the time of the "real" data session.
 
-After-the-fact (or real-time) data analysis of PDM flow MAY occur by
+After-the-fact (or real-time) data analysis of PDM flow may occur by
 network diagnosticians or network devices.  The definition of how
 this is done is out of scope for this document.
 
@@ -163,7 +163,8 @@ this is done is out of scope for this document.
 ## Client - Server Negotiation
 
 The two entities exchange a set of data to ensure the respective
-identities.
+identities. This could be done via a TLS or other session.  The
+exact nature of the identity verification is out-of-scope for this document.
 
 They use HPKE KEM to negotiate a "SharedSecret".
 
