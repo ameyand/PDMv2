@@ -12,6 +12,7 @@ v: 3
 area: "Transport"
 workgroup: "Internet Engineering Task Force"
 keyword:
+
  - Extension Headers
  - IPv6
  - PDMv2
@@ -27,6 +28,7 @@ venue:
 
 author:
  -
+
     fullname: Nalini Elkins
     organization: Inside Products, Inc.
     email: "nalini.elkins@insidethestack.com"
@@ -77,8 +79,6 @@ are also defined.
 
 # Introduction
 
-## Current Performance and Diagnostic Metrics (PDM)
-
 The current PDM is an IPv6 Destination Options header which provides
 information based on the metrics like Round-trip delay and Server
 delay.  This information helps to measure the Quality of Service
@@ -97,11 +97,7 @@ incorrect conclusions.  For example, during the debugging process
 using PDM header, it can mislead the person showing there are no
 unusual server delays.
 
-
-## PDMv2 Introduction
-
 PDMv2 adds confidentiality, integrity and authentication to PDM.
-
 
 # Conventions used in this document
 
@@ -109,36 +105,35 @@ PDMv2 adds confidentiality, integrity and authentication to PDM.
 
 # Terminology
 
--  Client: An endpoint node which initiates a session with a
-   listening port and sends PDM data.  Creates cryptographic keys in
-   collaboration with the Server.	 		
- 		
--  Server: An endpoint node which has a listening port and sends PDM
-   data.  Creates cryptographic keys in collaboration with the
-   Client.
+- Client: An endpoint node which initiates a session with a
+  listening port and sends PDM data.  Creates cryptographic keys in
+  collaboration with the Server.
+
+- Server: An endpoint node which has a listening port and sends PDM
+  data.  Creates cryptographic keys in collaboration with the
+  Client.
 
 Note: a client may act as a server (have listening ports).
 
--  Symmetric Key (K): A uniformly random bitstring as an input to the
-   encryption algorithm, known only to Clients and Servers.  Used to
-   establish a secure communication.
+- Symmetric Key (K): A uniformly random bitstring as an input to the
+  encryption algorithm, known only to Clients and Servers.  Used to
+  establish a secure communication.
 
--  Public and Private Keys: A pair of keys that is used in asymmetric
-   cryptography.  If one is used for encryption, the other is used
-   for decryption.  Private Keys are kept hidden by the source of the
-   key pair generator, but Public Key is known to everyone.  pkX
-   (Public Key) and skX (Private Key).  Where X can be, any client or
-   any server.
+- Public and Private Keys: A pair of keys that is used in asymmetric
+  cryptography.  If one is used for encryption, the other is used
+  for decryption.  Private Keys are kept hidden by the source of the
+  key pair generator, but Public Key is known to everyone.  pkX
+  (Public Key) and skX (Private Key).  Where X can be, any client or
+  any server.
 
--  Pre-shared Key (PSK): A symmetric key.  Uniformly random
-   bitstring, shared between any Client or any Server or a key shared
-   between an entity that forms client-server relationship.  This
-   could happen through an out-of band mechanism: e.g., a physical
-   meeting or use of another protocol.
+- Pre-shared Key (PSK): A symmetric key.  Uniformly random
+  bitstring, shared between any Client or any Server or a key shared
+  between an entity that forms client-server relationship.  This
+  could happen through an out-of band mechanism: e.g., a physical
+  meeting or use of another protocol.
 
--  Session Key: A temporary key which acts as a symmetric key for the
-   whole session.
-
+- Session Key: A temporary key which acts as a symmetric key for the
+  whole session.
 
 # Protocol Flow
 
@@ -147,18 +142,17 @@ The protocol will proceed in 2 steps.
 {:req1: counter="bar" style="format Step %d:"}
 
 {: req1}
+
 - Creation of cryptographic secrets between Server and Client.
 - PDM data flow between Client and Server.
 
 These steps MAY be in the same session or in separate sessions.  That
-is, the cryptographic secrets MAY be created beforehand and used in	 		
+is, the cryptographic secrets MAY be created beforehand and used in
 the PDM data flow at the time of the "real" data session.
 
 After-the-fact (or real-time) data analysis of PDM flow may occur by
 network diagnosticians or network devices.  The definition of how
 this is done is out of scope for this document.
-
-## Cryptographic Phase
 
 ## Client - Server Negotiation
 
@@ -171,36 +165,27 @@ They use HPKE KEM to negotiate a "SharedSecret".
 Each Client and Server derive a "SessionTemporaryKey" by using HPKE
 KDF, using the following inputs:
 
--  The "SharedSecret".
+- The "SharedSecret".
 
--  The 5-tuple (SrcIP, SrcPort, DstIP, DstPort, Protocol) of the
-   communication.
+- The 5-tuple (SrcIP, SrcPort, DstIP, DstPort, Protocol) of the
+  communication.
 
--  A Key Rotation Index (Kri).
+- An Epoch.
 
-The Kri SHOULD be initialized to zero.
+The Epoch SHOULD be initialized to zero. A change in the Epoch
+indicates that the SessionTemporaryKey has been rotated.
 
-The Server and Client initialize (separately) a pseudo-random non-
-repeating sequence between 1 and 2^15-1.  How to generate this
-sequence is beyond the scope of this document, and does not affect
-the rest of the specification.  When the sequence is used fully, or
-earlier if appropriate, the sender signals the other party that a key
-change is necessary.  This is achieved by flipping the "F bit" and
-resetting the PRSEQ.  The receiver increments the Kri of the sender,
-and derives another SessionTemporaryKey to be used for decryption.
+When the Epoch rolls over, the SharedSecret SHOULD be re-negotiated.
 
-It shall be stressed that the two SessionTemporaryKeys used in the
-communication are never the same, as the 5-tuple is reversed for the
-Server and Client.  Moreover, the time evolution of the respective
-Kri can be different.  As a consequence, each entity MUST maintain a
-table with (at least) the following informations:
+The Epoch MUST be incremented when the PSN This Packet (PSNTP) is
+rolled over. It CAN be incremented earlier, depending on the
+implementation and the security considerations.
 
+The sender MUST NOT create two packets with identical PSNTP and Epoch.
 
--  Flow 5-tuple, Own Kri, Other Kri
+The SessionTemporaryKey using a KDF with the following inputs:
 
-An implementation might optimize this further by caching the
-OwnSessionTemporaryKey (used in Encryption) and
-OtherSessionTemporaryKey (used in Decryption).
+- SrcIP, SrcPort, DstIP, DstPort, Protocol, SharedSecret, Epoch.
 
 # Security Goals
 
@@ -226,6 +211,7 @@ cases:
 {:req2: style="format %c)"}
 
 {: req2}
+
 - PDM is used over an already encrypted medium (For example VPN
   tunnels).
 - PDM is used in a link-local scenario.
@@ -239,7 +225,6 @@ PDM data MUST be kept confidential between the intended parties,
 which includes (but is not limited to) the two entities exchanging
 PDM data, and any legitimate party with the proper rights to access
 such data.
-
 
 ## Security Goals for Integrity
 
@@ -259,6 +244,7 @@ be seen to be met.
 {:req3: style="format %c)"}
 
 {: req3}
+
 - PDM is used over an already authenticated medium (For example,
   TLS session).
 - PDM is used in a link-local scenario.
@@ -286,7 +272,6 @@ traditional schemes and thus lead to our choice of this framework.
 
 # PDMv2 Destination Options
 
-
 ## Destinations Option Header
 
 The IPv6 Destination Options extension header [RFC8200] is used to
@@ -304,6 +289,7 @@ The IPv6 PDMv2 destination option contains the following base fields:
 {:req4: style="empty"}
 
 {: req4}
+
 - SCALEDTLR: Scale for Delta Time Last Received
 - SCALEDTLS: Scale for Delta Time Last Sent
 - GLOBALPTR: Global Pointer
@@ -321,6 +307,7 @@ The 5-tuple consists of:
 {:req5: style="empty"}
 
 {: req5}
+
 - SADDR: IP address of the sender
 - SPORT: Port for the sender
 - DADDR: IP address of the destination
@@ -334,6 +321,7 @@ considered:
 {:req6: style="format %c)"}
 
 {: req6}
+
 - Link-Local
 - Global Unicast
 
@@ -341,7 +329,6 @@ The Global Pointer is treated as a common entity over all the
 5-tuples with the same SADDR type.  It is initialised to the value 1
 and increments for every packet sent.  Global Pointer provides a
 measure of the amount of IPv6 traffic sent by the PDMv2 node.
-
 
 When the SADDR type is Link-Local, the PDMv2 node sends Global
 Pointer defined for Link-Local addresses, and when the SADDR type is
@@ -390,6 +377,7 @@ Following is the representation of the encrypted PDMv2 header:
 {:req7: style="empty"}
 
 {: req7}
+
 - Option Type
 
     0x0F
@@ -412,18 +400,20 @@ Following is the representation of the encrypted PDMv2 header:
 
     4-bit unsigned number.
 
-- Epoche
+- Epoch
 
-  12-bit unsigned number.
+    12-bit unsigned number.
 
-  Epoche field is used to indicate the roll-over of PSNTP counter.
+    Epoch field is used to indicate the valid SessionTemporaryKey.
 
 - Packet Sequence Number This Packet (PSNTP)
 
     16-bit unsigned number.
 
     This field is initialized at a random number and is incremented
- 	  sequentially for each packet of the 5-tuple.
+    sequentially for each packet of the 5-tuple.
+
+    This field is also used in the Encrypted PDMv2 as the encryption nonce.
 
 - Reserved Bits
 
@@ -436,7 +426,7 @@ Following is the representation of the encrypted PDMv2 header:
     8-bit unsigned number.
 
     This is the scaling value for the Delta Time Last Sent
- 	  (DELTATLS) field.
+    (DELTATLS) field.
 
 - Scale Delta Time Last Sent (SCALEDTLS)
 
@@ -450,18 +440,18 @@ Following is the representation of the encrypted PDMv2 header:
     32-bit unsigned number.
 
     Global Pointer is initialized to 1 for the different source
- 	  address types and incremented sequentially for each packet
- 	  with the corresponding source address type.
+    address types and incremented sequentially for each packet
+    with the corresponding source address type.
 
     This field stores the Global Pointer type corresponding to the
- 	  SADDR type of the packet.
+    SADDR type of the packet.
 
 - Packet Sequence Number Last Received (PSNLR)
 
     16-bit unsigned number.
 
     This field is the PSNTP of the last received packet on the
- 	  5-tuple.
+    5-tuple.
 
 - Delta Time Last Received (DELTATLR)
 
@@ -492,6 +482,7 @@ subject to:
 {:req8: style="format %d)"}
 
 {: req8}
+
 - Confidentiality and
 - Integrity
 
@@ -499,63 +490,63 @@ with respect to an attacker.
 
 As outlined in Section 4.1, the Client and the Server share a
 "SharedSecret", which can be used to decrypt the data.  A leakage of
-this secret can lead to a confidentiality and integrity violation.	 		
-It is advised to avoid using the same "SharedSecret" in different	 		
+this secret can lead to a confidentiality and integrity violation.
+It is advised to avoid using the same "SharedSecret" in different
 Clients and Server pairs.
 
 Assuming that the "SharedSecret" is not compromised, an attacker will
-not be able to recover it even in the case of a brute-force attack to	 		
-the _SessionTemporaryKey_. Moreover, the key rotation of the	 		
+not be able to recover it even in the case of a brute-force attack to
+the _SessionTemporaryKey_. Moreover, the key rotation of the
 _SessionTemporaryKey_ ensures a forward secrecy.
 
-## Resource exhaustion attacks	
- 		
-The present document does not covers online decryption.  Hence, it is	 	
+## Resource exhaustion attacks
+
+The present document does not covers online decryption.  Hence, it is
 not foreseen a computation resource exhaustion attack due to bogus
 PDMv2 header insertion by an attacker.
- 		
+
 However, logging any incoming PDMv2 header might lead to a storage
-resource exhaustion.  Hence, it is suggested to not log PDMv2 headers	 		
-incoming from an unknown party.	 		
- 		
+resource exhaustion.  Hence, it is suggested to not log PDMv2 headers
+incoming from an unknown party.
+
 In other terms, PDMv2 logging SHOULD be enabled only for sessions
-that have PDMv2 enabled.  The simple fact that a packet contains a	 		
-PDMv2 header SHOULD NOT result in a logging event.	 		
- 		
-An attacker can still inject bogus packets with PDMv2 headers for a	
+that have PDMv2 enabled.  The simple fact that a packet contains a
+PDMv2 header SHOULD NOT result in a logging event.
+
+An attacker can still inject bogus packets with PDMv2 headers for a
 valid PDMv2-enabled session.  This, to a lesser extent, can cause an
-increase in resource utilization.  However, these bogus headers will	 		
-be found at decryption time.  To further mitigate this attack, it is	 		
-advised to log the PDMv2 headers only for packets with expected Epoch	 		
-and/or PSNTP.	 		
- 		
-The definition of "expected" is dependent on the traffic flow type	
+increase in resource utilization.  However, these bogus headers will
+be found at decryption time.  To further mitigate this attack, it is
+advised to log the PDMv2 headers only for packets with expected Epoch
+and/or PSNTP.
+
+The definition of "expected" is dependent on the traffic flow type
 and the network characteristics (e.g., bandwidth, delay, loss,
-reordering, etc.), and it is left to the implementation.	 		
- 		
+reordering, etc.), and it is left to the implementation.
+
 Replay attacks, performed by inserting a valid PDMv2 header sniffed
 from an existing session in a bogus packet, SHOULD NOT be considered
 a threat, as the offline decryption and analysis should be able to
-find and eliminate out-of-order data.  Hence, we do not consider this	
+find and eliminate out-of-order data.  Hence, we do not consider this
 as a threat.
- 		
-##  Effects of a Client or Server Compromise
+
+## Effects of a Client or Server Compromise
 
 If a Client or a Server is compromised, i.e., an attacker takes
-control of the device, the attacker can leverage the knowledge of the	
-"SharedSecret" to encrypt (and, potentially, decrypt) the PDMv2 data.	
+control of the device, the attacker can leverage the knowledge of the
+"SharedSecret" to encrypt (and, potentially, decrypt) the PDMv2 data.
 
 To mitigate this event, we suggest:
 
--  The "SharedSecret" SHOULD NOT be shared by different Clients or
+- The "SharedSecret" SHOULD NOT be shared by different Clients or
    Servers, unless all of them are trusted, or unless the risk of a
    "SecretKey" violation has been evaluated and considered
-   acceptable.	
- 		
--  The "SharedSecret" could be stored in a secure, tamper-resistant
+   acceptable.
+
+- The "SharedSecret" could be stored in a secure, tamper-resistant
    memory area capable of deriving the _SessionTemporaryKey_ without
    disclosing the "SharedSecret".
- 		
+
    Note that the second point is only necessary for cases where device
    tampering is very likely, and the security of the system has to be
    guaranteed.
@@ -567,7 +558,8 @@ Encryption plays a crucial role in providing privacy as defined by [RFC6973], es
 {:req12: style="format %c)"}
 
 {: req12}
--  Confidentiality: Encryption ensures that the actual content of the
+
+- Confidentiality: Encryption ensures that the actual content of the
    communication remains confidential. Even if attackers or observers
    intercept the data packets, they won't be able to decipher the
    information without the encryption key. In the case of IPv6
@@ -575,14 +567,14 @@ Encryption plays a crucial role in providing privacy as defined by [RFC6973], es
    non-encrypted metadata is still visiblenegligible, and does not
    poses confidentiality
 
--  Content Protection: Metadata, such as network and end-to-end
+- Content Protection: Metadata, such as network and end-to-end
    response time, may reveal sensitive information about the
    communication. By encrypting the content, encryption mechanisms
    help protect this sensitive data from being exposed. Observers may
    still see that communication is happening, but they won't be able
    to glean meaningful information from the metadata.
 
--  Integrity: Encryption often includes mechanisms to ensure data
+- Integrity: Encryption often includes mechanisms to ensure data
    integrity. It allows the recipient to verify that the received data
    has not been tampered with during transit. This helps protect
    against attackers who might try to manipulate the metadata.
@@ -631,6 +623,7 @@ The following steps describe the protocol flow:
 {:req13: style="format %d."}
 
 {: req13}
+
 - Client initiates a request to the Server.  The
   request contains a list of available ciphersuites for KEM, KDF,
   and AEAD.
