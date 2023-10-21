@@ -515,9 +515,9 @@ There are also active attacks within the context of the limited Internet threat 
 {: req13}
 - Message Modification Attack:
 
-In a message modification attack, the attacker intercepts a message, modifies its content, and then reinserts it into the network. This attack is significant because it allows the attacker to tamper with the integrity of the data being transmitted.
+    In a message modification attack, the attacker intercepts a message, modifies its content, and then reinserts it into the network. This attack is significant because it allows the attacker to tamper with the integrity of the data being transmitted.
 
-   Example: Suppose an attacker intercepts an IPv6 packet containing unencrypted PDMv2 information that includes network and end-to-end response time metadata. The attacker modifies this information, such as altering the response time data or inserting false information. When this modified packet reaches its destination, the receiving device or network may act based on this malicious information, potentially leading to degraded performance, incorrect network management decisions, wrong performance data collection, etc. A direct consequence of modifying the performance data could be, for example, to hide an ongoing QoS violation, or to create a fake QoS violation, with consequences on the violation of Service Level Agreements.
+    Example: Suppose an attacker intercepts an IPv6 packet containing unencrypted PDMv2 information that includes network and end-to-end response time metadata. The attacker modifies this information, such as altering the response time data or inserting false information. When this modified packet reaches its destination, the receiving device or network may act based on this malicious information, potentially leading to degraded performance, incorrect network management decisions, wrong performance data collection, etc. A direct consequence of modifying the performance data could be, for example, to hide an ongoing QoS violation, or to create a fake QoS violation, with consequences on the violation of Service Level Agreements.
 
 - Message Deletion Attack:
 
