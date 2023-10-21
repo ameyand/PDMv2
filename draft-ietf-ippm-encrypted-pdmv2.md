@@ -62,6 +62,7 @@ normative:
 
 informative:
  RFC9180:
+ RFC4303:
  RFC1421:
 
 --- abstract
@@ -469,91 +470,100 @@ Following is the representation of the encrypted PDMv2 header:
 
 # Security Considerations
 
-PDMv2 Destination Options header can be used by an attacker to gather information about a
-victim (passive attack) or to force the victim to modify its
-operational parameters to comply with forged data (active attacks).
+PDMv2 carries metadata, including information about network characteristics and end-to-end response time. This metadata is used to optimize communication. However, in the context of passive attacks, the information contained within PDMv2 packets can be intercepted by an attacker, and in the context of active attacks the metadata can be modified by an attacker.
 
-In order to mitigate these, it is important that the PDMv2 Destination Options header is
-subject to:
-{:req8: style="format %d)"}
+In the following we will briefly outline the threat model and the associated security risks, using RFC3552 terminology and classification.
 
-{: req8}
+## Limited Threat Model
 
-- Confidentiality and
-- Integrity
+We assume that the attacker does not control the endpoints, but it does have a limited control of the network, i.e., it can either monitor the communications (leading to passive attacks), or modify/forge packets (active attacks).
 
-with respect to an attacker.
+### Passive attacks with unencrypted PDMv2
 
-As outlined in Section 4.1, the Client and the Server share a
-"SharedSecret", which can be used to decrypt the data.  A leakage of
-this secret can lead to a confidentiality and integrity violation.
-It is advised to avoid using the same "SharedSecret" in different
-Clients and Server pairs.
+Passive Attack Scenario: In a passive attack, the attacker seeks to obtain information that the sender and receiver of the communication would prefer to keep private. In this case, the attacker is not altering the packets but is intercepting and analyzing them. Here's how this can happen in the context of unencrypted PDMv2:
 
-Assuming that the "SharedSecret" is not compromised, an attacker will
-not be able to recover it even in the case of a brute-force attack to
-the _SessionTemporaryKey_. Moreover, the key rotation of the
-_SessionTemporaryKey_ ensures a forward secrecy.
+{:req12: style="format %c."}
 
-## Resource exhaustion attacks
+{: req12}
 
-The present document does not covers online decryption.  Hence, it is
-not foreseen a computation resource exhaustion attack due to bogus
-PDMv2 header insertion by an attacker.
+- Being on the same LAN: The simplest way for an attacker to launch a passive attack is to be on the same Local Area Network (LAN) as the victim. Many LAN configurations, such as Ethernet, 802.3, and FDDI, allow any machine on the network to read all traffic destined for any other machine on the same LAN. This means that if PDM packets are sent over the LAN, the attacker can capture them.
 
-However, logging any incoming PDMv2 header might lead to a storage
-resource exhaustion.  Hence, it is suggested to not log PDMv2 headers
-incoming from an unknown party.
+- Control of a Host in the Communication Path: If the attacker has control over a host that lies in the communication path between two victim machines, they can intercept PDM packets as they pass through this compromised host. This allows the attacker to collect metadata without being on the same LAN as the victim.
 
-In other terms, PDMv2 logging SHOULD be enabled only for sessions
-that have PDMv2 enabled.  The simple fact that a packet contains a
-PDMv2 header SHOULD NOT result in a logging event.
+- Compromising Routing Infrastructure: In some cases, attackers may actively compromise the routing infrastructure to route traffic through a compromised machine. This can facilitate a passive attack on victim machines. By manipulating routing, the attacker can ensure that PDMv2 packets pass through their controlled node.
 
-An attacker can still inject bogus packets with PDMv2 headers for a
-valid PDMv2-enabled session.  This, to a lesser extent, can cause an
-increase in resource utilization.  However, these bogus headers will
-be found at decryption time.  To further mitigate this attack, it is
-advised to log the PDMv2 headers only for packets with expected Epoch
-and/or PSNTP.
+- Wireless Networks: Wireless communication channels, such as those using 802.11 (Wi-Fi), are particularly vulnerable to passive attacks. Since data is broadcast over well-known radio frequencies, an attacker with the ability to receive those transmissions can intercept PDMv2 packets. Weak or ineffective cryptographic protection in wireless networks can make it easier for attackers to capture this data.
 
-The definition of "expected" is dependent on the traffic flow type
-and the network characteristics (e.g., bandwidth, delay, loss,
-reordering, etc.), and it is left to the implementation.
+Goal of Passive Attack: In a passive attack, the attacker's goal is to obtain sensitive information from intercepted packets. In the case of PDMv2, this information may include network characteristics, end-to-end response times, and potentially any other metadata that is transmitted. This information can be valuable to the attacker for various purposes, such as analyzing network performance or gaining insights into communication patterns.
 
-Replay attacks, performed by inserting a valid PDMv2 header sniffed
-from an existing session in a bogus packet, SHOULD NOT be considered
-a threat, as the offline decryption and analysis should be able to
-find and eliminate out-of-order data.  Hence, we do not consider this
-as a threat.
+In summary, within the limited Internet threat model described in RFC3552, attackers with the ability to intercept packets can conduct passive attacks to capture metadata carried in IPv6 unencrypted PDMv2 packets. This information can be useful for the attacker, even without actively altering the communication. Security measures, such as encryption and network segmentation, are important countermeasures to protect against such passive attacks.
 
-## Effects of a Client or Server Compromise
+### Passive attacks with encrypted PDMv2
 
-If a Client or a Server is compromised, i.e., an attacker takes
-control of the device, the attacker can leverage the knowledge of the
-"SharedSecret" to encrypt (and, potentially, decrypt) the PDMv2 data.
+Passive Attack Scenario: An attacker is trying to seek useful information from encrypted PDMv2 packets happening between two different entities. Encrypted PDMv2 has most of the metadata fields encrypted except for PSNTP which is also used as a nonce in HPKE AEAD.
 
-To mitigate this event, we suggest:
+Goal of Passive Attack: In this attack, the attacker is trying to obtain the order in which the packets were sent from the sender to the receiver for different flows. The amount of information gathered by the attacker is similar, to some extent, to the ones available by inspecting the TTCP sequence number, which is also usually not protected. Therefore, we consider this information leak acceptable.
 
-- The "SharedSecret" SHOULD NOT be shared by different Clients or
-   Servers, unless all of them are trusted, or unless the risk of a
-   "SecretKey" violation has been evaluated and considered
-   acceptable.
+Nevertheless, this point should be noted if complete traffic obfuscation (including packet disordering) is necessary. In these cases it is suggested to use IPSec ESP [RFC4303] in tunnel mode (in which case the PDMv2 can be used unencrypted).
 
-- The "SharedSecret" could be stored in a secure, tamper-resistant
-   memory area capable of deriving the _SessionTemporaryKey_ without
-   disclosing the "SharedSecret".
+### Active attacks with unencrypted PDMv2
 
-   Note that the second point is only necessary for cases where device
-   tampering is very likely, and the security of the system has to be
-   guaranteed.
+There are also active attacks within the context of the limited Internet threat model defined in [RFC3552]. In this model, active attacks involve an attacker writing data to the network, and the attacker can forge packets and potentially manipulate the behavior of devices or networks. Let's break down how message modification, deletion, or insertion by attackers using the unencrypted IPv6 Performance and Destination option v2 (PDMv2) fits into this threat model:
+
+{:req13: style="format %d."}
+
+{: req13}
+- Message Modification Attack:
+
+In a message modification attack, the attacker intercepts a message, modifies its content, and then reinserts it into the network. This attack is significant because it allows the attacker to tamper with the integrity of the data being transmitted.
+
+   Example: Suppose an attacker intercepts an IPv6 packet containing unencrypted PDMv2 information that includes network and end-to-end response time metadata. The attacker modifies this information, such as altering the response time data or inserting false information. When this modified packet reaches its destination, the receiving device or network may act based on this malicious information, potentially leading to degraded performance, incorrect network management decisions, wrong performance data collection, etc. A direct consequence of modifying the performance data could be, for example, to hide an ongoing QoS violation, or to create a fake QoS violation, with consequences on the violation of Service Level Agreements.
+
+- Message Deletion Attack:
+
+   In a message deletion attack, the attacker removes a message from the network. This attack can be used in conjunction with other attacks to disrupt communication or achieve specific objectives.
+
+   Example: Consider a scenario where an attacker deletes certain IPv6 packets that contain unencrypted PDMv2 information, or deletes the PDM header from the packet. If the PDMv2 is used for network monitoring or quality of service (QoS) management, the deletion of these packets can cause the monitoring system to miss critical data, potentially leading to inaccurate network performance analysis or decisions.
+
+- Message Insertion Attack:
+
+   In a message insertion attack, the attacker forges a message and injects it into the network.
+
+   Example: An attacker could forge IPv6 packets containing unencrypted PDMv2 data with fake source addresses and inject them into the network. If PDM is used for making routing or resource allocation decisions, these injected packets can influence the network's behavior, potentially causing it to take suboptimal routes or allocate resources incorrectly.
+
+All these attacks are considered active attacks because the attacker actively manipulates network traffic, and they can potentially spoof the source address to disguise their identity. In the limited Internet threat model defined in [RFC3552], it is assumed that attackers can forge packets and carry out such active attacks. These attacks highlight the importance of securing network protocols, authenticating messages, and implementing proper security measures to protect against them.
+
+### Active attacks with encrypted PDMv2
+
+Encrypted PDMv2 provides inherent protection against active attacks like Message Modification by providing integrity. If either of the sequence number or encrypted PDMv2 contents are modified then decryption will fail.
+
+Message Deletion Attack can be performed for encrypted PDMv2 similarly to unencrypted PDMv2.
+
+Impersonation Attack: Encrypted PDMv2 relies on a shared secret negotiated by an external protocol (e.g., TLS). If key exchange does have authentication check, then an adversary who impersonates the host can derive a key with the destination client and potentially perform all the above active attacks even on encrypted PDMv2.
+
+## Topological considerations
+
+The same topological considerations highlighted in [RFC3552] applies in this context. Passive attacks and active attacks where the messages need to be modified or deleted are more likely if the attacker is on-path, while message insertion attacks are more likely when the attacker is off-path but can happen also when the attacker is on-path. Link-local attacks can be considered as a special case of on-path for PDM, i.e., for PDM a link-local attacker has no special privileges with respect to an on-path attacker.
+
+## Further mitigations
+
+PDM includes cryptographic mechanisms to mitigate passive and active attacks.
+As a further security mechanism to protect from active attacks, it is possible for an implementation to include logging of anomalous events, e.g.:
+
+{: req14}
+- Missing PDM header when expected (counteracts the Message Deletion).
+- Unusual variations of the PDM data (counteracts the Message Modification)
+- Accept the PDM data only if the application level accepts the packet payload (counteracts the Message Insertion)
+- Monitor repeated or unexpected PDM data (counteracts replay attacks).
+
 
 # Privacy Considerations
 
 Encryption plays a crucial role in providing privacy as defined by [RFC6973], especially when metadata sniffing is a concern. [RFC6973], titled "Privacy Considerations for Internet Protocols," outlines the importance of protecting users' privacy in the context of various Internet protocols, including IPv6. When metadata like network and end-to-end response time is at risk of being observed by attackers, eavesdroppers, or observers, encryption can help mitigate the privacy risks. Here's how encryption achieves this:
 
-{:req12: style="format %c)"}
+{:req15: style="format %c)"}
 
-{: req12}
+{: req15}
 
 - Confidentiality: Encryption ensures that the actual content of the
    communication remains confidential. Even if attackers or observers
@@ -616,9 +626,9 @@ secrets on the arrival of the first packet from the secondary client.
 ## High level flow
 
 The following steps describe the protocol flow:
-{:req13: style="format %d."}
+{:req16: style="format %d."}
 
-{: req13}
+{: req16}
 
 - Client initiates a request to the Server.  The
   request contains a list of available ciphersuites for KEM, KDF,
