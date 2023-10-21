@@ -21,10 +21,10 @@ keyword:
 venue:
   group: "IP Performance Measurement"
   type: "Working Group"
-  mail: "<ippm@ietf.org>"
-  arch: "<https://mailarchive.ietf.org/arch/browse/ippm/>"
+  mail: "ippm@ietf.org"
+  arch: "https://mailarchive.ietf.org/arch/browse/ippm/"
   github: "ameyand/PDMv2"
-  latest: "<https://ameyand.github.io/PDMv2/draft-elkins-ippm-encrypted-pdmv2.html>"
+  latest: "https://ameyand.github.io/PDMv2/draft-elkins-ippm-encrypted-pdmv2.html"
 
 author:
  -
@@ -33,25 +33,25 @@ author:
     organization: Inside Products, Inc.
     email: "nalini.elkins@insidethestack.com"
 
--
+ -
     fullname: Michael Ackermann
     organization: BCBS Michigan
-    email: "<mackermann@bcbsm.com>"
+    email: "mackermann@bcbsm.com"
 
--
+ -
     fullname: Ameya Deshpande
     organization: NITK Surathkal/Google
-    email: "<ameyanrd@gmail.com>"
+    email: "ameyanrd@gmail.com"
 
--
+ -
     fullname: Tommaso Pecorella
     organization: University of Florence
-    email: "<tommaso.pecorella@unifi.it>"
+    email: "tommaso.pecorella@unifi.it"
 
--
+ -
     fullname: Adnan Rashid
     organization: Politecnico di Bari
-    email: "<adnan.rashid@poliba.it>"
+    email: "adnan.rashid@poliba.it"
 
 normative:
  RFC2780:
