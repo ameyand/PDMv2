@@ -1338,28 +1338,23 @@ Client.<a href="#section-3-1.2.1" class="pilcrow">¶</a></p>
 <p id="section-3-2">Note: a client may act as a server (have listening ports).<a href="#section-3-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3-3.1">
-          <p id="section-3-3.1.1">Symmetric Key (K): A uniformly random bitstring as an input to the
-encryption algorithm, known only to Clients and Servers.  Used to
-establish a secure communication.<a href="#section-3-3.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-3-3.2">
-          <p id="section-3-3.2.1">Public and Private Keys: A pair of keys that is used in asymmetric
+          <p id="section-3-3.1.1">Public and Private Keys: A pair of keys that is used in asymmetric
 cryptography.  If one is used for encryption, the other is used
 for decryption.  Private Keys are kept hidden by the source of the
 key pair generator, but Public Key is known to everyone.  pkX
 (Public Key) and skX (Private Key).  Where X can be, any client or
-any server.<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
+any server.<a href="#section-3-3.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-3.3">
-          <p id="section-3-3.3.1">Pre-shared Key (PSK): A symmetric key.  Uniformly random
+        <li class="normal" id="section-3-3.2">
+          <p id="section-3-3.2.1">Pre-shared Key (PSK): A symmetric key.  Uniformly random
 bitstring, shared between any Client or any Server or a key shared
 between an entity that forms client-server relationship.  This
 could happen through an out-of band mechanism: e.g., a physical
-meeting or use of another protocol.<a href="#section-3-3.3.1" class="pilcrow">¶</a></p>
+meeting or use of another protocol.<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-3.4">
-          <p id="section-3-3.4.1">Session Key: A temporary key which acts as a symmetric key for the
-whole session.<a href="#section-3-3.4.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-3.3">
+          <p id="section-3-3.3.1">Session Key: A temporary key which acts as a symmetric key for the
+whole session.<a href="#section-3-3.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
