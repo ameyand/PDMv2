@@ -20,7 +20,7 @@ lightweight handshake (registration procedure) and encryption to
 secure this data.  Additional performance metrics which may be of use
 are also defined. 
     " name="description">
-<meta content="xml2rfc 3.18.1" name="generator">
+<meta content="xml2rfc 3.18.2" name="generator">
 <meta content="Extension Headers" name="keyword">
 <meta content="IPv6" name="keyword">
 <meta content="PDMv2" name="keyword">
@@ -28,8 +28,8 @@ are also defined.
 <meta content="Diagnostic" name="keyword">
 <meta content="draft-ietf-ippm-encrypted-pdmv2-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.18.1
-    Python 3.11.5
+  xml2rfc 3.18.2
+    Python 3.11.6
     ConfigArgParse 1.5.3
     google-i18n-address 3.1.0
     intervaltree 3.1.0
@@ -1044,7 +1044,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Elkins, et al.</td>
-<td class="center">Expires 18 April 2024</td>
+<td class="center">Expires 23 April 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1057,12 +1057,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ippm-encrypted-pdmv2-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-10-16" class="published">16 October 2023</time>
+<time datetime="2023-10-21" class="published">21 October 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-04-18">18 April 2024</time></dd>
+<dd class="expires"><time datetime="2024-04-23">23 April 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1135,7 +1135,7 @@ are also defined.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 18 April 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 23 April 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1166,29 +1166,18 @@ are also defined.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <nav class="toc"><ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
-                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-current-performance-and-dia" class="internal xref">Current Performance and Diagnostic Metrics (PDM)</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2">
-                <p id="section-toc.1-1.1.2.2.1" class="keepWithNext"><a href="#section-1.2" class="auto internal xref">1.2</a>.  <a href="#name-pdmv2-introduction" class="internal xref">PDMv2 Introduction</a></p>
-</li>
-            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-used-in-this-do" class="internal xref">Conventions used in this document</a></p>
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-used-in-this-do" class="internal xref">Conventions used in this document</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-terminology" class="internal xref">Terminology</a></p>
+            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-terminology" class="internal xref">Terminology</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-protocol-flow" class="internal xref">Protocol Flow</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-cryptographic-phase" class="internal xref">Cryptographic Phase</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-client-server-negotiation" class="internal xref">Client - Server Negotiation</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-client-server-negotiation" class="internal xref">Client - Server Negotiation</a></p>
 </li>
             </ul>
 </li>
@@ -1283,36 +1272,22 @@ are also defined.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<div id="current-performance-and-diagnostic-metrics-pdm">
-<section id="section-1.1">
-        <h3 id="name-current-performance-and-dia">
-<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-current-performance-and-dia" class="section-name selfRef">Current Performance and Diagnostic Metrics (PDM)</a>
-        </h3>
-<p id="section-1.1-1">The current PDM is an IPv6 Destination Options header which provides
+<p id="section-1-1">The current PDM is an IPv6 Destination Options header which provides
 information based on the metrics like Round-trip delay and Server
 delay.  This information helps to measure the Quality of Service
 (QoS) and to assist in diagnostics.  However, there are potential
-risks involved transmitting PDM data during a diagnostics session.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
-<p id="section-1.1-2">PDM metrics can help an attacker understand about the type of machine
+risks involved transmitting PDM data during a diagnostics session.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">PDM metrics can help an attacker understand about the type of machine
 and its processing capabilities.  Inferring from the PDM data, the
 attack can launch a timing attack.  For example, if a cryptographic
 protocol is used, a timing attack <span class="bcp14">MAY</span> be launched against the keying
-material to obtain the secret.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
-<p id="section-1.1-3">Along with this, PDM does not provide integrity.  It is possible for
+material to obtain the secret.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">Along with this, PDM does not provide integrity.  It is possible for
 a Man-In-The-Middle (MITM) node to modify PDM headers leading to
 incorrect conclusions.  For example, during the debugging process
 using PDM header, it can mislead the person showing there are no
-unusual server delays.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="pdmv2-introduction">
-<section id="section-1.2">
-        <h3 id="name-pdmv2-introduction">
-<a href="#section-1.2" class="section-number selfRef">1.2. </a><a href="#name-pdmv2-introduction" class="section-name selfRef">PDMv2 Introduction</a>
-        </h3>
-<p id="section-1.2-1">PDMv2 adds confidentiality, integrity and authentication to PDM.<a href="#section-1.2-1" class="pilcrow">¶</a></p>
-</section>
-</div>
+unusual server delays.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">PDMv2 adds confidentiality, integrity and authentication to PDM.<a href="#section-1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-used-in-this-document">
@@ -1391,63 +1366,47 @@ whole session.<a href="#section-3-3.4.1" class="pilcrow">¶</a></p>
       <dd class="break"></dd>
 </dl>
 <p id="section-4-3">These steps <span class="bcp14">MAY</span> be in the same session or in separate sessions.  That
-is, the cryptographic secrets <span class="bcp14">MAY</span> be created beforehand and used in                   <br>
+is, the cryptographic secrets <span class="bcp14">MAY</span> be created beforehand and used in
 the PDM data flow at the time of the "real" data session.<a href="#section-4-3" class="pilcrow">¶</a></p>
 <p id="section-4-4">After-the-fact (or real-time) data analysis of PDM flow may occur by
 network diagnosticians or network devices.  The definition of how
 this is done is out of scope for this document.<a href="#section-4-4" class="pilcrow">¶</a></p>
-<div id="cryptographic-phase">
-<section id="section-4.1">
-        <h3 id="name-cryptographic-phase">
-<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-cryptographic-phase" class="section-name selfRef">Cryptographic Phase</a>
-      </h3>
-</section>
-</div>
 <div id="client-server-negotiation">
-<section id="section-4.2">
+<section id="section-4.1">
         <h3 id="name-client-server-negotiation">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-client-server-negotiation" class="section-name selfRef">Client - Server Negotiation</a>
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-client-server-negotiation" class="section-name selfRef">Client - Server Negotiation</a>
         </h3>
-<p id="section-4.2-1">The two entities exchange a set of data to ensure the respective
+<p id="section-4.1-1">The two entities exchange a set of data to ensure the respective
 identities. This could be done via a TLS or other session.  The
-exact nature of the identity verification is out-of-scope for this document.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.2-2">They use HPKE KEM to negotiate a "SharedSecret".<a href="#section-4.2-2" class="pilcrow">¶</a></p>
-<p id="section-4.2-3">Each Client and Server derive a "SessionTemporaryKey" by using HPKE
-KDF, using the following inputs:<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+exact nature of the identity verification is out-of-scope for this document.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">They use HPKE KEM to negotiate a "SharedSecret".<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.1-3">Each Client and Server derive a "SessionTemporaryKey" by using HPKE
+KDF, using the following inputs:<a href="#section-4.1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.2-4.1">
-            <p id="section-4.2-4.1.1">The "SharedSecret".<a href="#section-4.2-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.1-4.1">
+            <p id="section-4.1-4.1.1">The "SharedSecret".<a href="#section-4.1-4.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.2-4.2">
-            <p id="section-4.2-4.2.1">The 5-tuple (SrcIP, SrcPort, DstIP, DstPort, Protocol) of the
-communication.<a href="#section-4.2-4.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.1-4.2">
+            <p id="section-4.1-4.2.1">The 5-tuple (SrcIP, SrcPort, DstIP, DstPort, Protocol) of the
+communication.<a href="#section-4.1-4.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.2-4.3">
-            <p id="section-4.2-4.3.1">A Key Rotation Index (Kri).<a href="#section-4.2-4.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.1-4.3">
+            <p id="section-4.1-4.3.1">An Epoch.<a href="#section-4.1-4.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.2-5">The Kri <span class="bcp14">SHOULD</span> be initialized to zero.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
-<p id="section-4.2-6">The Server and Client initialize (separately) a pseudo-random non-
-repeating sequence between 1 and 2^15-1.  How to generate this
-sequence is beyond the scope of this document, and does not affect
-the rest of the specification.  When the sequence is used fully, or
-earlier if appropriate, the sender signals the other party that a key
-change is necessary.  This is achieved by flipping the "F bit" and
-resetting the PRSEQ.  The receiver increments the Kri of the sender,
-and derives another SessionTemporaryKey to be used for decryption.<a href="#section-4.2-6" class="pilcrow">¶</a></p>
-<p id="section-4.2-7">It shall be stressed that the two SessionTemporaryKeys used in the
-communication are never the same, as the 5-tuple is reversed for the
-Server and Client.  Moreover, the time evolution of the respective
-Kri can be different.  As a consequence, each entity <span class="bcp14">MUST</span> maintain a
-table with (at least) the following informations:<a href="#section-4.2-7" class="pilcrow">¶</a></p>
+<p id="section-4.1-5">The Epoch <span class="bcp14">SHOULD</span> be initialized to zero. A change in the Epoch
+indicates that the SessionTemporaryKey has been rotated.<a href="#section-4.1-5" class="pilcrow">¶</a></p>
+<p id="section-4.1-6">When the Epoch rolls over, the SharedSecret <span class="bcp14">SHOULD</span> be re-negotiated.<a href="#section-4.1-6" class="pilcrow">¶</a></p>
+<p id="section-4.1-7">The Epoch <span class="bcp14">MUST</span> be incremented when the PSN This Packet (PSNTP) is
+rolled over. It CAN be incremented earlier, depending on the
+implementation and the security considerations.<a href="#section-4.1-7" class="pilcrow">¶</a></p>
+<p id="section-4.1-8">The sender <span class="bcp14">MUST NOT</span> create two packets with identical PSNTP and Epoch.<a href="#section-4.1-8" class="pilcrow">¶</a></p>
+<p id="section-4.1-9">The SessionTemporaryKey using a KDF with the following inputs:<a href="#section-4.1-9" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.2-8.1">
-            <p id="section-4.2-8.1.1">Flow 5-tuple, Own Kri, Other Kri<a href="#section-4.2-8.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.1-10.1">
+            <p id="section-4.1-10.1.1">SrcIP, SrcPort, DstIP, DstPort, Protocol, SharedSecret, Epoch.<a href="#section-4.1-10.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.2-9">An implementation might optimize this further by caching the
-OwnSessionTemporaryKey (used in Encryption) and
-OtherSessionTemporaryKey (used in Decryption).<a href="#section-4.2-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1732,11 +1691,11 @@ the two types of headers is determined from the Options Length value.<a href="#s
 4-bit unsigned number.<a href="#section-6.3-6.3.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.4">
-            <p id="section-6.3-6.4.1">Epoche<a href="#section-6.3-6.4.1" class="pilcrow">¶</a></p>
+            <p id="section-6.3-6.4.1">Epoch<a href="#section-6.3-6.4.1" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.4.2">
 12-bit unsigned number.<a href="#section-6.3-6.4.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.4.3">
-Epoche field is used to indicate the roll-over of PSNTP counter.<a href="#section-6.3-6.4.3" class="pilcrow">¶</a></p>
+Epoch field is used to indicate the valid SessionTemporaryKey.<a href="#section-6.3-6.4.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.5">
             <p id="section-6.3-6.5.1">Packet Sequence Number This Packet (PSNTP)<a href="#section-6.3-6.5.1" class="pilcrow">¶</a></p>
@@ -1744,7 +1703,9 @@ Epoche field is used to indicate the roll-over of PSNTP counter.<a href="#sectio
 16-bit unsigned number.<a href="#section-6.3-6.5.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.5.3">
 This field is initialized at a random number and is incremented
-        sequentially for each packet of the 5-tuple.<a href="#section-6.3-6.5.3" class="pilcrow">¶</a></p>
+  sequentially for each packet of the 5-tuple.<a href="#section-6.3-6.5.3" class="pilcrow">¶</a></p>
+<p id="section-6.3-6.5.4">
+This field is also used in the Encrypted PDMv2 as the encryption nonce.<a href="#section-6.3-6.5.4" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.6">
             <p id="section-6.3-6.6.1">Reserved Bits<a href="#section-6.3-6.6.1" class="pilcrow">¶</a></p>
@@ -1759,7 +1720,7 @@ Reserved bits for future use.  They are initialised to 0 for PDMv2.<a href="#sec
 8-bit unsigned number.<a href="#section-6.3-6.7.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.7.3">
 This is the scaling value for the Delta Time Last Sent
-        (DELTATLS) field.<a href="#section-6.3-6.7.3" class="pilcrow">¶</a></p>
+  (DELTATLS) field.<a href="#section-6.3-6.7.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.8">
             <p id="section-6.3-6.8.1">Scale Delta Time Last Sent (SCALEDTLS)<a href="#section-6.3-6.8.1" class="pilcrow">¶</a></p>
@@ -1775,11 +1736,11 @@ This is the scaling value for the Delta Time Last Sent
 32-bit unsigned number.<a href="#section-6.3-6.9.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.9.3">
 Global Pointer is initialized to 1 for the different source
-        address types and incremented sequentially for each packet
-        with the corresponding source address type.<a href="#section-6.3-6.9.3" class="pilcrow">¶</a></p>
+  address types and incremented sequentially for each packet
+  with the corresponding source address type.<a href="#section-6.3-6.9.3" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.9.4">
 This field stores the Global Pointer type corresponding to the
-        SADDR type of the packet.<a href="#section-6.3-6.9.4" class="pilcrow">¶</a></p>
+  SADDR type of the packet.<a href="#section-6.3-6.9.4" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.10">
             <p id="section-6.3-6.10.1">Packet Sequence Number Last Received (PSNLR)<a href="#section-6.3-6.10.1" class="pilcrow">¶</a></p>
@@ -1787,7 +1748,7 @@ This field stores the Global Pointer type corresponding to the
 16-bit unsigned number.<a href="#section-6.3-6.10.2" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.10.3">
 This field is the PSNTP of the last received packet on the
-        5-tuple.<a href="#section-6.3-6.10.3" class="pilcrow">¶</a></p>
+  5-tuple.<a href="#section-6.3-6.10.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.11">
             <p id="section-6.3-6.11.1">Delta Time Last Received (DELTATLR)<a href="#section-6.3-6.11.1" class="pilcrow">¶</a></p>
@@ -1839,40 +1800,40 @@ subject to:<a href="#section-7-2" class="pilcrow">¶</a></p>
 <p id="section-7-4">with respect to an attacker.<a href="#section-7-4" class="pilcrow">¶</a></p>
 <p id="section-7-5">As outlined in Section 4.1, the Client and the Server share a
 "SharedSecret", which can be used to decrypt the data.  A leakage of
-this secret can lead to a confidentiality and integrity violation.                    <br>
-It is advised to avoid using the same "SharedSecret" in different                     <br>
+this secret can lead to a confidentiality and integrity violation.
+It is advised to avoid using the same "SharedSecret" in different
 Clients and Server pairs.<a href="#section-7-5" class="pilcrow">¶</a></p>
 <p id="section-7-6">Assuming that the "SharedSecret" is not compromised, an attacker will
-not be able to recover it even in the case of a brute-force attack to                 <br>
-the <em>SessionTemporaryKey</em>. Moreover, the key rotation of the                  <br>
-        <em>SessionTemporaryKey</em> ensures a forward secrecy.<a href="#section-7-6" class="pilcrow">¶</a></p>
+not be able to recover it even in the case of a brute-force attack to
+the <em>SessionTemporaryKey</em>. Moreover, the key rotation of the
+<em>SessionTemporaryKey</em> ensures a forward secrecy.<a href="#section-7-6" class="pilcrow">¶</a></p>
 <div id="resource-exhaustion-attacks">
 <section id="section-7.1">
         <h3 id="name-resource-exhaustion-attacks">
 <a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-resource-exhaustion-attacks" class="section-name selfRef">Resource exhaustion attacks</a>
         </h3>
-<p id="section-7.1-1">The present document does not covers online decryption.  Hence, it is         <br>
+<p id="section-7.1-1">The present document does not covers online decryption.  Hence, it is
 not foreseen a computation resource exhaustion attack due to bogus
 PDMv2 header insertion by an attacker.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
 <p id="section-7.1-2">However, logging any incoming PDMv2 header might lead to a storage
-resource exhaustion.  Hence, it is suggested to not log PDMv2 headers                 <br>
+resource exhaustion.  Hence, it is suggested to not log PDMv2 headers
 incoming from an unknown party.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
 <p id="section-7.1-3">In other terms, PDMv2 logging <span class="bcp14">SHOULD</span> be enabled only for sessions
-that have PDMv2 enabled.  The simple fact that a packet contains a                    <br>
+that have PDMv2 enabled.  The simple fact that a packet contains a
 PDMv2 header <span class="bcp14">SHOULD NOT</span> result in a logging event.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
-<p id="section-7.1-4">An attacker can still inject bogus packets with PDMv2 headers for a   <br>
+<p id="section-7.1-4">An attacker can still inject bogus packets with PDMv2 headers for a
 valid PDMv2-enabled session.  This, to a lesser extent, can cause an
-increase in resource utilization.  However, these bogus headers will                  <br>
-be found at decryption time.  To further mitigate this attack, it is                  <br>
-advised to log the PDMv2 headers only for packets with expected Epoch                 <br>
+increase in resource utilization.  However, these bogus headers will
+be found at decryption time.  To further mitigate this attack, it is
+advised to log the PDMv2 headers only for packets with expected Epoch
 and/or PSNTP.<a href="#section-7.1-4" class="pilcrow">¶</a></p>
-<p id="section-7.1-5">The definition of "expected" is dependent on the traffic flow type    <br>
+<p id="section-7.1-5">The definition of "expected" is dependent on the traffic flow type
 and the network characteristics (e.g., bandwidth, delay, loss,
 reordering, etc.), and it is left to the implementation.<a href="#section-7.1-5" class="pilcrow">¶</a></p>
 <p id="section-7.1-6">Replay attacks, performed by inserting a valid PDMv2 header sniffed
 from an existing session in a bogus packet, <span class="bcp14">SHOULD NOT</span> be considered
 a threat, as the offline decryption and analysis should be able to
-find and eliminate out-of-order data.  Hence, we do not consider this <br>
+find and eliminate out-of-order data.  Hence, we do not consider this
 as a threat.<a href="#section-7.1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1882,24 +1843,24 @@ as a threat.<a href="#section-7.1-6" class="pilcrow">¶</a></p>
 <a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-effects-of-a-client-or-serv" class="section-name selfRef">Effects of a Client or Server Compromise</a>
         </h3>
 <p id="section-7.2-1">If a Client or a Server is compromised, i.e., an attacker takes
-control of the device, the attacker can leverage the knowledge of the <br>
+control of the device, the attacker can leverage the knowledge of the
 "SharedSecret" to encrypt (and, potentially, decrypt) the PDMv2 data.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
 <p id="section-7.2-2">To mitigate this event, we suggest:<a href="#section-7.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-7.2-3.1">
             <p id="section-7.2-3.1.1">The "SharedSecret" <span class="bcp14">SHOULD NOT</span> be shared by different Clients or
-Servers, unless all of them are trusted, or unless the risk of a
-"SecretKey" violation has been evaluated and considered
-acceptable.<a href="#section-7.2-3.1.1" class="pilcrow">¶</a></p>
+ Servers, unless all of them are trusted, or unless the risk of a
+ "SecretKey" violation has been evaluated and considered
+ acceptable.<a href="#section-7.2-3.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-7.2-3.2">
             <p id="section-7.2-3.2.1">The "SharedSecret" could be stored in a secure, tamper-resistant
-memory area capable of deriving the <em>SessionTemporaryKey</em> without
-disclosing the "SharedSecret".<a href="#section-7.2-3.2.1" class="pilcrow">¶</a></p>
+ memory area capable of deriving the <em>SessionTemporaryKey</em> without
+ disclosing the "SharedSecret".<a href="#section-7.2-3.2.1" class="pilcrow">¶</a></p>
 <p id="section-7.2-3.2.2">
 Note that the second point is only necessary for cases where device
-tampering is very likely, and the security of the system has to be
-guaranteed.<a href="#section-7.2-3.2.2" class="pilcrow">¶</a></p>
+ tampering is very likely, and the security of the system has to be
+ guaranteed.<a href="#section-7.2-3.2.2" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1916,30 +1877,30 @@ guaranteed.<a href="#section-7.2-3.2.2" class="pilcrow">¶</a></p>
 <dt>a)</dt>
 <dd id="section-8-2.1">
           <p id="section-8-2.1.1">Confidentiality: Encryption ensures that the actual content of the
-communication remains confidential. Even if attackers or observers
-intercept the data packets, they won't be able to decipher the
-information without the encryption key. In the case of IPv6
-Performance and Destination Option (PDM), the still-visible,
-non-encrypted metadata is still visiblenegligible, and does not
-poses confidentiality<a href="#section-8-2.1.1" class="pilcrow">¶</a></p>
+ communication remains confidential. Even if attackers or observers
+ intercept the data packets, they won't be able to decipher the
+ information without the encryption key. In the case of IPv6
+ Performance and Destination Option (PDM), the still-visible,
+ non-encrypted metadata is still visiblenegligible, and does not
+ poses confidentiality<a href="#section-8-2.1.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 <dt>b)</dt>
 <dd id="section-8-2.2">
           <p id="section-8-2.2.1">Content Protection: Metadata, such as network and end-to-end
-response time, may reveal sensitive information about the
-communication. By encrypting the content, encryption mechanisms
-help protect this sensitive data from being exposed. Observers may
-still see that communication is happening, but they won't be able
-to glean meaningful information from the metadata.<a href="#section-8-2.2.1" class="pilcrow">¶</a></p>
+ response time, may reveal sensitive information about the
+ communication. By encrypting the content, encryption mechanisms
+ help protect this sensitive data from being exposed. Observers may
+ still see that communication is happening, but they won't be able
+ to glean meaningful information from the metadata.<a href="#section-8-2.2.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 <dt>c)</dt>
 <dd id="section-8-2.3">
           <p id="section-8-2.3.1">Integrity: Encryption often includes mechanisms to ensure data
-integrity. It allows the recipient to verify that the received data
-has not been tampered with during transit. This helps protect
-against attackers who might try to manipulate the metadata.<a href="#section-8-2.3.1" class="pilcrow">¶</a></p>
+ integrity. It allows the recipient to verify that the received data
+ has not been tampered with during transit. This helps protect
+ against attackers who might try to manipulate the metadata.<a href="#section-8-2.3.1" class="pilcrow">¶</a></p>
 </dd>
       <dd class="break"></dd>
 </dl>
