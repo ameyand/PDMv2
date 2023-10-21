@@ -1852,28 +1852,32 @@ Delta Time Last Sent =
 <dt>1.</dt>
 <dd id="section-7.1.3-2.1">
               <p id="section-7.1.3-2.1.1">Message Modification Attack:<a href="#section-7.1.3-2.1.1" class="pilcrow">¶</a></p>
+<p id="section-7.1.3-2.1.2">
+In a message modification attack, the attacker intercepts a message, modifies its content, and then reinserts it into the network. This attack is significant because it allows the attacker to tamper with the integrity of the data being transmitted.<a href="#section-7.1.3-2.1.2" class="pilcrow">¶</a></p>
+<p id="section-7.1.3-2.1.3">
+Example: Suppose an attacker intercepts an IPv6 packet containing unencrypted PDMv2 information that includes network and end-to-end response time metadata. The attacker modifies this information, such as altering the response time data or inserting false information. When this modified packet reaches its destination, the receiving device or network may act based on this malicious information, potentially leading to degraded performance, incorrect network management decisions, wrong performance data collection, etc. A direct consequence of modifying the performance data could be, for example, to hide an ongoing QoS violation, or to create a fake QoS violation, with consequences on the violation of Service Level Agreements.<a href="#section-7.1.3-2.1.3" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt>2.</dt>
+<dd id="section-7.1.3-2.2">
+              <p id="section-7.1.3-2.2.1">Message Deletion Attack:<a href="#section-7.1.3-2.2.1" class="pilcrow">¶</a></p>
+<p id="section-7.1.3-2.2.2">
+In a message deletion attack, the attacker removes a message from the network. This attack can be used in conjunction with other attacks to disrupt communication or achieve specific objectives.<a href="#section-7.1.3-2.2.2" class="pilcrow">¶</a></p>
+<p id="section-7.1.3-2.2.3">
+Example: Consider a scenario where an attacker deletes certain IPv6 packets that contain unencrypted PDMv2 information, or deletes the PDM header from the packet. If the PDMv2 is used for network monitoring or quality of service (QoS) management, the deletion of these packets can cause the monitoring system to miss critical data, potentially leading to inaccurate network performance analysis or decisions.<a href="#section-7.1.3-2.2.3" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt>3.</dt>
+<dd id="section-7.1.3-2.3">
+              <p id="section-7.1.3-2.3.1">Message Insertion Attack:<a href="#section-7.1.3-2.3.1" class="pilcrow">¶</a></p>
+<p id="section-7.1.3-2.3.2">
+In a message insertion attack, the attacker forges a message and injects it into the network.<a href="#section-7.1.3-2.3.2" class="pilcrow">¶</a></p>
+<p id="section-7.1.3-2.3.3">
+Example: An attacker could forge IPv6 packets containing unencrypted PDMv2 data with fake source addresses and inject them into the network. If PDM is used for making routing or resource allocation decisions, these injected packets can influence the network's behavior, potentially causing it to take suboptimal routes or allocate resources incorrectly.<a href="#section-7.1.3-2.3.3" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 </dl>
-<p id="section-7.1.3-3">In a message modification attack, the attacker intercepts a message, modifies its content, and then reinserts it into the network. This attack is significant because it allows the attacker to tamper with the integrity of the data being transmitted.<a href="#section-7.1.3-3" class="pilcrow">¶</a></p>
-<p id="section-7.1.3-4">Example: Suppose an attacker intercepts an IPv6 packet containing unencrypted PDMv2 information that includes network and end-to-end response time metadata. The attacker modifies this information, such as altering the response time data or inserting false information. When this modified packet reaches its destination, the receiving device or network may act based on this malicious information, potentially leading to degraded performance, incorrect network management decisions, wrong performance data collection, etc. A direct consequence of modifying the performance data could be, for example, to hide an ongoing QoS violation, or to create a fake QoS violation, with consequences on the violation of Service Level Agreements.<a href="#section-7.1.3-4" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-7.1.3-5.1">
-              <p id="section-7.1.3-5.1.1">Message Deletion Attack:<a href="#section-7.1.3-5.1.1" class="pilcrow">¶</a></p>
-<p id="section-7.1.3-5.1.2">
-In a message deletion attack, the attacker removes a message from the network. This attack can be used in conjunction with other attacks to disrupt communication or achieve specific objectives.<a href="#section-7.1.3-5.1.2" class="pilcrow">¶</a></p>
-<p id="section-7.1.3-5.1.3">
-Example: Consider a scenario where an attacker deletes certain IPv6 packets that contain unencrypted PDMv2 information, or deletes the PDM header from the packet. If the PDMv2 is used for network monitoring or quality of service (QoS) management, the deletion of these packets can cause the monitoring system to miss critical data, potentially leading to inaccurate network performance analysis or decisions.<a href="#section-7.1.3-5.1.3" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-7.1.3-5.2">
-              <p id="section-7.1.3-5.2.1">Message Insertion Attack:<a href="#section-7.1.3-5.2.1" class="pilcrow">¶</a></p>
-<p id="section-7.1.3-5.2.2">
-In a message insertion attack, the attacker forges a message and injects it into the network.<a href="#section-7.1.3-5.2.2" class="pilcrow">¶</a></p>
-<p id="section-7.1.3-5.2.3">
-Example: An attacker could forge IPv6 packets containing unencrypted PDMv2 data with fake source addresses and inject them into the network. If PDM is used for making routing or resource allocation decisions, these injected packets can influence the network's behavior, potentially causing it to take suboptimal routes or allocate resources incorrectly.<a href="#section-7.1.3-5.2.3" class="pilcrow">¶</a></p>
-</li>
-          </ul>
-<p id="section-7.1.3-6">All these attacks are considered active attacks because the attacker actively manipulates network traffic, and they can potentially spoof the source address to disguise their identity. In the limited Internet threat model defined in <span>[<a href="#RFC3552" class="cite xref">RFC3552</a>]</span>, it is assumed that attackers can forge packets and carry out such active attacks. These attacks highlight the importance of securing network protocols, authenticating messages, and implementing proper security measures to protect against them.<a href="#section-7.1.3-6" class="pilcrow">¶</a></p>
+<p id="section-7.1.3-3">All these attacks are considered active attacks because the attacker actively manipulates network traffic, and they can potentially spoof the source address to disguise their identity. In the limited Internet threat model defined in <span>[<a href="#RFC3552" class="cite xref">RFC3552</a>]</span>, it is assumed that attackers can forge packets and carry out such active attacks. These attacks highlight the importance of securing network protocols, authenticating messages, and implementing proper security measures to protect against them.<a href="#section-7.1.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="active-attacks-with-encrypted-pdmv2">
