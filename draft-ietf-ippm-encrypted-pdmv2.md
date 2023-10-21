@@ -115,10 +115,6 @@ PDMv2 adds confidentiality, integrity and authentication to PDM.
 
 Note: a client may act as a server (have listening ports).
 
-- Symmetric Key (K): A uniformly random bitstring as an input to the
-  encryption algorithm, known only to Clients and Servers.  Used to
-  establish a secure communication.
-
 - Public and Private Keys: A pair of keys that is used in asymmetric
   cryptography.  If one is used for encryption, the other is used
   for decryption.  Private Keys are kept hidden by the source of the
