@@ -56,7 +56,6 @@ author:
 normative:
  RFC2780:
  RFC3552:
- RFC6973:
  RFC8250:
  RFC8200:
 
@@ -64,6 +63,7 @@ informative:
  RFC9180:
  RFC4303:
  RFC1421:
+ RFC6973:
 
 --- abstract
 
@@ -225,18 +225,17 @@ such data.
 
 ## Security Goals for Integrity
 
-PDM data MUST NOT be forged or modified by a malicious entity.  In
-other terms, a malicious entity MUST NOT be able to generate a valid
-PDM header impersonating an endpoint, and MUST NOT be able to modify
-a valid PDM header.
+An implementation SHOULD attempt to detect if PDM data is forged or
+modified by a malicious entity.  In other terms, the implementation
+should attempt to detect if a malicious entity has generated a valid
+PDM header impersonating an endpoint or modified a valid PDM header.
 
 ## Security Goals for Authentication
 
 An unauthorized party MUST NOT be able to send PDM data and MUST NOT
-be able to authorize another entity to do so.  The protocol to define
-this will be defined in a subsequent document.  Alternatively, if
+be able to authorize another entity to do so.  Alternatively, if
 authentication is done via any of the following, this requirement MAY
-be seen to be met.
+be considered to be met.
 
 {:req3: style="format %c)"}
 
@@ -504,7 +503,7 @@ Passive Attack Scenario: An attacker is trying to seek useful information from e
 
 Goal of Passive Attack: In this attack, the attacker is trying to obtain the order in which the packets were sent from the sender to the receiver for different flows. The amount of information gathered by the attacker is similar, to some extent, to the ones available by inspecting the TTCP sequence number, which is also usually not protected. Therefore, we consider this information leak acceptable.
 
-Nevertheless, this point should be noted if complete traffic obfuscation (including packet disordering) is necessary. In these cases it is suggested to use IPSec ESP [RFC4303] in tunnel mode (in which case the PDMv2 can be used unencrypted).
+Nevertheless, this point should be noted if complete traffic obfuscation (including packet reordering) is necessary. In these cases it is suggested to use IPSec ESP [RFC4303] in tunnel mode (in which case the PDMv2 can be used unencrypted).
 
 ### Active attacks with unencrypted PDMv2
 
