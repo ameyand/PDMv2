@@ -56,7 +56,6 @@ author:
 normative:
  RFC2780:
  RFC3552:
- RFC6973:
  RFC8250:
  RFC8200:
 
@@ -64,6 +63,7 @@ informative:
  RFC9180:
  RFC4303:
  RFC1421:
+ RFC6973:
 
 --- abstract
 
@@ -225,18 +225,17 @@ such data.
 
 ## Security Goals for Integrity
 
-PDM data MUST NOT be forged or modified by a malicious entity.  In
-other terms, a malicious entity MUST NOT be able to generate a valid
-PDM header impersonating an endpoint, and MUST NOT be able to modify
-a valid PDM header.
+An implementation SHOULD attempt to detect if PDM data is forged or
+modified by a malicious entity.  In other terms, the implementation
+should attempt to detect if a malicious entity has generated a valid
+PDM header impersonating an endpoint or modified a valid PDM header.
 
 ## Security Goals for Authentication
 
 An unauthorized party MUST NOT be able to send PDM data and MUST NOT
-be able to authorize another entity to do so.  The protocol to define
-this will be defined in a subsequent document.  Alternatively, if
+be able to authorize another entity to do so.  Alternatively, if
 authentication is done via any of the following, this requirement MAY
-be seen to be met.
+be considered to be met.
 
 {:req3: style="format %c)"}
 
@@ -504,7 +503,7 @@ Passive Attack Scenario: An attacker is trying to seek useful information from e
 
 Goal of Passive Attack: In this attack, the attacker is trying to obtain the order in which the packets were sent from the sender to the receiver for different flows. The amount of information gathered by the attacker is similar, to some extent, to the ones available by inspecting the TTCP sequence number, which is also usually not protected. Therefore, we consider this information leak acceptable.
 
-Nevertheless, this point should be noted if complete traffic obfuscation (including packet disordering) is necessary. In these cases it is suggested to use IPSec ESP [RFC4303] in tunnel mode (in which case the PDMv2 can be used unencrypted).
+Nevertheless, this point should be noted if complete traffic obfuscation (including packet reordering) is necessary. In these cases it is suggested to use IPSec ESP [RFC4303] in tunnel mode (in which case the PDMv2 can be used unencrypted).
 
 ### Active attacks with unencrypted PDMv2
 
@@ -515,9 +514,9 @@ There are also active attacks within the context of the limited Internet threat 
 {: req13}
 - Message Modification Attack:
 
-In a message modification attack, the attacker intercepts a message, modifies its content, and then reinserts it into the network. This attack is significant because it allows the attacker to tamper with the integrity of the data being transmitted.
+    In a message modification attack, the attacker intercepts a message, modifies its content, and then reinserts it into the network. This attack is significant because it allows the attacker to tamper with the integrity of the data being transmitted.
 
-   Example: Suppose an attacker intercepts an IPv6 packet containing unencrypted PDMv2 information that includes network and end-to-end response time metadata. The attacker modifies this information, such as altering the response time data or inserting false information. When this modified packet reaches its destination, the receiving device or network may act based on this malicious information, potentially leading to degraded performance, incorrect network management decisions, wrong performance data collection, etc. A direct consequence of modifying the performance data could be, for example, to hide an ongoing QoS violation, or to create a fake QoS violation, with consequences on the violation of Service Level Agreements.
+    Example: Suppose an attacker intercepts an IPv6 packet containing unencrypted PDMv2 information that includes network and end-to-end response time metadata. The attacker modifies this information, such as altering the response time data or inserting false information. When this modified packet reaches its destination, the receiving device or network may act based on this malicious information, potentially leading to degraded performance, incorrect network management decisions, wrong performance data collection, etc. A direct consequence of modifying the performance data could be, for example, to hide an ongoing QoS violation, or to create a fake QoS violation, with consequences on the violation of Service Level Agreements.
 
 - Message Deletion Attack:
 
