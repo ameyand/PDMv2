@@ -264,7 +264,10 @@ Our choice is to use the HPKE framework that incorporates key
 encapsulation mechanism (KEM), key derivation function (KDF) and
 authenticated encryption with associated data (AEAD).  These multiple
 schemes are more robust and significantly efficient than the
-traditional schemes and thus lead to our choice of this framework.
+traditional schemes and thus lead to our choice of this framework. We
+recommend default encryption algorithm for HPKE AEAD as AES-128-GCM,
+however this is an implementation choice and can be negotiated between
+the communicating parties.
 
 # PDMv2 Destination Options
 
