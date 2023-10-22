@@ -301,6 +301,9 @@ Table of Contents
    authenticated encryption with associated data (AEAD).  These multiple
    schemes are more robust and significantly efficient than the
    traditional schemes and thus lead to our choice of this framework.
+   We recommend default encryption algorithm for HPKE AEAD as AES-
+   128-GCM, however this is an implementation choice and can be
+   negotiated between the communicating parties.
 
 6.  PDMv2 Destination Options
 
