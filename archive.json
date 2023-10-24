@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-10-22T01:15:04.389011+00:00",
+  "timestamp": "2023-10-24T01:09:59.090709+00:00",
   "repo": "ameyand/PDMv2",
   "labels": [
     {
@@ -799,6 +799,62 @@
       "mergedBy": "ameyand",
       "mergeCommit": {
         "oid": "d84795f625701912265126bf3b5249be0565efd4"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 27,
+      "id": "PR_kwDOJCM9B85dd1k4",
+      "title": "Add suggestions from Nalini",
+      "url": "https://github.com/ameyand/PDMv2/pull/27",
+      "state": "MERGED",
+      "author": "ameyand",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-10-22T15:00:25Z",
+      "updatedAt": "2023-10-22T15:01:56Z",
+      "baseRepository": "ameyand/PDMv2",
+      "baseRefName": "main",
+      "baseRefOid": "d84795f625701912265126bf3b5249be0565efd4",
+      "headRepository": "ameyand/PDMv2",
+      "headRefName": "patch-branch",
+      "headRefOid": "de721a41a296264b3bc740f0b2f896887dce3a15",
+      "closedAt": "2023-10-22T15:01:56Z",
+      "mergedAt": "2023-10-22T15:01:56Z",
+      "mergedBy": "ameyand",
+      "mergeCommit": {
+        "oid": "3ba926bb04535cf4911c181a8b3fd66a542e08f9"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 28,
+      "id": "PR_kwDOJCM9B85dd27_",
+      "title": "Update default ciphersuite details",
+      "url": "https://github.com/ameyand/PDMv2/pull/28",
+      "state": "MERGED",
+      "author": "ameyand",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-10-22T15:19:37Z",
+      "updatedAt": "2023-10-22T15:20:24Z",
+      "baseRepository": "ameyand/PDMv2",
+      "baseRefName": "main",
+      "baseRefOid": "3ba926bb04535cf4911c181a8b3fd66a542e08f9",
+      "headRepository": "ameyand/PDMv2",
+      "headRefName": "patch-branch",
+      "headRefOid": "d71553cd4a200f509342624fb104a1e0585e4b15",
+      "closedAt": "2023-10-22T15:20:23Z",
+      "mergedAt": "2023-10-22T15:20:23Z",
+      "mergedBy": "ameyand",
+      "mergeCommit": {
+        "oid": "9ba9d96f00adf10f85c1d9b69e13a2d7cf7e7778"
       },
       "comments": [],
       "reviews": []
