@@ -20,7 +20,7 @@ lightweight handshake (registration procedure) and encryption to
 secure this data.  Additional performance metrics which may be of use
 are also defined. 
     " name="description">
-<meta content="xml2rfc 3.18.2" name="generator">
+<meta content="xml2rfc 3.19.1" name="generator">
 <meta content="Extension Headers" name="keyword">
 <meta content="IPv6" name="keyword">
 <meta content="PDMv2" name="keyword">
@@ -28,20 +28,20 @@ are also defined.
 <meta content="Diagnostic" name="keyword">
 <meta content="draft-ietf-ippm-encrypted-pdmv2-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.18.2
+  xml2rfc 3.19.1
     Python 3.11.6
-    ConfigArgParse 1.5.3
+    ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.3
-    platformdirs 3.11.0
+    platformdirs 4.1.0
     pycountry 22.3.5
-    PyYAML 6.0
+    PyYAML 6.0.1
     requests 2.31.0
-    setuptools 67.7.2
+    setuptools 68.2.2
     six 1.16.0
-    wcwidth 0.2.8
+    wcwidth 0.2.13
 -->
 <link href="draft-ietf-ippm-encrypted-pdmv2.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1040,11 +1040,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">draft-ietf-ippm-encrypted-pdmv2</td>
-<td class="right">October 2023</td>
+<td class="right">January 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Elkins, et al.</td>
-<td class="center">Expires 23 April 2024</td>
+<td class="center">Expires 1 August 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1057,12 +1057,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ippm-encrypted-pdmv2-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-10-21" class="published">21 October 2023</time>
+<time datetime="2024-01-29" class="published">29 January 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-04-23">23 April 2024</time></dd>
+<dd class="expires"><time datetime="2024-08-01">1 August 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1135,7 +1135,7 @@ are also defined.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 23 April 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 1 August 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1144,7 +1144,7 @@ are also defined.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2023 IETF Trust and the persons identified as the
+            Copyright (c) 2024 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1216,10 +1216,27 @@ are also defined.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
-                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-resource-exhaustion-attacks" class="internal xref">Resource exhaustion attacks</a></p>
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-limited-threat-model" class="internal xref">Limited Threat Model</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.1">
+                    <p id="section-toc.1-1.7.2.1.2.1.1"><a href="#section-7.1.1" class="auto internal xref">7.1.1</a>.  <a href="#name-passive-attacks-with-unencr" class="internal xref">Passive attacks with unencrypted PDMv2</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.2">
+                    <p id="section-toc.1-1.7.2.1.2.2.1"><a href="#section-7.1.2" class="auto internal xref">7.1.2</a>.  <a href="#name-passive-attacks-with-encryp" class="internal xref">Passive attacks with encrypted PDMv2</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.3">
+                    <p id="section-toc.1-1.7.2.1.2.3.1"><a href="#section-7.1.3" class="auto internal xref">7.1.3</a>.  <a href="#name-active-attacks-with-unencry" class="internal xref">Active attacks with unencrypted PDMv2</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.4">
+                    <p id="section-toc.1-1.7.2.1.2.4.1"><a href="#section-7.1.4" class="auto internal xref">7.1.4</a>.  <a href="#name-active-attacks-with-encrypt" class="internal xref">Active attacks with encrypted PDMv2</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
-                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-effects-of-a-client-or-serv" class="internal xref">Effects of a Client or Server Compromise</a></p>
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-topological-considerations" class="internal xref">Topological considerations</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-further-mitigations" class="internal xref">Further mitigations</a></p>
 </li>
             </ul>
 </li>
@@ -1280,7 +1297,7 @@ risks involved transmitting PDM data during a diagnostics session.<a href="#sect
 <p id="section-1-2">PDM metrics can help an attacker understand about the type of machine
 and its processing capabilities.  Inferring from the PDM data, the
 attack can launch a timing attack.  For example, if a cryptographic
-protocol is used, a timing attack <span class="bcp14">MAY</span> be launched against the keying
+protocol is used, a timing attack may be launched against the keying
 material to obtain the secret.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">Along with this, PDM does not provide integrity.  It is possible for
 a Man-In-The-Middle (MITM) node to modify PDM headers leading to
@@ -1321,28 +1338,23 @@ Client.<a href="#section-3-1.2.1" class="pilcrow">¶</a></p>
 <p id="section-3-2">Note: a client may act as a server (have listening ports).<a href="#section-3-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3-3.1">
-          <p id="section-3-3.1.1">Symmetric Key (K): A uniformly random bitstring as an input to the
-encryption algorithm, known only to Clients and Servers.  Used to
-establish a secure communication.<a href="#section-3-3.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-3-3.2">
-          <p id="section-3-3.2.1">Public and Private Keys: A pair of keys that is used in asymmetric
+          <p id="section-3-3.1.1">Public and Private Keys: A pair of keys that is used in asymmetric
 cryptography.  If one is used for encryption, the other is used
 for decryption.  Private Keys are kept hidden by the source of the
 key pair generator, but Public Key is known to everyone.  pkX
 (Public Key) and skX (Private Key).  Where X can be, any client or
-any server.<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
+any server.<a href="#section-3-3.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-3.3">
-          <p id="section-3-3.3.1">Pre-shared Key (PSK): A symmetric key.  Uniformly random
+        <li class="normal" id="section-3-3.2">
+          <p id="section-3-3.2.1">Pre-shared Key (PSK): A symmetric key.  Uniformly random
 bitstring, shared between any Client or any Server or a key shared
 between an entity that forms client-server relationship.  This
 could happen through an out-of band mechanism: e.g., a physical
-meeting or use of another protocol.<a href="#section-3-3.3.1" class="pilcrow">¶</a></p>
+meeting or use of another protocol.<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-3.4">
-          <p id="section-3-3.4.1">Session Key: A temporary key which acts as a symmetric key for the
-whole session.<a href="#section-3-3.4.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-3.3">
+          <p id="section-3-3.3.1">Session Key: A temporary key which acts as a symmetric key for the
+whole session.<a href="#section-3-3.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
@@ -1468,10 +1480,10 @@ such data.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
         <h3 id="name-security-goals-for-integrit">
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-security-goals-for-integrit" class="section-name selfRef">Security Goals for Integrity</a>
         </h3>
-<p id="section-5.2-1">PDM data <span class="bcp14">MUST NOT</span> be forged or modified by a malicious entity.  In
-other terms, a malicious entity <span class="bcp14">MUST NOT</span> be able to generate a valid
-PDM header impersonating an endpoint, and <span class="bcp14">MUST NOT</span> be able to modify
-a valid PDM header.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-1">An implementation <span class="bcp14">SHOULD</span> attempt to detect if PDM data is forged or
+modified by a malicious entity.  In other terms, the implementation
+should attempt to detect if a malicious entity has generated a valid
+PDM header impersonating an endpoint or modified a valid PDM header.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-goals-for-authentication">
@@ -1480,10 +1492,9 @@ a valid PDM header.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-security-goals-for-authenti" class="section-name selfRef">Security Goals for Authentication</a>
         </h3>
 <p id="section-5.3-1">An unauthorized party <span class="bcp14">MUST NOT</span> be able to send PDM data and <span class="bcp14">MUST NOT</span>
-be able to authorize another entity to do so.  The protocol to define
-this will be defined in a subsequent document.  Alternatively, if
+be able to authorize another entity to do so.  Alternatively, if
 authentication is done via any of the following, this requirement <span class="bcp14">MAY</span>
-be seen to be met.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+be considered to be met.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="olPercent" id="section-5.3-2">
 <dt>a)</dt>
 <dd id="section-5.3-2.1">
@@ -1520,11 +1531,13 @@ symmetric key with the public key by joining both yields.  Hybrid
 public-key encryption schemes (HPKE) <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span> used a different
 approach that generates the symmetric key and its encapsulation with
 the public key of the receiver.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
-<p id="section-5.4-2">Our choice is to use the HPKE framework that incorporates key
+<p id="section-5.4-2">It is <span class="bcp14">RECOMMENDED</span> to use the HPKE framework that incorporates key
 encapsulation mechanism (KEM), key derivation function (KDF) and
 authenticated encryption with associated data (AEAD).  These multiple
-schemes are more robust and significantly efficient than the
-traditional schemes and thus lead to our choice of this framework.<a href="#section-5.4-2" class="pilcrow">¶</a></p>
+schemes are more robust and significantly more efficient than other
+schemes. While the schemes may be negotiated between communicating
+parties, it is <span class="bcp14">RECOMMENDED</span> to use default encryption algorithm for
+HPKE AEAD as AES-128-GCM.<a href="#section-5.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1705,7 +1718,8 @@ Epoch field is used to indicate the valid SessionTemporaryKey.<a href="#section-
 This field is initialized at a random number and is incremented
   sequentially for each packet of the 5-tuple.<a href="#section-6.3-6.5.3" class="pilcrow">¶</a></p>
 <p id="section-6.3-6.5.4">
-This field is also used in the Encrypted PDMv2 as the encryption nonce.<a href="#section-6.3-6.5.4" class="pilcrow">¶</a></p>
+This field is also used in the Encrypted PDMv2 as the encryption
+  nonce. The nonce <span class="bcp14">MUST NOT</span> be reused in different sessions.<a href="#section-6.3-6.5.4" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-6.3-6.6">
             <p id="section-6.3-6.6.1">Reserved Bits<a href="#section-6.3-6.6.1" class="pilcrow">¶</a></p>
@@ -1780,89 +1794,138 @@ Delta Time Last Sent =
       <h2 id="name-security-considerations">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-7-1">PDMv2 Destination Options header can be used by an attacker to gather information about a
-victim (passive attack) or to force the victim to modify its
-operational parameters to comply with forged data (active attacks).<a href="#section-7-1" class="pilcrow">¶</a></p>
-<p id="section-7-2">In order to mitigate these, it is important that the PDMv2 Destination Options header is
-subject to:<a href="#section-7-2" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="olPercent" id="section-7-3">
-<dt>1)</dt>
-<dd id="section-7-3.1">
-          <p id="section-7-3.1.1">Confidentiality and<a href="#section-7-3.1.1" class="pilcrow">¶</a></p>
-</dd>
-        <dd class="break"></dd>
-<dt>2)</dt>
-<dd id="section-7-3.2">
-          <p id="section-7-3.2.1">Integrity<a href="#section-7-3.2.1" class="pilcrow">¶</a></p>
-</dd>
-      <dd class="break"></dd>
-</dl>
-<p id="section-7-4">with respect to an attacker.<a href="#section-7-4" class="pilcrow">¶</a></p>
-<p id="section-7-5">As outlined in Section 4.1, the Client and the Server share a
-"SharedSecret", which can be used to decrypt the data.  A leakage of
-this secret can lead to a confidentiality and integrity violation.
-It is advised to avoid using the same "SharedSecret" in different
-Clients and Server pairs.<a href="#section-7-5" class="pilcrow">¶</a></p>
-<p id="section-7-6">Assuming that the "SharedSecret" is not compromised, an attacker will
-not be able to recover it even in the case of a brute-force attack to
-the <em>SessionTemporaryKey</em>. Moreover, the key rotation of the
-<em>SessionTemporaryKey</em> ensures a forward secrecy.<a href="#section-7-6" class="pilcrow">¶</a></p>
-<div id="resource-exhaustion-attacks">
+<p id="section-7-1">PDMv2 carries metadata, including information about network characteristics and end-to-end response time. This metadata is used to optimize communication. However, in the context of passive attacks, the information contained within PDMv2 packets can be intercepted by an attacker, and in the context of active attacks the metadata can be modified by an attacker.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-2">In the following we will briefly outline the threat model and the associated security risks, using RFC3552 terminology and classification.<a href="#section-7-2" class="pilcrow">¶</a></p>
+<div id="limited-threat-model">
 <section id="section-7.1">
-        <h3 id="name-resource-exhaustion-attacks">
-<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-resource-exhaustion-attacks" class="section-name selfRef">Resource exhaustion attacks</a>
+        <h3 id="name-limited-threat-model">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-limited-threat-model" class="section-name selfRef">Limited Threat Model</a>
         </h3>
-<p id="section-7.1-1">The present document does not covers online decryption.  Hence, it is
-not foreseen a computation resource exhaustion attack due to bogus
-PDMv2 header insertion by an attacker.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
-<p id="section-7.1-2">However, logging any incoming PDMv2 header might lead to a storage
-resource exhaustion.  Hence, it is suggested to not log PDMv2 headers
-incoming from an unknown party.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
-<p id="section-7.1-3">In other terms, PDMv2 logging <span class="bcp14">SHOULD</span> be enabled only for sessions
-that have PDMv2 enabled.  The simple fact that a packet contains a
-PDMv2 header <span class="bcp14">SHOULD NOT</span> result in a logging event.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
-<p id="section-7.1-4">An attacker can still inject bogus packets with PDMv2 headers for a
-valid PDMv2-enabled session.  This, to a lesser extent, can cause an
-increase in resource utilization.  However, these bogus headers will
-be found at decryption time.  To further mitigate this attack, it is
-advised to log the PDMv2 headers only for packets with expected Epoch
-and/or PSNTP.<a href="#section-7.1-4" class="pilcrow">¶</a></p>
-<p id="section-7.1-5">The definition of "expected" is dependent on the traffic flow type
-and the network characteristics (e.g., bandwidth, delay, loss,
-reordering, etc.), and it is left to the implementation.<a href="#section-7.1-5" class="pilcrow">¶</a></p>
-<p id="section-7.1-6">Replay attacks, performed by inserting a valid PDMv2 header sniffed
-from an existing session in a bogus packet, <span class="bcp14">SHOULD NOT</span> be considered
-a threat, as the offline decryption and analysis should be able to
-find and eliminate out-of-order data.  Hence, we do not consider this
-as a threat.<a href="#section-7.1-6" class="pilcrow">¶</a></p>
+<p id="section-7.1-1">We assume that the attacker does not control the endpoints, but it does have a limited control of the network, i.e., it can either monitor the communications (leading to passive attacks), or modify/forge packets (active attacks).<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<div id="passive-attacks-with-unencrypted-pdmv2">
+<section id="section-7.1.1">
+          <h4 id="name-passive-attacks-with-unencr">
+<a href="#section-7.1.1" class="section-number selfRef">7.1.1. </a><a href="#name-passive-attacks-with-unencr" class="section-name selfRef">Passive attacks with unencrypted PDMv2</a>
+          </h4>
+<p id="section-7.1.1-1">Passive Attack Scenario: In a passive attack, the attacker seeks to obtain information that the sender and receiver of the communication would prefer to keep private. In this case, the attacker is not altering the packets but is intercepting and analyzing them. Here's how this can happen in the context of unencrypted PDMv2:<a href="#section-7.1.1-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="olPercent" id="section-7.1.1-2">
+<dt>a.</dt>
+<dd id="section-7.1.1-2.1">
+              <p id="section-7.1.1-2.1.1">Being on the same LAN: The simplest way for an attacker to launch a passive attack is to be on the same Local Area Network (LAN) as the victim. Many LAN configurations, such as Ethernet, 802.3, and FDDI, allow any machine on the network to read all traffic destined for any other machine on the same LAN. This means that if PDM packets are sent over the LAN, the attacker can capture them.<a href="#section-7.1.1-2.1.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt>b.</dt>
+<dd id="section-7.1.1-2.2">
+              <p id="section-7.1.1-2.2.1">Control of a Host in the Communication Path: If the attacker has control over a host that lies in the communication path between two victim machines, they can intercept PDM packets as they pass through this compromised host. This allows the attacker to collect metadata without being on the same LAN as the victim.<a href="#section-7.1.1-2.2.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt>c.</dt>
+<dd id="section-7.1.1-2.3">
+              <p id="section-7.1.1-2.3.1">Compromising Routing Infrastructure: In some cases, attackers may actively compromise the routing infrastructure to route traffic through a compromised machine. This can facilitate a passive attack on victim machines. By manipulating routing, the attacker can ensure that PDMv2 packets pass through their controlled node.<a href="#section-7.1.1-2.3.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt>d.</dt>
+<dd id="section-7.1.1-2.4">
+              <p id="section-7.1.1-2.4.1">Wireless Networks: Wireless communication channels, such as those using 802.11 (Wi-Fi), are particularly vulnerable to passive attacks. Since data is broadcast over well-known radio frequencies, an attacker with the ability to receive those transmissions can intercept PDMv2 packets. Weak or ineffective cryptographic protection in wireless networks can make it easier for attackers to capture this data.<a href="#section-7.1.1-2.4.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+</dl>
+<p id="section-7.1.1-3">Goal of Passive Attack: In a passive attack, the attacker's goal is to obtain sensitive information from intercepted packets. In the case of PDMv2, this information may include network characteristics, end-to-end response times, and potentially any other metadata that is transmitted. This information can be valuable to the attacker for various purposes, such as analyzing network performance or gaining insights into communication patterns.<a href="#section-7.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-4">In summary, within the limited Internet threat model described in RFC3552, attackers with the ability to intercept packets can conduct passive attacks to capture metadata carried in IPv6 unencrypted PDMv2 packets. This information can be useful for the attacker, even without actively altering the communication. Security measures, such as encryption and network segmentation, are important countermeasures to protect against such passive attacks.<a href="#section-7.1.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="effects-of-a-client-or-server-compromise">
+<div id="passive-attacks-with-encrypted-pdmv2">
+<section id="section-7.1.2">
+          <h4 id="name-passive-attacks-with-encryp">
+<a href="#section-7.1.2" class="section-number selfRef">7.1.2. </a><a href="#name-passive-attacks-with-encryp" class="section-name selfRef">Passive attacks with encrypted PDMv2</a>
+          </h4>
+<p id="section-7.1.2-1">Passive Attack Scenario: An attacker is trying to seek useful information from encrypted PDMv2 packets happening between two different entities. Encrypted PDMv2 has most of the metadata fields encrypted except for PSNTP which is also used as a nonce in HPKE AEAD.<a href="#section-7.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.1.2-2">Goal of Passive Attack: In this attack, the attacker is trying to obtain the order in which the packets were sent from the sender to the receiver for different flows. The amount of information gathered by the attacker is similar, to some extent, to the ones available by inspecting the TTCP sequence number, which is also usually not protected. Therefore, we consider this information leak acceptable.<a href="#section-7.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-7.1.2-3">Nevertheless, this point should be noted if complete traffic obfuscation (including packet reordering) is necessary. In these cases it is suggested to use IPSec ESP <span>[<a href="#RFC4303" class="cite xref">RFC4303</a>]</span> in tunnel mode (in which case the PDMv2 can be used unencrypted).<a href="#section-7.1.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="active-attacks-with-unencrypted-pdmv2">
+<section id="section-7.1.3">
+          <h4 id="name-active-attacks-with-unencry">
+<a href="#section-7.1.3" class="section-number selfRef">7.1.3. </a><a href="#name-active-attacks-with-unencry" class="section-name selfRef">Active attacks with unencrypted PDMv2</a>
+          </h4>
+<p id="section-7.1.3-1">There are also active attacks within the context of the limited Internet threat model defined in <span>[<a href="#RFC3552" class="cite xref">RFC3552</a>]</span>. In this model, active attacks involve an attacker writing data to the network, and the attacker can forge packets and potentially manipulate the behavior of devices or networks. Let's break down how message modification, deletion, or insertion by attackers using the unencrypted IPv6 Performance and Destination option v2 (PDMv2) fits into this threat model:<a href="#section-7.1.3-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="olPercent" id="section-7.1.3-2">
+<dt>1.</dt>
+<dd id="section-7.1.3-2.1">
+              <p id="section-7.1.3-2.1.1">Message Modification Attack:<a href="#section-7.1.3-2.1.1" class="pilcrow">¶</a></p>
+<p id="section-7.1.3-2.1.2">
+In a message modification attack, the attacker intercepts a message, modifies its content, and then reinserts it into the network. This attack is significant because it allows the attacker to tamper with the integrity of the data being transmitted.<a href="#section-7.1.3-2.1.2" class="pilcrow">¶</a></p>
+<p id="section-7.1.3-2.1.3">
+Example: Suppose an attacker intercepts an IPv6 packet containing unencrypted PDMv2 information that includes network and end-to-end response time metadata. The attacker modifies this information, such as altering the response time data or inserting false information. When this modified packet reaches its destination, the receiving device or network may act based on this malicious information, potentially leading to degraded performance, incorrect network management decisions, wrong performance data collection, etc. A direct consequence of modifying the performance data could be, for example, to hide an ongoing QoS violation, or to create a fake QoS violation, with consequences on the violation of Service Level Agreements.<a href="#section-7.1.3-2.1.3" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt>2.</dt>
+<dd id="section-7.1.3-2.2">
+              <p id="section-7.1.3-2.2.1">Message Deletion Attack:<a href="#section-7.1.3-2.2.1" class="pilcrow">¶</a></p>
+<p id="section-7.1.3-2.2.2">
+In a message deletion attack, the attacker removes a message from the network. This attack can be used in conjunction with other attacks to disrupt communication or achieve specific objectives.<a href="#section-7.1.3-2.2.2" class="pilcrow">¶</a></p>
+<p id="section-7.1.3-2.2.3">
+Example: Consider a scenario where an attacker deletes certain IPv6 packets that contain unencrypted PDMv2 information, or deletes the PDM header from the packet. If the PDMv2 is used for network monitoring or quality of service (QoS) management, the deletion of these packets can cause the monitoring system to miss critical data, potentially leading to inaccurate network performance analysis or decisions.<a href="#section-7.1.3-2.2.3" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt>3.</dt>
+<dd id="section-7.1.3-2.3">
+              <p id="section-7.1.3-2.3.1">Message Insertion Attack:<a href="#section-7.1.3-2.3.1" class="pilcrow">¶</a></p>
+<p id="section-7.1.3-2.3.2">
+In a message insertion attack, the attacker forges a message and injects it into the network.<a href="#section-7.1.3-2.3.2" class="pilcrow">¶</a></p>
+<p id="section-7.1.3-2.3.3">
+Example: An attacker could forge IPv6 packets containing unencrypted PDMv2 data with fake source addresses and inject them into the network. If PDM is used for making routing or resource allocation decisions, these injected packets can influence the network's behavior, potentially causing it to take suboptimal routes or allocate resources incorrectly.<a href="#section-7.1.3-2.3.3" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+</dl>
+<p id="section-7.1.3-3">All these attacks are considered active attacks because the attacker actively manipulates network traffic, and they can potentially spoof the source address to disguise their identity. In the limited Internet threat model defined in <span>[<a href="#RFC3552" class="cite xref">RFC3552</a>]</span>, it is assumed that attackers can forge packets and carry out such active attacks. These attacks highlight the importance of securing network protocols, authenticating messages, and implementing proper security measures to protect against them.<a href="#section-7.1.3-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="active-attacks-with-encrypted-pdmv2">
+<section id="section-7.1.4">
+          <h4 id="name-active-attacks-with-encrypt">
+<a href="#section-7.1.4" class="section-number selfRef">7.1.4. </a><a href="#name-active-attacks-with-encrypt" class="section-name selfRef">Active attacks with encrypted PDMv2</a>
+          </h4>
+<p id="section-7.1.4-1">Encrypted PDMv2 provides inherent protection against active attacks like Message Modification by providing integrity. If either of the sequence number or encrypted PDMv2 contents are modified then decryption will fail.<a href="#section-7.1.4-1" class="pilcrow">¶</a></p>
+<p id="section-7.1.4-2">Message Deletion Attack can be performed for encrypted PDMv2 similarly to unencrypted PDMv2.<a href="#section-7.1.4-2" class="pilcrow">¶</a></p>
+<p id="section-7.1.4-3">Impersonation Attack: Encrypted PDMv2 relies on a shared secret negotiated by an external protocol (e.g., TLS). If key exchange does have authentication check, then an adversary who impersonates the host can derive a key with the destination client and potentially perform all the above active attacks even on encrypted PDMv2.<a href="#section-7.1.4-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="topological-considerations">
 <section id="section-7.2">
-        <h3 id="name-effects-of-a-client-or-serv">
-<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-effects-of-a-client-or-serv" class="section-name selfRef">Effects of a Client or Server Compromise</a>
+        <h3 id="name-topological-considerations">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-topological-considerations" class="section-name selfRef">Topological considerations</a>
         </h3>
-<p id="section-7.2-1">If a Client or a Server is compromised, i.e., an attacker takes
-control of the device, the attacker can leverage the knowledge of the
-"SharedSecret" to encrypt (and, potentially, decrypt) the PDMv2 data.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
-<p id="section-7.2-2">To mitigate this event, we suggest:<a href="#section-7.2-2" class="pilcrow">¶</a></p>
+<p id="section-7.2-1">The same topological considerations highlighted in <span>[<a href="#RFC3552" class="cite xref">RFC3552</a>]</span> applies in this context. Passive attacks and active attacks where the messages need to be modified or deleted are more likely if the attacker is on-path, while message insertion attacks are more likely when the attacker is off-path but can happen also when the attacker is on-path. Link-local attacks can be considered as a special case of on-path for PDM, i.e., for PDM a link-local attacker has no special privileges with respect to an on-path attacker.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="further-mitigations">
+<section id="section-7.3">
+        <h3 id="name-further-mitigations">
+<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-further-mitigations" class="section-name selfRef">Further mitigations</a>
+        </h3>
+<p id="section-7.3-1">PDM includes cryptographic mechanisms to mitigate passive and active attacks.
+As a further security mechanism to protect from active attacks, it is possible for an implementation to include logging of anomalous events, e.g.:<a href="#section-7.3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-7.2-3.1">
-            <p id="section-7.2-3.1.1">The "SharedSecret" <span class="bcp14">SHOULD NOT</span> be shared by different Clients or
- Servers, unless all of them are trusted, or unless the risk of a
- "SecretKey" violation has been evaluated and considered
- acceptable.<a href="#section-7.2-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-7.3-2.1">
+            <p id="section-7.3-2.1.1">Missing PDM header when expected (counteracts the Message Deletion).<a href="#section-7.3-2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-7.2-3.2">
-            <p id="section-7.2-3.2.1">The "SharedSecret" could be stored in a secure, tamper-resistant
- memory area capable of deriving the <em>SessionTemporaryKey</em> without
- disclosing the "SharedSecret".<a href="#section-7.2-3.2.1" class="pilcrow">¶</a></p>
-<p id="section-7.2-3.2.2">
-Note that the second point is only necessary for cases where device
- tampering is very likely, and the security of the system has to be
- guaranteed.<a href="#section-7.2-3.2.2" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-7.3-2.2">
+            <p id="section-7.3-2.2.1">Unusual variations of the PDM data (counteracts the Message Modification)<a href="#section-7.3-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.3-2.3">
+            <p id="section-7.3-2.3.1">Accept the PDM data only if the application level accepts the packet payload (counteracts the Message Insertion)<a href="#section-7.3-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.3-2.4">
+            <p id="section-7.3-2.4.1">Monitor repeated or unexpected PDM data (counteracts replay attacks).<a href="#section-7.3-2.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
+<p id="section-7.3-3">Security considerations about HPKE are addressed in RFC 9180. Security
+considerations about PDM are addressed in RFC 8250. Security considerations
+about destination objects are addressed in RFC 8200.<a href="#section-7.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1954,10 +2017,6 @@ servers needed for protocol development.<a href="#section-10-1" class="pilcrow">
         <dd>
 <span class="refAuthor">Rescorla, E.</span> and <span class="refAuthor">B. Korver</span>, <span class="refTitle">"Guidelines for Writing RFC Text on Security Considerations"</span>, <span class="seriesInfo">BCP 72</span>, <span class="seriesInfo">RFC 3552</span>, <span class="seriesInfo">DOI 10.17487/RFC3552</span>, <time datetime="2003-07" class="refDate">July 2003</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc3552">https://www.rfc-editor.org/rfc/rfc3552</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC6973">[RFC6973]</dt>
-        <dd>
-<span class="refAuthor">Cooper, A.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Aboba, B.</span>, <span class="refAuthor">Peterson, J.</span>, <span class="refAuthor">Morris, J.</span>, <span class="refAuthor">Hansen, M.</span>, and <span class="refAuthor">R. Smith</span>, <span class="refTitle">"Privacy Considerations for Internet Protocols"</span>, <span class="seriesInfo">RFC 6973</span>, <span class="seriesInfo">DOI 10.17487/RFC6973</span>, <time datetime="2013-07" class="refDate">July 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6973">https://www.rfc-editor.org/rfc/rfc6973</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
         <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
@@ -1982,6 +2041,14 @@ servers needed for protocol development.<a href="#section-10-1" class="pilcrow">
 <dt id="RFC1421">[RFC1421]</dt>
         <dd>
 <span class="refAuthor">Linn, J.</span>, <span class="refTitle">"Privacy Enhancement for Internet Electronic Mail: Part I: Message Encryption and Authentication Procedures"</span>, <span class="seriesInfo">RFC 1421</span>, <span class="seriesInfo">DOI 10.17487/RFC1421</span>, <time datetime="1993-02" class="refDate">February 1993</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc1421">https://www.rfc-editor.org/rfc/rfc1421</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4303">[RFC4303]</dt>
+        <dd>
+<span class="refAuthor">Kent, S.</span>, <span class="refTitle">"IP Encapsulating Security Payload (ESP)"</span>, <span class="seriesInfo">RFC 4303</span>, <span class="seriesInfo">DOI 10.17487/RFC4303</span>, <time datetime="2005-12" class="refDate">December 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4303">https://www.rfc-editor.org/rfc/rfc4303</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6973">[RFC6973]</dt>
+        <dd>
+<span class="refAuthor">Cooper, A.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Aboba, B.</span>, <span class="refAuthor">Peterson, J.</span>, <span class="refAuthor">Morris, J.</span>, <span class="refAuthor">Hansen, M.</span>, and <span class="refAuthor">R. Smith</span>, <span class="refTitle">"Privacy Considerations for Internet Protocols"</span>, <span class="seriesInfo">RFC 6973</span>, <span class="seriesInfo">DOI 10.17487/RFC6973</span>, <time datetime="2013-07" class="refDate">July 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6973">https://www.rfc-editor.org/rfc/rfc6973</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9180">[RFC9180]</dt>
       <dd>
