@@ -89,7 +89,7 @@ risks involved transmitting PDM data during a diagnostics session.
 PDM metrics can help an attacker understand about the type of machine
 and its processing capabilities.  Inferring from the PDM data, the
 attack can launch a timing attack.  For example, if a cryptographic
-protocol is used, a timing attack MAY be launched against the keying
+protocol is used, a timing attack may be launched against the keying
 material to obtain the secret.
 
 Along with this, PDM does not provide integrity.  It is possible for
@@ -260,14 +260,13 @@ public-key encryption schemes (HPKE) [RFC9180] used a different
 approach that generates the symmetric key and its encapsulation with
 the public key of the receiver.
 
-Our choice is to use the HPKE framework that incorporates key
+It is RECOMMENDED to use the HPKE framework that incorporates key
 encapsulation mechanism (KEM), key derivation function (KDF) and
 authenticated encryption with associated data (AEAD).  These multiple
-schemes are more robust and significantly efficient than the
-traditional schemes and thus lead to our choice of this framework. We
-recommend default encryption algorithm for HPKE AEAD as AES-128-GCM,
-however this is an implementation choice and can be negotiated between
-the communicating parties.
+schemes are more robust and significantly more efficient than other
+schemes. While the schemes may be negotiated between communicating
+parties, it is RECOMMENDED to use default encryption algorithm for
+HPKE AEAD as AES-128-GCM.
 
 # PDMv2 Destination Options
 
@@ -412,7 +411,8 @@ Following is the representation of the encrypted PDMv2 header:
     This field is initialized at a random number and is incremented
     sequentially for each packet of the 5-tuple.
 
-    This field is also used in the Encrypted PDMv2 as the encryption nonce.
+    This field is also used in the Encrypted PDMv2 as the encryption
+    nonce. The nonce MUST NOT be reused in different sessions.
 
 - Reserved Bits
 
@@ -557,6 +557,10 @@ As a further security mechanism to protect from active attacks, it is possible f
 - Unusual variations of the PDM data (counteracts the Message Modification)
 - Accept the PDM data only if the application level accepts the packet payload (counteracts the Message Insertion)
 - Monitor repeated or unexpected PDM data (counteracts replay attacks).
+
+Security considerations about HPKE are addressed in RFC 9180. Security
+considerations about PDM are addressed in RFC 8250. Security considerations
+about destination objects are addressed in RFC 8200.
 
 
 # Privacy Considerations
