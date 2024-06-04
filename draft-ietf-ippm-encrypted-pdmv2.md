@@ -30,31 +30,35 @@ author:
  -
 
     fullname: Nalini Elkins
+    location: United States
     organization: Inside Products, Inc.
     email: "nalini.elkins@insidethestack.com"
 
  -
     fullname: Michael Ackermann
+    location: United States
     organization: BCBS Michigan
     email: "mackermann@bcbsm.com"
 
  -
     fullname: Ameya Deshpande
+    location: India
     organization: NITK Surathkal/Google
     email: "ameyanrd@gmail.com"
 
  -
     fullname: Tommaso Pecorella
+    location: Italy
     organization: University of Florence
     email: "tommaso.pecorella@unifi.it"
 
  -
     fullname: Adnan Rashid
+    location: Italy
     organization: Politecnico di Bari
     email: "adnan.rashid@poliba.it"
 
 normative:
- RFC2780:
  RFC3552:
  RFC8250:
  RFC8200:
@@ -64,6 +68,7 @@ informative:
  RFC4303:
  RFC1421:
  RFC6973:
+ RFC9288:
 
 --- abstract
 
@@ -93,12 +98,17 @@ protocol is used, a timing attack may be launched against the keying
 material to obtain the secret.
 
 Along with this, PDM does not provide integrity.  It is possible for
-a Man-In-The-Middle (MITM) node to modify PDM headers leading to
+a Machine-In-The-Middle (MITM) node to modify PDM headers leading to
 incorrect conclusions.  For example, during the debugging process
 using PDM header, it can mislead the person showing there are no
 unusual server delays.
 
-PDMv2 adds confidentiality, integrity and authentication to PDM.
+PDMv2 is an IPv6 Destination Options Extension Header which adds
+confidentiality, integrity and authentication to PDM.
+
+The procedures specified in RFC8250 for header placement,
+implementation, security considerations and so on continue to apply
+for PDMv2.
 
 # Conventions used in this document
 
@@ -106,13 +116,14 @@ PDMv2 adds confidentiality, integrity and authentication to PDM.
 
 # Terminology
 
-- Client: An endpoint node which initiates a session with a
-  listening port and sends PDM data.  Creates cryptographic keys in
-  collaboration with the Server.
+- Endpoint Node: Creates cryptographic keys in collaboration with a
+  partner.
 
-- Server: An endpoint node which has a listening port and sends PDM
-  data.  Creates cryptographic keys in collaboration with the
-  Client.
+- Client: An Endpoint Node which initiates a session with a
+  listening port on a different Endpoint Node and sends PDM data.
+
+- Server: An Endpoint node which has a listening port and sends PDM
+  data to another Endpoint Node.
 
 Note: a client may act as a server (have listening ports).
 
@@ -141,6 +152,7 @@ The protocol will proceed in 2 steps.
 {: req1}
 
 - Creation of cryptographic secrets between Server and Client.
+  This includes the creation of pkX and skX.
 - PDM data flow between Client and Server.
 
 These steps MAY be in the same session or in separate sessions.  That
@@ -157,10 +169,11 @@ The two entities exchange a set of data to ensure the respective
 identities. This could be done via a TLS or other session.  The
 exact nature of the identity verification is out-of-scope for this document.
 
-They use HPKE KEM to negotiate a "SharedSecret".
+They use Hybrid Public Key Encryption scheme (HPKE) Key Encapsulation Mechanism
+to negotiate a "SharedSecret".
 
 Each Client and Server derive a "SessionTemporaryKey" by using HPKE
-KDF, using the following inputs:
+Key Derivation Function (KDF), using the following inputs:
 
 - The "SharedSecret".
 
@@ -174,15 +187,64 @@ indicates that the SessionTemporaryKey has been rotated.
 
 When the Epoch rolls over, the SharedSecret SHOULD be re-negotiated.
 
-The Epoch MUST be incremented when the PSN This Packet (PSNTP) is
-rolled over. It CAN be incremented earlier, depending on the
-implementation and the security considerations.
+The Epoch MUST be incremented when the Packet Sequence Number (PSN)
+This Packet (PSNTP) is rolled over. It MAY be incremented earlier,
+depending on the implementation and the security considerations.
 
 The sender MUST NOT create two packets with identical PSNTP and Epoch.
 
 The SessionTemporaryKey using a KDF with the following inputs:
 
 - SrcIP, SrcPort, DstIP, DstPort, Protocol, SharedSecret, Epoch.
+
+## Implementation Guidelines	 		
+
+How should a network administrator decide whether a client should use
+PDM, unencrypted PDMv2, or encrypted PDMv2?  This decision is a
+network policy issue.  The administrator must be aware that PDM or
+unencrypted PDMv2 might expose too much information to malicious
+parties.
+
+That said, if the network administrator decides that taking such a
+risk within their network is acceptable, then they should make the
+decision that is appropriate for their network.
+
+Alternatively, the network administrator might choose to create a
+policy that prohibits the use of PDM or unencrypted PDMv2 on their
+network.  The implementation SHOULD provide a way for the network
+administrator to enforce such a policy.
+
+The server and client implementations SHOULD support PDM, unencrypted
+PDMv2, and encrypted PDMv2.  If a client chooses a certain mechanism
+(e.g., PDM), the server MAY respond with the same mechanism, unless
+the network administrator has selected a policy that only allows
+certain mechanisms on their network.
+
+### Use Case 1: Server does not understand PDM or PDMv2
+
+If a client sends a packet with PDM or PDMv2 and the server does not
+have code which understands the header, the packet is processed
+according to the Option Type which is defined in RFC8250 and is in
+accordance with RFC8200.
+
+### Use Case 2: Server does not allow PDM or PDMv2
+
+If a client sends a packet with PDM and the network policy is to only
+allow encrypted or unencrypted PDMv2, then the PDM / PDMv2 header
+MUST be ignored and processing continue normally.
+
+The server SHOULD log such occurrences but MUST apply rate limiting
+to any such logs.  The implementor should be aware that logging or
+returning of error messages can be used in a Denial of Service
+reflector attack.  An attacker might send many packets with PDM /
+PDMv2 and cause the receiver to experience resource exhaustion.
+
+The routers involved may have implemented filtering as per [RFC9288]
+on filtering of IPv6 extension headers which may impact the receipt
+of PDM / PDMv2.  The organization which manages the network within
+which PDM / PDMv2 is sent should take care that the filtering of
+extension headers is done correctly so that the desired effect is
+obtained.
 
 # Security Goals
 
@@ -418,7 +480,8 @@ Following is the representation of the encrypted PDMv2 header:
 
     16-bits.
 
-    Reserved bits for future use.  They are initialised to 0 for PDMv2.
+    Reserved bits for future use.  They MUST be set to zero on
+    transmission and ignored on receipt per [RFC3552].
 
 - Scale Delta Time Last Received (SCALEDTLR)
 
@@ -600,7 +663,7 @@ than strictly necessary.
 
 # IANA Considerations
 
-Option Type to be assigned by IANA [RFC2780].
+No action is needed by IANA.
 
 # Contributors
 
@@ -608,8 +671,11 @@ The authors wish to thank NITK Surathkal for their support and
 assistance in coding and review.  In particular Dr. Mohit Tahiliani
 and Abhishek Kumar (now with Google).  Thanks also to Priyanka Sinha
 for her comments.  Thanks to the India Internet Engineering Society
-(iiesoc.in), in particular Dhruv Dhody, for providing the funding for
-servers needed for protocol development.
+(iiesoc.in), in particular Dhruv Dhody, for his comments and for
+providing the funding for servers needed for protocol development.
+Thanks to Balajinaidu V, Amogh Umesh, and Chinmaya Sharma of NITK for
+developing the PDMv2 implementation for testing.
+
 
 --- back
 
@@ -619,15 +685,8 @@ servers needed for protocol development.
 
 In the Registration phase, the objective is to generate a shared
 secret that will be used in encryption and decryption during the Data
-Transfer phase.  We have adopted a Primary-Secondary architecture to
-represent the clients and servers (see Section 4.1.1).  The primary
-server and primary client perform Key Encapsulation Mechanism (KEM)
-[RFC9180] to generate a primary shared secret.  The primary server
-shares this secret with secondary servers, whereas the primary client
-performs Key Derivation Function (KDF) [RFC9180] to share client-
-specific secrets to corresponding secondary clients.  During the Data
-Transfer phase, the secondary servers generate the client-specific
-secrets on the arrival of the first packet from the secondary client.
+Transfer phase.  How this is to be done is left to the
+implementation.
 
 ## High level flow
 
@@ -640,7 +699,7 @@ The following steps describe the protocol flow:
   request contains a list of available ciphersuites for KEM, KDF,
   and AEAD.
 - Server responds to the Client with one of the
-  available ciphersuites and shares its public key.
+  available ciphersuites and shares its pkX.
 - Client generates a secret and its encapsulation.  The
   Client sends the encapsulation and a salt to the
   Server.  The salt is required during KDF in the Data Transfer
