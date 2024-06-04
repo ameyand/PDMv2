@@ -5,14 +5,14 @@
 Internet Engineering Task Force                                N. Elkins
 Internet-Draft                                     Inside Products, Inc.
 Intended status: Standards Track                            M. Ackermann
-Expires: 1 August 2024                                     BCBS Michigan
+Expires: 6 December 2024                                   BCBS Michigan
                                                             A. Deshpande
                                                    NITK Surathkal/Google
                                                             T. Pecorella
                                                   University of Florence
                                                                A. Rashid
                                                      Politecnico di Bari
-                                                         29 January 2024
+                                                             4 June 2024
 
 
  IPv6 Performance and Diagnostic Metrics Version 2 (PDMv2) Destination
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 August 2024.
+   This Internet-Draft will expire on 6 December 2024.
 
 Copyright Notice
 
@@ -85,6 +85,9 @@ Table of Contents
    3.  Terminology
    4.  Protocol Flow
      4.1.  Client - Server Negotiation
+     4.2.  Implementation Guidelines
+       4.2.1.  Use Case 1: Server does not understand PDM or PDMv2
+       4.2.2.  Use Case 2: Server does not allow PDM or PDMv2
    5.  Security Goals
      5.1.  Security Goals for Confidentiality
      5.2.  Security Goals for Integrity
@@ -130,12 +133,17 @@ Table of Contents
    material to obtain the secret.
 
    Along with this, PDM does not provide integrity.  It is possible for
-   a Man-In-The-Middle (MITM) node to modify PDM headers leading to
+   a Machine-In-The-Middle (MITM) node to modify PDM headers leading to
    incorrect conclusions.  For example, during the debugging process
    using PDM header, it can mislead the person showing there are no
    unusual server delays.
 
-   PDMv2 adds confidentiality, integrity and authentication to PDM.
+   PDMv2 is an IPv6 Destination Options Extension Header which adds
+   confidentiality, integrity and authentication to PDM.
+
+   The procedures specified in RFC8250 for header placement,
+   implementation, security considerations and so on continue to apply
+   for PDMv2.
 
 2.  Conventions used in this document
 
@@ -147,13 +155,14 @@ Table of Contents
 
 3.  Terminology
 
-   *  Client: An endpoint node which initiates a session with a
-      listening port and sends PDM data.  Creates cryptographic keys in
-      collaboration with the Server.
+   *  Endpoint Node: Creates cryptographic keys in collaboration with a
+      partner.
 
-   *  Server: An endpoint node which has a listening port and sends PDM
-      data.  Creates cryptographic keys in collaboration with the
-      Client.
+   *  Client: An Endpoint Node which initiates a session with a
+      listening port on a different Endpoint Node and sends PDM data.
+
+   *  Server: An Endpoint node which has a listening port and sends PDM
+      data to another Endpoint Node.
 
    Note: a client may act as a server (have listening ports).
 
@@ -178,6 +187,7 @@ Table of Contents
    The protocol will proceed in 2 steps.
 
    Step 1:  Creation of cryptographic secrets between Server and Client.
+            This includes the creation of pkX and skX.
 
    Step 2:  PDM data flow between Client and Server.
 
@@ -196,10 +206,11 @@ Table of Contents
    exact nature of the identity verification is out-of-scope for this
    document.
 
-   They use HPKE KEM to negotiate a "SharedSecret".
+   They use Hybrid Public Key Encryption scheme (HPKE) Key Encapsulation
+   Mechanism to negotiate a "SharedSecret".
 
    Each Client and Server derive a "SessionTemporaryKey" by using HPKE
-   KDF, using the following inputs:
+   Key Derivation Function (KDF), using the following inputs:
 
    *  The "SharedSecret".
 
@@ -213,9 +224,9 @@ Table of Contents
 
    When the Epoch rolls over, the SharedSecret SHOULD be re-negotiated.
 
-   The Epoch MUST be incremented when the PSN This Packet (PSNTP) is
-   rolled over.  It CAN be incremented earlier, depending on the
-   implementation and the security considerations.
+   The Epoch MUST be incremented when the Packet Sequence Number (PSN)
+   This Packet (PSNTP) is rolled over.  It MAY be incremented earlier,
+   depending on the implementation and the security considerations.
 
    The sender MUST NOT create two packets with identical PSNTP and
    Epoch.
@@ -223,6 +234,55 @@ Table of Contents
    The SessionTemporaryKey using a KDF with the following inputs:
 
    *  SrcIP, SrcPort, DstIP, DstPort, Protocol, SharedSecret, Epoch.
+
+4.2.  Implementation Guidelines
+
+   How should a network administrator decide whether a client should use
+   PDM, unencrypted PDMv2, or encrypted PDMv2?  This decision is a
+   network policy issue.  The administrator must be aware that PDM or
+   unencrypted PDMv2 might expose too much information to malicious
+   parties.
+
+   That said, if the network administrator decides that taking such a
+   risk within their network is acceptable, then they should make the
+   decision that is appropriate for their network.
+
+   Alternatively, the network administrator might choose to create a
+   policy that prohibits the use of PDM or unencrypted PDMv2 on their
+   network.  The implementation SHOULD provide a way for the network
+   administrator to enforce such a policy.
+
+   The server and client implementations SHOULD support PDM, unencrypted
+   PDMv2, and encrypted PDMv2.  If a client chooses a certain mechanism
+   (e.g., PDM), the server MAY respond with the same mechanism, unless
+   the network administrator has selected a policy that only allows
+   certain mechanisms on their network.
+
+4.2.1.  Use Case 1: Server does not understand PDM or PDMv2
+
+   If a client sends a packet with PDM or PDMv2 and the server does not
+   have code which understands the header, the packet is processed
+   according to the Option Type which is defined in RFC8250 and is in
+   accordance with RFC8200.
+
+4.2.2.  Use Case 2: Server does not allow PDM or PDMv2
+
+   If a client sends a packet with PDM and the network policy is to only
+   allow encrypted or unencrypted PDMv2, then the PDM / PDMv2 header
+   MUST be ignored and processing continue normally.
+
+   The server SHOULD log such occurrences but MUST apply rate limiting
+   to any such logs.  The implementor should be aware that logging or
+   returning of error messages can be used in a Denial of Service
+   reflector attack.  An attacker might send many packets with PDM /
+   PDMv2 and cause the receiver to experience resource exhaustion.
+
+   The routers involved may have implemented filtering as per [RFC9288]
+   on filtering of IPv6 extension headers which may impact the receipt
+   of PDM / PDMv2.  The organization which manages the network within
+   which PDM / PDMv2 is sent should take care that the filtering of
+   extension headers is done correctly so that the desired effect is
+   obtained.
 
 5.  Security Goals
 
@@ -447,8 +507,8 @@ Table of Contents
 
       16-bits.
 
-      Reserved bits for future use.  They are initialised to 0 for
-      PDMv2.
+      Reserved bits for future use.  They MUST be set to zero on
+      transmission and ignored on receipt per [RFC3552].
 
       Scale Delta Time Last Received (SCALEDTLR)
 
@@ -758,7 +818,7 @@ Table of Contents
 
 9.  IANA Considerations
 
-   Option Type to be assigned by IANA [RFC2780].
+   No action is needed by IANA.
 
 10.  Contributors
 
@@ -766,8 +826,10 @@ Table of Contents
    assistance in coding and review.  In particular Dr. Mohit Tahiliani
    and Abhishek Kumar (now with Google).  Thanks also to Priyanka Sinha
    for her comments.  Thanks to the India Internet Engineering Society
-   (iiesoc.in), in particular Dhruv Dhody, for providing the funding for
-   servers needed for protocol development.
+   (iiesoc.in), in particular Dhruv Dhody, for his comments and for
+   providing the funding for servers needed for protocol development.
+   Thanks to Balajinaidu V, Amogh Umesh, and Chinmaya Sharma of NITK for
+   developing the PDMv2 implementation for testing.
 
 11.  References
 
@@ -777,11 +839,6 @@ Table of Contents
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
-
-   [RFC2780]  Bradner, S. and V. Paxson, "IANA Allocation Guidelines For
-              Values In the Internet Protocol and Related Headers",
-              BCP 37, RFC 2780, DOI 10.17487/RFC2780, March 2000,
-              <https://www.rfc-editor.org/rfc/rfc2780>.
 
    [RFC3552]  Rescorla, E. and B. Korver, "Guidelines for Writing RFC
               Text on Security Considerations", BCP 72, RFC 3552,
@@ -823,21 +880,19 @@ Table of Contents
               Public Key Encryption", RFC 9180, DOI 10.17487/RFC9180,
               February 2022, <https://www.rfc-editor.org/rfc/rfc9180>.
 
+   [RFC9288]  Gont, F. and W. Liu, "Recommendations on the Filtering of
+              IPv6 Packets Containing IPv6 Extension Headers at Transit
+              Routers", RFC 9288, DOI 10.17487/RFC9288, August 2022,
+              <https://www.rfc-editor.org/rfc/rfc9288>.
+
 Appendix A.  Sample Implementation of Registration
 
 A.1.  Overall summary
 
    In the Registration phase, the objective is to generate a shared
    secret that will be used in encryption and decryption during the Data
-   Transfer phase.  We have adopted a Primary-Secondary architecture to
-   represent the clients and servers (see Section 4.1.1).  The primary
-   server and primary client perform Key Encapsulation Mechanism (KEM)
-   [RFC9180] to generate a primary shared secret.  The primary server
-   shares this secret with secondary servers, whereas the primary client
-   performs Key Derivation Function (KDF) [RFC9180] to share client-
-   specific secrets to corresponding secondary clients.  During the Data
-   Transfer phase, the secondary servers generate the client-specific
-   secrets on the arrival of the first packet from the secondary client.
+   Transfer phase.  How this is to be done is left to the
+   implementation.
 
 A.2.  High level flow
 
@@ -847,7 +902,7 @@ A.2.  High level flow
        list of available ciphersuites for KEM, KDF, and AEAD.
 
    2.  Server responds to the Client with one of the available
-       ciphersuites and shares its public key.
+       ciphersuites and shares its pkX.
 
    3.  Client generates a secret and its encapsulation.  The Client
        sends the encapsulation and a salt to the Server.  The salt is
