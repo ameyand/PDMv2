@@ -5,14 +5,14 @@
 Internet Engineering Task Force                                N. Elkins
 Internet-Draft                                     Inside Products, Inc.
 Intended status: Standards Track                            M. Ackermann
-Expires: 6 December 2024                                   BCBS Michigan
+Expires: 9 December 2024                                   BCBS Michigan
                                                             A. Deshpande
                                                    NITK Surathkal/Google
                                                             T. Pecorella
                                                   University of Florence
                                                                A. Rashid
                                                      Politecnico di Bari
-                                                             4 June 2024
+                                                             7 June 2024
 
 
  IPv6 Performance and Diagnostic Metrics Version 2 (PDMv2) Destination
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 December 2024.
+   This Internet-Draft will expire on 9 December 2024.
 
 Copyright Notice
 
@@ -159,9 +159,9 @@ Table of Contents
       partner.
 
    *  Client: An Endpoint Node which initiates a session with a
-      listening port on a different Endpoint Node and sends PDM data.
+      listening port on another Endpoint Node and sends PDM data.
 
-   *  Server: An Endpoint node which has a listening port and sends PDM
+   *  Server: An Endpoint Node which has a listening port and sends PDM
       data to another Endpoint Node.
 
    Note: a client may act as a server (have listening ports).
@@ -206,8 +206,8 @@ Table of Contents
    exact nature of the identity verification is out-of-scope for this
    document.
 
-   They use Hybrid Public Key Encryption scheme (HPKE) Key Encapsulation
-   Mechanism to negotiate a "SharedSecret".
+   They use Hybrid Public-Key Encryption scheme (HPKE) Key Encapsulation
+   Mechanism (KEM) to negotiate a "SharedSecret".
 
    Each Client and Server derive a "SessionTemporaryKey" by using HPKE
    Key Derivation Function (KDF), using the following inputs:
@@ -264,6 +264,9 @@ Table of Contents
    have code which understands the header, the packet is processed
    according to the Option Type which is defined in RFC8250 and is in
    accordance with RFC8200.
+
+   The Option Type identifiers is coded to skip over this option and
+   continue processing the header.
 
 4.2.2.  Use Case 2: Server does not allow PDM or PDMv2
 
@@ -925,24 +928,29 @@ Authors' Addresses
 
    Nalini Elkins
    Inside Products, Inc.
+   United States
    Email: nalini.elkins@insidethestack.com
 
 
    Michael Ackermann
    BCBS Michigan
+   United States
    Email: mackermann@bcbsm.com
 
 
    Ameya Deshpande
    NITK Surathkal/Google
+   India
    Email: ameyanrd@gmail.com
 
 
    Tommaso Pecorella
    University of Florence
+   Italy
    Email: tommaso.pecorella@unifi.it
 
 
    Adnan Rashid
    Politecnico di Bari
+   Italy
    Email: adnan.rashid@poliba.it
