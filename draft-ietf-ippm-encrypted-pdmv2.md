@@ -30,31 +30,31 @@ author:
  -
 
     fullname: Nalini Elkins
-    location: United States
+    country: United States
     organization: Inside Products, Inc.
     email: "nalini.elkins@insidethestack.com"
 
  -
     fullname: Michael Ackermann
-    location: United States
+    country: United States
     organization: BCBS Michigan
     email: "mackermann@bcbsm.com"
 
  -
     fullname: Ameya Deshpande
-    location: India
+    country: India
     organization: NITK Surathkal/Google
     email: "ameyanrd@gmail.com"
 
  -
     fullname: Tommaso Pecorella
-    location: Italy
+    country: Italy
     organization: University of Florence
     email: "tommaso.pecorella@unifi.it"
 
  -
     fullname: Adnan Rashid
-    location: Italy
+    country: Italy
     organization: Politecnico di Bari
     email: "adnan.rashid@poliba.it"
 
@@ -120,9 +120,9 @@ for PDMv2.
   partner.
 
 - Client: An Endpoint Node which initiates a session with a
-  listening port on a different Endpoint Node and sends PDM data.
+  listening port on another Endpoint Node and sends PDM data.
 
-- Server: An Endpoint node which has a listening port and sends PDM
+- Server: An Endpoint Node which has a listening port and sends PDM
   data to another Endpoint Node.
 
 Note: a client may act as a server (have listening ports).
@@ -169,8 +169,8 @@ The two entities exchange a set of data to ensure the respective
 identities. This could be done via a TLS or other session.  The
 exact nature of the identity verification is out-of-scope for this document.
 
-They use Hybrid Public Key Encryption scheme (HPKE) Key Encapsulation Mechanism
-to negotiate a "SharedSecret".
+They use Hybrid Public-Key Encryption scheme (HPKE) Key Encapsulation Mechanism
+(KEM) to negotiate a "SharedSecret".
 
 Each Client and Server derive a "SessionTemporaryKey" by using HPKE
 Key Derivation Function (KDF), using the following inputs:
@@ -226,6 +226,9 @@ If a client sends a packet with PDM or PDMv2 and the server does not
 have code which understands the header, the packet is processed
 according to the Option Type which is defined in RFC8250 and is in
 accordance with RFC8200.
+
+The Option Type identifiers is coded to skip over this option and	 		
+continue processing the header.
 
 ### Use Case 2: Server does not allow PDM or PDMv2
 
