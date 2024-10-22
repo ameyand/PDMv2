@@ -8,7 +8,7 @@ submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
 number:
 date:
 consensus: true
-v: 3
+v: 9
 area: "Transport"
 workgroup: "Internet Engineering Task Force"
 keyword:
@@ -102,6 +102,9 @@ Inferring from the PDM data, the attack can launch a timing attack.
 For example, if a cryptographic protocol is used, a timing attack
 may be launched against the keying material to obtain the secret.
 
+PDM metrics may also help the attacker find out about the network	 		
+speed or capabilities of the network path.  For example, are there	 		
+delays or blockages?  Are there alternate or multiple paths?
 Along with this, PDM does not provide integrity.  It is possible for
 a Machine-In-The-Middle (MITM) node to modify PDM headers leading to
 incorrect conclusions.  For example, during the debugging process
@@ -164,8 +167,8 @@ The 5-tuple consists of:
 - PROTC: Upper-layer protocol (TCP, UDP, ICMP, etc.)
 
 Unlike PDM fields, Global Pointer (GLOBALPTR) field in PDMv2 is
-defined for the SADDR type.  Following are the SADDR address types
-considered:
+defined for the SADDR type for the node.  Two SADDR address types
+are used:
 
 {:req6: style="format %c)"}
 
@@ -173,6 +176,8 @@ considered:
 
 - Link-Local
 - Global Unicast
+
+Hence, there are two Global Pointers.
 
 The Global Pointer is treated as a common entity over all the
 5-tuples with the same SADDR type.  It is initialised to the value 1
@@ -184,6 +189,16 @@ Pointer defined for Link-Local addresses, and when the SADDR type is
 Global Unicast, it sends the one defined for Global Unicast
 addresses.
 
+The reason for the Global Pointers is to provide a rough estimation	 		
+of the load on the node in question.  That is, if the node is sending	 		
+many other packets to other destinations at the same time as this	 		
+particular session.  Given that goal, if we combine the Link Local	 		
+and Global Unicast, the traffic traversing the path over the LAN or	 		
+VLAN (Link Local) would be combined with the traffic traversing the	 		
+path over the internet or wide area network.  The nature of Link-	 		
+Local and Global Unicast traffic is quite different, hence the two	 		
+separate counters.
+
 ## PDMv2 Layout
 
 PDMv2 has two different header formats corresponding to whether the
@@ -193,34 +208,37 @@ the two types of headers is determined from the Options Length value.
 Following is the representation of the unencrypted PDMv2 header:
 
 ~~~
-   0                   1                   2                   3
-   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |  Option Type  | Option Length | Vrsn  |         Epoch         |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |      PSN This Packet          |         Reserved Bits         |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |                         Global Pointer                        |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |   ScaleDTLR   |   ScaleDTLS   |    PSN Last Received          |
-  |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |   Delta Time Last Received    |     Delta Time Last Sent      |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+        0                   1                   2                   3
+        0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |  Option Type  | Option Length | Vrsn  |         Epoch         |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |                 PSN This packet                               |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |                 PSN Last Received                             |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |                 Global Pointer                                |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |  ScaleDTLR    |  ScaleDTLS    |   Reserved                    |
+       |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |   Delta Time Last Received    |     Delta Time Last Sent      |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
 
 Following is the representation of the encrypted PDMv2 header:
 
 ~~~
-   0                   1                   2                   3
-   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |  Option Type  | Option Length | Vrsn  |         Epoch         |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |      PSN This Packet          |                               |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               :
-  |                      Encrypted PDM Data                       :
-  :                          (30 bytes)                           |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      0                   1                   2                   3
+      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |  Option Type  | Option Length | Vrsn  |         Epoch         |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |                       PSN This Packet                         |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |                      Encrypted PDM Data                       :
+     :                          (16 bytes)                           |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
 
 {:req7: style="empty"}
@@ -235,13 +253,12 @@ Following is the representation of the encrypted PDMv2 header:
 
 - Option Length
 
-    0x12: Unencrypted PDM
+    0x22: Unencrypted PDM
 
     0x22: Encrypted PDM
 
     8-bit unsigned integer.  Length of the option, in octets, excluding the Option
-    Type and Option Length fields.  The options length is used for differentiating
-    PDM [RFC8250], unencrypted PDMv2 and encrypted PDMv2.
+    Type and Option Length fields.
 
 - Version Number
 
@@ -257,20 +274,31 @@ Following is the representation of the encrypted PDMv2 header:
 
 - Packet Sequence Number This Packet (PSNTP)
 
-    16-bit unsigned number.
+    32-bit unsigned number.
 
     This field is initialized at a random number and is incremented
     sequentially for each packet of the 5-tuple.
 
-    This field is also used in the Encrypted PDMv2 as the encryption
+    This field + Epoch are used in the Encrypted PDMv2 as the encryption
     nonce. The nonce MUST NOT be reused in different sessions.
 
-- Reserved Bits
+- Packet Sequence Number Last Received (PSNLR)	 		
+ 		
+    32-bit unsigned number.	 		
 
-    16-bits.
+    This field is the PSNTP of the last received packet on the	 		
+    5-tuple.
 
-    Reserved bits for future use.  They MUST be set to zero on
-    transmission and ignored on receipt per [RFC3552].
+- Global Pointer	 		
+ 		
+    32-bit unsigned number.
+ 
+    Global Pointer is initialized to 1 for the different source
+    address types and incremented sequentially for each packet with	 		
+    the corresponding source address type.
+ 		
+    This field stores the Global Pointer type corresponding to the
+    SADDR type of the packet.
 
 - Scale Delta Time Last Received (SCALEDTLR)
 
@@ -286,23 +314,12 @@ Following is the representation of the encrypted PDMv2 header:
     This is the scaling value for the Delta Time Last Sent
     (DELTATLS) field.
 
-- Global Pointer
+- Reserved Bits
 
-    32-bit unsigned number.
+    16-bits.
 
-    Global Pointer is initialized to 1 for the different source
-    address types and incremented sequentially for each packet
-    with the corresponding source address type.
-
-    This field stores the Global Pointer type corresponding to the
-    SADDR type of the packet.
-
-- Packet Sequence Number Last Received (PSNLR)
-
-    16-bit unsigned number.
-
-    This field is the PSNTP of the last received packet on the
-    5-tuple.
+    Reserved bits for future use.  They MUST be set to zero on
+    transmission and ignored on receipt per [RFC3552].
 
 - Delta Time Last Received (DELTATLR)
 
@@ -340,7 +357,7 @@ Note: a client may act as a server (have listening ports).
   for decryption.  Private Keys are kept hidden by the source of the
   key pair generator, but the Public Key may be known to everyone.
   In this document, the Public Key is represented as pkX and the
-  Private Key as skX (where X can be client or server.
+  Private Key as skX (where X can be any client or server.
 
 - Pre-shared Key (PSK): A symmetric key.  Uniformly random
   bitstring, shared between any Client or any Server or a key shared
