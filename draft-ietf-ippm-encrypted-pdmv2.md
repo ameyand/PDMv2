@@ -292,7 +292,7 @@ Following is the representation of the encrypted PDMv2 header:
 - Global Pointer	 		
  		
     32-bit unsigned number.
- 
+
     Global Pointer is initialized to 1 for the different source
     address types and incremented sequentially for each packet with	 		
     the corresponding source address type.
