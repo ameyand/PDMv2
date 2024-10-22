@@ -85,23 +85,28 @@ are also defined.
 
 # Introduction
 
-The current PDM is an IPv6 Destination Options header which provides
-information based on the metrics like Round-trip delay and Server
-delay.  This information helps to measure the Quality of Service
-(QoS) and to assist in diagnostics.  However, there are potential
-risks involved transmitting PDM data during a diagnostics session.
+The current Performance and Destinations Metrics (PDM) is an IPv6
+Destination Options header which provides information based on the
+metrics like Round-trip delay and Server delay.  This information
+helps to measure the Quality of Service (QoS) and to assist in
+diagnostics.  However, there are potential risks involved transmitting
+PDM data during a diagnostics session.
 
 PDM metrics can help an attacker understand about the type of machine
-and its processing capabilities.  Inferring from the PDM data, the
-attack can launch a timing attack.  For example, if a cryptographic
-protocol is used, a timing attack may be launched against the keying
-material to obtain the secret.
+and its processing capabilities.  For example, the operational
+capabilities of either the client or server end hosts such as
+processing speed -- that is, if the system in question is very fast
+system or an older, slower device.
+
+Inferring from the PDM data, the attack can launch a timing attack.
+For example, if a cryptographic protocol is used, a timing attack
+may be launched against the keying material to obtain the secret.
 
 Along with this, PDM does not provide integrity.  It is possible for
 a Machine-In-The-Middle (MITM) node to modify PDM headers leading to
 incorrect conclusions.  For example, during the debugging process
-using PDM header, it can mislead the person showing there are no
-unusual server delays.
+using PDM header, it can mislead by showing there are no unusual
+server delays.
 
 PDMv2 is an IPv6 Destination Options Extension Header which adds
 confidentiality, integrity and authentication to PDM.
@@ -113,225 +118,6 @@ for PDMv2.
 # Conventions used in this document
 
 {::boilerplate bcp14-tagged}
-
-# Terminology
-
-- Endpoint Node: Creates cryptographic keys in collaboration with a
-  partner.
-
-- Client: An Endpoint Node which initiates a session with a
-  listening port on another Endpoint Node and sends PDM data.
-
-- Server: An Endpoint Node which has a listening port and sends PDM
-  data to another Endpoint Node.
-
-Note: a client may act as a server (have listening ports).
-
-- Public and Private Keys: A pair of keys that is used in asymmetric
-  cryptography.  If one is used for encryption, the other is used
-  for decryption.  Private Keys are kept hidden by the source of the
-  key pair generator, but Public Key is known to everyone.  pkX
-  (Public Key) and skX (Private Key).  Where X can be, any client or
-  any server.
-
-- Pre-shared Key (PSK): A symmetric key.  Uniformly random
-  bitstring, shared between any Client or any Server or a key shared
-  between an entity that forms client-server relationship.  This
-  could happen through an out-of band mechanism: e.g., a physical
-  meeting or use of another protocol.
-
-- Session Key: A temporary key which acts as a symmetric key for the
-  whole session.
-
-# Protocol Flow
-
-The protocol will proceed in 2 steps.
-
-{:req1: counter="bar" style="format Step %d:"}
-
-{: req1}
-
-- Creation of cryptographic secrets between Server and Client.
-  This includes the creation of pkX and skX.
-- PDM data flow between Client and Server.
-
-These steps MAY be in the same session or in separate sessions.  That
-is, the cryptographic secrets MAY be created beforehand and used in
-the PDM data flow at the time of the "real" data session.
-
-After-the-fact (or real-time) data analysis of PDM flow may occur by
-network diagnosticians or network devices.  The definition of how
-this is done is out of scope for this document.
-
-## Client - Server Negotiation
-
-The two entities exchange a set of data to ensure the respective
-identities. This could be done via a TLS or other session.  The
-exact nature of the identity verification is out-of-scope for this document.
-
-They use Hybrid Public-Key Encryption scheme (HPKE) Key Encapsulation Mechanism
-(KEM) to negotiate a "SharedSecret".
-
-Each Client and Server derive a "SessionTemporaryKey" by using HPKE
-Key Derivation Function (KDF), using the following inputs:
-
-- The "SharedSecret".
-
-- The 5-tuple (SrcIP, SrcPort, DstIP, DstPort, Protocol) of the
-  communication.
-
-- An Epoch.
-
-The Epoch SHOULD be initialized to zero. A change in the Epoch
-indicates that the SessionTemporaryKey has been rotated.
-
-When the Epoch rolls over, the SharedSecret SHOULD be re-negotiated.
-
-The Epoch MUST be incremented when the Packet Sequence Number (PSN)
-This Packet (PSNTP) is rolled over. It MAY be incremented earlier,
-depending on the implementation and the security considerations.
-
-The sender MUST NOT create two packets with identical PSNTP and Epoch.
-
-The SessionTemporaryKey using a KDF with the following inputs:
-
-- SrcIP, SrcPort, DstIP, DstPort, Protocol, SharedSecret, Epoch.
-
-## Implementation Guidelines	 		
-
-How should a network administrator decide whether a client should use
-PDM, unencrypted PDMv2, or encrypted PDMv2?  This decision is a
-network policy issue.  The administrator must be aware that PDM or
-unencrypted PDMv2 might expose too much information to malicious
-parties.
-
-That said, if the network administrator decides that taking such a
-risk within their network is acceptable, then they should make the
-decision that is appropriate for their network.
-
-Alternatively, the network administrator might choose to create a
-policy that prohibits the use of PDM or unencrypted PDMv2 on their
-network.  The implementation SHOULD provide a way for the network
-administrator to enforce such a policy.
-
-The server and client implementations SHOULD support PDM, unencrypted
-PDMv2, and encrypted PDMv2.  If a client chooses a certain mechanism
-(e.g., PDM), the server MAY respond with the same mechanism, unless
-the network administrator has selected a policy that only allows
-certain mechanisms on their network.
-
-### Use Case 1: Server does not understand PDM or PDMv2
-
-If a client sends a packet with PDM or PDMv2 and the server does not
-have code which understands the header, the packet is processed
-according to the Option Type which is defined in RFC8250 and is in
-accordance with RFC8200.
-
-The Option Type identifiers is coded to skip over this option and	 		
-continue processing the header.
-
-### Use Case 2: Server does not allow PDM or PDMv2
-
-If a client sends a packet with PDM and the network policy is to only
-allow encrypted or unencrypted PDMv2, then the PDM / PDMv2 header
-MUST be ignored and processing continue normally.
-
-The server SHOULD log such occurrences but MUST apply rate limiting
-to any such logs.  The implementor should be aware that logging or
-returning of error messages can be used in a Denial of Service
-reflector attack.  An attacker might send many packets with PDM /
-PDMv2 and cause the receiver to experience resource exhaustion.
-
-The routers involved may have implemented filtering as per [RFC9288]
-on filtering of IPv6 extension headers which may impact the receipt
-of PDM / PDMv2.  The organization which manages the network within
-which PDM / PDMv2 is sent should take care that the filtering of
-extension headers is done correctly so that the desired effect is
-obtained.
-
-# Security Goals
-
-As discussed in the introduction, PDM data can represent a serious
-data leakage in presence of a malicious actor.
-
-In particular, the sequence numbers included in the PDM header allows
-correlating the traffic flows, and the timing data can highlight the
-operational limits of a server to a malicious actor.  Moreover,
-forging PDM headers can lead to unnecessary, unwanted, or dangerous
-operational choices, e.g., to restore an apparently degraded Quality
-of Service (QoS).
-
-Due to this, it is important that the confidentiality and integrity
-of the PDM headers is maintained.  PDM headers can be encrypted and
-authenticated using the methods discussed in Section 5.4, thus
-ensuring confidentiality and integrity.  However, if PDM is used in a
-scenario where the integrity and confidentiality is already ensured
-by other means, they can be transmitted without encryption or
-authentication.  This includes, but is not limited to, the following
-cases:
-
-{:req2: style="format %c)"}
-
-{: req2}
-
-- PDM is used over an already encrypted medium (For example VPN
-  tunnels).
-- PDM is used in a link-local scenario.
-- PDM is used in a corporate network where there are security
-  measures strong enough to consider the presence of a malicious
-  actor a negligible risk.
-
-## Security Goals for Confidentiality
-
-PDM data MUST be kept confidential between the intended parties,
-which includes (but is not limited to) the two entities exchanging
-PDM data, and any legitimate party with the proper rights to access
-such data.
-
-## Security Goals for Integrity
-
-An implementation SHOULD attempt to detect if PDM data is forged or
-modified by a malicious entity.  In other terms, the implementation
-should attempt to detect if a malicious entity has generated a valid
-PDM header impersonating an endpoint or modified a valid PDM header.
-
-## Security Goals for Authentication
-
-An unauthorized party MUST NOT be able to send PDM data and MUST NOT
-be able to authorize another entity to do so.  Alternatively, if
-authentication is done via any of the following, this requirement MAY
-be considered to be met.
-
-{:req3: style="format %c)"}
-
-{: req3}
-
-- PDM is used over an already authenticated medium (For example,
-  TLS session).
-- PDM is used in a link-local scenario.
-- PDM is used in a corporate network where security measures are
-  strong enough to consider the presence of a malicious actor a
-  negligible risk.
-
-## Cryptographic Algorithm
-
-Symmetric key cryptography has performance benefits over asymmetric
-cryptography; asymmetric cryptography is better for key management.
-Encryption schemes that unite both have been specified in [RFC1421],
-and have been participating practically since the early days of
-public-key cryptography.  The basic mechanism is to encrypt the
-symmetric key with the public key by joining both yields.  Hybrid
-public-key encryption schemes (HPKE) [RFC9180] used a different
-approach that generates the symmetric key and its encapsulation with
-the public key of the receiver.
-
-It is RECOMMENDED to use the HPKE framework that incorporates key
-encapsulation mechanism (KEM), key derivation function (KDF) and
-authenticated encryption with associated data (AEAD).  These multiple
-schemes are more robust and significantly more efficient than other
-schemes. While the schemes may be negotiated between communicating
-parties, it is RECOMMENDED to use default encryption algorithm for
-HPKE AEAD as AES-128-GCM.
 
 # PDMv2 Destination Options
 
@@ -535,6 +321,217 @@ Following is the representation of the encrypted PDMv2 header:
 
     Delta Time Last Sent =
     (receive time packet n - send time packet (n - 1))
+
+# Terminology
+
+- Endpoint Node: Creates cryptographic keys in collaboration with a
+  partner.
+
+- Client: An Endpoint Node which initiates a session with a
+  listening port on another Endpoint Node and sends PDM data.
+
+- Server: An Endpoint Node which has a listening port and sends PDM
+  data to another Endpoint Node.
+
+Note: a client may act as a server (have listening ports).
+
+- Public and Private Keys: A pair of keys that is used in asymmetric
+  cryptography.  If one is used for encryption, the other is used
+  for decryption.  Private Keys are kept hidden by the source of the
+  key pair generator, but the Public Key may be known to everyone.
+  In this document, the Public Key is represented as pkX and the
+  Private Key as skX (where X can be client or server.
+
+- Pre-shared Key (PSK): A symmetric key.  Uniformly random
+  bitstring, shared between any Client or any Server or a key shared
+  between an entity that forms client-server relationship.  This
+  could happen through an out-of band mechanism: e.g., a physical
+  meeting or use of another protocol.
+
+- Shared Secret: A piece of data, known only to the parties involved.
+
+- SessionTemporaryKey: A temporary key used to secure data for	 		
+  only the current session.
+
+# Protocol Flow
+
+The protocol will proceed in 2 steps.
+
+{:req1: counter="bar" style="format Step %d:"}
+
+{: req1}
+
+- Creation of cryptographic secrets between Server and Client.
+  This includes the creation of pkX and skX.
+- PDM data flow between Client and Server.
+
+These steps MAY be in the same session or in separate sessions.  That
+is, the cryptographic secrets MAY be created beforehand and used in
+the PDM data flow at the time of the "real" data session.
+
+After-the-fact (or real-time) data analysis of PDM flow may occur by
+network diagnosticians or network devices.  The definition of how
+this is done is out of scope for this document.
+
+## Client - Server Negotiation
+
+The two entities exchange a set of data to ensure the respective
+identities. This could be done via a TLS or other session.  The
+exact nature of the identity verification is out-of-scope for this document.
+
+They use Hybrid Public-Key Encryption scheme (HPKE) Key Encapsulation Mechanism
+(KEM) to negotiate a "SharedSecret".
+
+Each Client and Server derive a "SessionTemporaryKey" by using HPKE
+Key Derivation Function (KDF), using the following inputs:
+
+- The "SharedSecret".
+
+- The 5-tuple (SrcIP, SrcPort, DstIP, DstPort, Protocol) of the
+  communication.
+
+- An Epoch.
+
+The Epoch SHOULD be initialized to zero. A change in the Epoch
+indicates that the SessionTemporaryKey has been rotated.
+
+The Epoch MUST be incremented when the Packet Sequence Number This
+Packet (PSNTP) is rolled over.  It MAY be incremented earlier,
+depending on the implementation and the security considerations.
+
+The sender MUST NOT create two packets with identical PSNTP and Epoch.
+
+When the Epoch overflows, then collection of PDM data for this
+session will be stopped.  An error message MUST be sent as per	 		
+[RFC9180]: MessageLimitReachedError: Context AEAD sequence number	 		
+overflow.
+
+## Implementation Guidelines	 		
+
+How should a network administrator decide whether a client should use
+PDM, unencrypted PDMv2, or encrypted PDMv2?  This decision is a
+network policy issue.  The administrator must be aware that PDM or
+unencrypted PDMv2 might expose too much information to malicious
+parties.
+
+That said, if the network administrator decides that taking such a
+risk within their network is acceptable, then they should make the
+decision that is appropriate for their network.
+
+Alternatively, the network administrator might choose to create a
+policy that prohibits the use of PDM or unencrypted PDMv2 on their
+network.  The implementation SHOULD provide a way for the network
+administrator to enforce such a policy.
+
+The server and client implementations SHOULD support PDM, unencrypted
+PDMv2, and encrypted PDMv2.  If a client chooses a certain mechanism
+(e.g., PDM), the server MAY respond with the same mechanism, unless
+the network administrator has selected a policy that only allows
+certain mechanisms on their network.
+
+### Use Case 1: Server does not understand PDM or PDMv2
+
+If a client sends a packet with PDM or PDMv2 and the server does not
+have code which understands the header, the packet is processed
+according to the Option Type which is defined in RFC8250 and is in
+accordance with RFC8200.
+
+The Option Type identifiers is coded to skip over this option and	 		
+continue processing the header.
+
+### Use Case 2: Server does not allow PDM Option (PDM or PDMv2)
+
+If a client sends a packet with a PDM option which does not match the
+network policy, then the PDM option MUST be ignored and processing
+continue normally.  The server SHOULD log such occurrences.
+
+Filtering at routers per [RFC9288] on filtering of IPv6 extension
+headers may impact the receipt of PDM / PDMv2.
+
+
+# Security Goals
+
+As discussed in the introduction, PDM data can represent a serious
+data leakage in presence of a malicious actor.
+
+In particular, the sequence numbers included in the PDM header allows
+correlating the traffic flows, and the timing data can highlight the
+operational limits of a server to a malicious actor.  Moreover,
+forging PDM headers can lead to unnecessary, unwanted, or dangerous
+operational choices, e.g., to restore an apparently degraded Quality
+of Service (QoS).
+
+Due to this, it is important that the confidentiality and integrity
+of the PDM headers is maintained.  PDM headers can be encrypted and
+authenticated using the methods discussed in Section 5.4, thus
+ensuring confidentiality and integrity.  However, if PDM is used in a
+scenario where the integrity and confidentiality is already ensured
+by other means, they can be transmitted without encryption or
+authentication.  This includes, but is not limited to, the following
+cases:
+
+{:req2: style="format %c)"}
+
+{: req2}
+
+- PDM is used over an already encrypted medium (For example VPN
+  tunnels).
+- PDM is used in a link-local scenario.
+- PDM is used in a corporate network where there are security
+  measures strong enough to consider the presence of a malicious
+  actor a negligible risk.
+
+## Security Goals for Confidentiality
+
+PDM data MUST be kept confidential between the intended parties,
+which includes (but is not limited to) the two entities exchanging
+PDM data, and any legitimate party with the proper rights to access
+such data.
+
+## Security Goals for Integrity
+
+An implementation SHOULD attempt to detect if PDM data is forged or
+modified by a malicious entity.  In other terms, the implementation
+should attempt to detect if a malicious entity has generated a valid
+PDM header impersonating an endpoint or modified a valid PDM header.
+
+## Security Goals for Authentication
+
+An unauthorized party MUST NOT be able to send PDM data and MUST NOT
+be able to authorize another entity to do so.  Alternatively, if
+authentication is done via any of the following, this requirement MAY
+be considered to be met.
+
+{:req3: style="format %c)"}
+
+{: req3}
+
+- PDM is used over an already authenticated medium (For example,
+  TLS session).
+- PDM is used in a link-local scenario.
+- PDM is used in a corporate network where security measures are
+  strong enough to consider the presence of a malicious actor a
+  negligible risk.
+
+## Cryptographic Algorithm
+
+Symmetric key cryptography has performance benefits over asymmetric
+cryptography; asymmetric cryptography is better for key management.
+Encryption schemes that unite both have been specified in [RFC1421],
+and have been participating practically since the early days of
+public-key cryptography.  The basic mechanism is to encrypt the
+symmetric key with the public key by joining both yields.  Hybrid
+public-key encryption schemes (HPKE) [RFC9180] used a different
+approach that generates the symmetric key and its encapsulation with
+the public key of the receiver.
+
+It is RECOMMENDED to use the HPKE framework that incorporates key
+encapsulation mechanism (KEM), key derivation function (KDF) and
+authenticated encryption with associated data (AEAD).  These multiple
+schemes are more robust and significantly more efficient than other
+schemes. While the schemes may be negotiated between communicating
+parties, it is RECOMMENDED to use default encryption algorithm for
+HPKE AEAD as AES-128-GCM.
 
 # Security Considerations
 
