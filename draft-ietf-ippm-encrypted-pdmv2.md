@@ -228,17 +228,17 @@ Following is the representation of the unencrypted PDMv2 header:
 Following is the representation of the encrypted PDMv2 header:
 
 ~~~
-      0                   1                   2                   3
-      0                   1                   2                   3
-      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |  Option Type  | Option Length | Vrsn  |         Epoch         |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |                       PSN This Packet                         |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |                      Encrypted PDM Data                       :
-     :                          (16 bytes)                           |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    0                   1                   2                   3
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |  Option Type  | Option Length | Vrsn  |         Epoch         |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                       PSN This Packet                         |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                      Encrypted PDM Data                       :
+   :                          (16 bytes)                           |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
 
 {:req7: style="empty"}
@@ -357,7 +357,7 @@ Note: a client may act as a server (have listening ports).
   for decryption.  Private Keys are kept hidden by the source of the
   key pair generator, but the Public Key may be known to everyone.
   In this document, the Public Key is represented as pkX and the
-  Private Key as skX (where X can be any client or server.
+  Private Key as skX (where X can be any client or server).
 
 - Pre-shared Key (PSK): A symmetric key.  Uniformly random
   bitstring, shared between any Client or any Server or a key shared
