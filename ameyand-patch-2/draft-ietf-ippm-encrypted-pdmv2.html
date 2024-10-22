@@ -1313,7 +1313,10 @@ system or an older, slower device.<a href="#section-1-2" class="pilcrow">¶</a><
 <p id="section-1-3">Inferring from the PDM data, the attack can launch a timing attack.
 For example, if a cryptographic protocol is used, a timing attack
 may be launched against the keying material to obtain the secret.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">Along with this, PDM does not provide integrity.  It is possible for
+<p id="section-1-4">PDM metrics may also help the attacker find out about the network                     <br>
+speed or capabilities of the network path.  For example, are there                    <br>
+delays or blockages?  Are there alternate or multiple paths?
+Along with this, PDM does not provide integrity.  It is possible for
 a Machine-In-The-Middle (MITM) node to modify PDM headers leading to
 incorrect conclusions.  For example, during the debugging process
 using PDM header, it can mislead by showing there are no unusual
@@ -1406,8 +1409,8 @@ to the identifying information called a "5-tuple".<a href="#section-3.2-3" class
 </li>
         </ul>
 <p id="section-3.2-6">Unlike PDM fields, Global Pointer (GLOBALPTR) field in PDMv2 is
-defined for the SADDR type.  Following are the SADDR address types
-considered:<a href="#section-3.2-6" class="pilcrow">¶</a></p>
+defined for the SADDR type for the node.  Two SADDR address types
+are used:<a href="#section-3.2-6" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="olPercent" id="section-3.2-7">
 <dt>a)</dt>
 <dd id="section-3.2-7.1">
@@ -1420,14 +1423,24 @@ considered:<a href="#section-3.2-6" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
-<p id="section-3.2-8">The Global Pointer is treated as a common entity over all the
+<p id="section-3.2-8">Hence, there are two Global Pointers.<a href="#section-3.2-8" class="pilcrow">¶</a></p>
+<p id="section-3.2-9">The Global Pointer is treated as a common entity over all the
 5-tuples with the same SADDR type.  It is initialised to the value 1
 and increments for every packet sent.  Global Pointer provides a
-measure of the amount of IPv6 traffic sent by the PDMv2 node.<a href="#section-3.2-8" class="pilcrow">¶</a></p>
-<p id="section-3.2-9">When the SADDR type is Link-Local, the PDMv2 node sends Global
+measure of the amount of IPv6 traffic sent by the PDMv2 node.<a href="#section-3.2-9" class="pilcrow">¶</a></p>
+<p id="section-3.2-10">When the SADDR type is Link-Local, the PDMv2 node sends Global
 Pointer defined for Link-Local addresses, and when the SADDR type is
 Global Unicast, it sends the one defined for Global Unicast
-addresses.<a href="#section-3.2-9" class="pilcrow">¶</a></p>
+addresses.<a href="#section-3.2-10" class="pilcrow">¶</a></p>
+<p id="section-3.2-11">The reason for the Global Pointers is to provide a rough estimation                   <br>
+of the load on the node in question.  That is, if the node is sending                 <br>
+many other packets to other destinations at the same time as this                     <br>
+particular session.  Given that goal, if we combine the Link Local                    <br>
+and Global Unicast, the traffic traversing the path over the LAN or                   <br>
+VLAN (Link Local) would be combined with the traffic traversing the                   <br>
+path over the internet or wide area network.  The nature of Link-                     <br>
+Local and Global Unicast traffic is quite different, hence the two                    <br>
+separate counters.<a href="#section-3.2-11" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="pdmv2-layout">
@@ -1441,34 +1454,37 @@ the two types of headers is determined from the Options Length value.<a href="#s
 <p id="section-3.3-2">Following is the representation of the unencrypted PDMv2 header:<a href="#section-3.3-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3.3-3">
 <pre>
-   0                   1                   2                   3
-   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |  Option Type  | Option Length | Vrsn  |         Epoch         |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |      PSN This Packet          |         Reserved Bits         |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |                         Global Pointer                        |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |   ScaleDTLR   |   ScaleDTLS   |    PSN Last Received          |
-  |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |   Delta Time Last Received    |     Delta Time Last Sent      |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+        0                   1                   2                   3
+        0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |  Option Type  | Option Length | Vrsn  |         Epoch         |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |                 PSN This packet                               |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |                 PSN Last Received                             |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |                 Global Pointer                                |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |  ScaleDTLR    |  ScaleDTLS    |   Reserved                    |
+       |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |   Delta Time Last Received    |     Delta Time Last Sent      |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre><a href="#section-3.3-3" class="pilcrow">¶</a>
 </div>
 <p id="section-3.3-4">Following is the representation of the encrypted PDMv2 header:<a href="#section-3.3-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3.3-5">
 <pre>
-   0                   1                   2                   3
-   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |  Option Type  | Option Length | Vrsn  |         Epoch         |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |      PSN This Packet          |                               |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               :
-  |                      Encrypted PDM Data                       :
-  :                          (30 bytes)                           |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      0                   1                   2                   3
+      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |  Option Type  | Option Length | Vrsn  |         Epoch         |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |                       PSN This Packet                         |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |                      Encrypted PDM Data                       :
+     :                          (16 bytes)                           |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre><a href="#section-3.3-5" class="pilcrow">¶</a>
 </div>
 <ul class="normal ulEmpty">
@@ -1482,13 +1498,12 @@ the two types of headers is determined from the Options Length value.<a href="#s
           <li class="normal ulEmpty" id="section-3.3-6.2">
             <p id="section-3.3-6.2.1">Option Length<a href="#section-3.3-6.2.1" class="pilcrow">¶</a></p>
 <p id="section-3.3-6.2.2">
-0x12: Unencrypted PDM<a href="#section-3.3-6.2.2" class="pilcrow">¶</a></p>
+0x22: Unencrypted PDM<a href="#section-3.3-6.2.2" class="pilcrow">¶</a></p>
 <p id="section-3.3-6.2.3">
 0x22: Encrypted PDM<a href="#section-3.3-6.2.3" class="pilcrow">¶</a></p>
 <p id="section-3.3-6.2.4">
 8-bit unsigned integer.  Length of the option, in octets, excluding the Option
-  Type and Option Length fields.  The options length is used for differentiating
-  PDM <span>[<a href="#RFC8250" class="cite xref">RFC8250</a>]</span>, unencrypted PDMv2 and encrypted PDMv2.<a href="#section-3.3-6.2.4" class="pilcrow">¶</a></p>
+  Type and Option Length fields.<a href="#section-3.3-6.2.4" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-3.3-6.3">
             <p id="section-3.3-6.3.1">Version Number<a href="#section-3.3-6.3.1" class="pilcrow">¶</a></p>
@@ -1507,32 +1522,36 @@ Epoch field is used to indicate the valid SessionTemporaryKey.<a href="#section-
           <li class="normal ulEmpty" id="section-3.3-6.5">
             <p id="section-3.3-6.5.1">Packet Sequence Number This Packet (PSNTP)<a href="#section-3.3-6.5.1" class="pilcrow">¶</a></p>
 <p id="section-3.3-6.5.2">
-16-bit unsigned number.<a href="#section-3.3-6.5.2" class="pilcrow">¶</a></p>
+32-bit unsigned number.<a href="#section-3.3-6.5.2" class="pilcrow">¶</a></p>
 <p id="section-3.3-6.5.3">
 This field is initialized at a random number and is incremented
   sequentially for each packet of the 5-tuple.<a href="#section-3.3-6.5.3" class="pilcrow">¶</a></p>
 <p id="section-3.3-6.5.4">
-This field is also used in the Encrypted PDMv2 as the encryption
+This field + Epoch are used in the Encrypted PDMv2 as the encryption
   nonce. The nonce <span class="bcp14">MUST NOT</span> be reused in different sessions.<a href="#section-3.3-6.5.4" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-3.3-6.6">
-            <p id="section-3.3-6.6.1">Reserved Bits<a href="#section-3.3-6.6.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-6.6.1">Packet Sequence Number Last Received (PSNLR)<a href="#section-3.3-6.6.1" class="pilcrow">¶</a></p>
 <p id="section-3.3-6.6.2">
-16-bits.<a href="#section-3.3-6.6.2" class="pilcrow">¶</a></p>
+32-bit unsigned number.<a href="#section-3.3-6.6.2" class="pilcrow">¶</a></p>
 <p id="section-3.3-6.6.3">
-Reserved bits for future use.  They <span class="bcp14">MUST</span> be set to zero on
-  transmission and ignored on receipt per <span>[<a href="#RFC3552" class="cite xref">RFC3552</a>]</span>.<a href="#section-3.3-6.6.3" class="pilcrow">¶</a></p>
+This field is the PSNTP of the last received packet on the                <br>
+  5-tuple.<a href="#section-3.3-6.6.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-3.3-6.7">
-            <p id="section-3.3-6.7.1">Scale Delta Time Last Received (SCALEDTLR)<a href="#section-3.3-6.7.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-6.7.1">Global Pointer<a href="#section-3.3-6.7.1" class="pilcrow">¶</a></p>
 <p id="section-3.3-6.7.2">
-8-bit unsigned number.<a href="#section-3.3-6.7.2" class="pilcrow">¶</a></p>
+32-bit unsigned number.<a href="#section-3.3-6.7.2" class="pilcrow">¶</a></p>
 <p id="section-3.3-6.7.3">
-This is the scaling value for the Delta Time Last Sent
-  (DELTATLS) field.<a href="#section-3.3-6.7.3" class="pilcrow">¶</a></p>
+Global Pointer is initialized to 1 for the different source
+  address types and incremented sequentially for each packet with                   <br>
+  the corresponding source address type.<a href="#section-3.3-6.7.3" class="pilcrow">¶</a></p>
+<p id="section-3.3-6.7.4">
+This field stores the Global Pointer type corresponding to the
+  SADDR type of the packet.<a href="#section-3.3-6.7.4" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-3.3-6.8">
-            <p id="section-3.3-6.8.1">Scale Delta Time Last Sent (SCALEDTLS)<a href="#section-3.3-6.8.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-6.8.1">Scale Delta Time Last Received (SCALEDTLR)<a href="#section-3.3-6.8.1" class="pilcrow">¶</a></p>
 <p id="section-3.3-6.8.2">
 8-bit unsigned number.<a href="#section-3.3-6.8.2" class="pilcrow">¶</a></p>
 <p id="section-3.3-6.8.3">
@@ -1540,24 +1559,20 @@ This is the scaling value for the Delta Time Last Sent
   (DELTATLS) field.<a href="#section-3.3-6.8.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-3.3-6.9">
-            <p id="section-3.3-6.9.1">Global Pointer<a href="#section-3.3-6.9.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-6.9.1">Scale Delta Time Last Sent (SCALEDTLS)<a href="#section-3.3-6.9.1" class="pilcrow">¶</a></p>
 <p id="section-3.3-6.9.2">
-32-bit unsigned number.<a href="#section-3.3-6.9.2" class="pilcrow">¶</a></p>
+8-bit unsigned number.<a href="#section-3.3-6.9.2" class="pilcrow">¶</a></p>
 <p id="section-3.3-6.9.3">
-Global Pointer is initialized to 1 for the different source
-  address types and incremented sequentially for each packet
-  with the corresponding source address type.<a href="#section-3.3-6.9.3" class="pilcrow">¶</a></p>
-<p id="section-3.3-6.9.4">
-This field stores the Global Pointer type corresponding to the
-  SADDR type of the packet.<a href="#section-3.3-6.9.4" class="pilcrow">¶</a></p>
+This is the scaling value for the Delta Time Last Sent
+  (DELTATLS) field.<a href="#section-3.3-6.9.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-3.3-6.10">
-            <p id="section-3.3-6.10.1">Packet Sequence Number Last Received (PSNLR)<a href="#section-3.3-6.10.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-6.10.1">Reserved Bits<a href="#section-3.3-6.10.1" class="pilcrow">¶</a></p>
 <p id="section-3.3-6.10.2">
-16-bit unsigned number.<a href="#section-3.3-6.10.2" class="pilcrow">¶</a></p>
+16-bits.<a href="#section-3.3-6.10.2" class="pilcrow">¶</a></p>
 <p id="section-3.3-6.10.3">
-This field is the PSNTP of the last received packet on the
-  5-tuple.<a href="#section-3.3-6.10.3" class="pilcrow">¶</a></p>
+Reserved bits for future use.  They <span class="bcp14">MUST</span> be set to zero on
+  transmission and ignored on receipt per <span>[<a href="#RFC3552" class="cite xref">RFC3552</a>]</span>.<a href="#section-3.3-6.10.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-3.3-6.11">
             <p id="section-3.3-6.11.1">Delta Time Last Received (DELTATLR)<a href="#section-3.3-6.11.1" class="pilcrow">¶</a></p>
@@ -1611,7 +1626,7 @@ cryptography.  If one is used for encryption, the other is used
 for decryption.  Private Keys are kept hidden by the source of the
 key pair generator, but the Public Key may be known to everyone.
 In this document, the Public Key is represented as pkX and the
-Private Key as skX (where X can be client or server.<a href="#section-4-3.1.1" class="pilcrow">¶</a></p>
+Private Key as skX (where X can be any client or server.<a href="#section-4-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-4-3.2">
           <p id="section-4-3.2.1">Pre-shared Key (PSK): A symmetric key.  Uniformly random
