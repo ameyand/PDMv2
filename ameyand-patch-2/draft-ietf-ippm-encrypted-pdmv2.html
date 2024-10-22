@@ -1474,17 +1474,17 @@ the two types of headers is determined from the Options Length value.<a href="#s
 <p id="section-3.3-4">Following is the representation of the encrypted PDMv2 header:<a href="#section-3.3-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3.3-5">
 <pre>
-      0                   1                   2                   3
-      0                   1                   2                   3
-      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |  Option Type  | Option Length | Vrsn  |         Epoch         |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |                       PSN This Packet                         |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |                      Encrypted PDM Data                       :
-     :                          (16 bytes)                           |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    0                   1                   2                   3
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |  Option Type  | Option Length | Vrsn  |         Epoch         |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                       PSN This Packet                         |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                      Encrypted PDM Data                       :
+   :                          (16 bytes)                           |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre><a href="#section-3.3-5" class="pilcrow">¶</a>
 </div>
 <ul class="normal ulEmpty">
@@ -1626,7 +1626,7 @@ cryptography.  If one is used for encryption, the other is used
 for decryption.  Private Keys are kept hidden by the source of the
 key pair generator, but the Public Key may be known to everyone.
 In this document, the Public Key is represented as pkX and the
-Private Key as skX (where X can be any client or server.<a href="#section-4-3.1.1" class="pilcrow">¶</a></p>
+Private Key as skX (where X can be any client or server).<a href="#section-4-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-4-3.2">
           <p id="section-4-3.2.1">Pre-shared Key (PSK): A symmetric key.  Uniformly random
