@@ -382,9 +382,10 @@ The protocol will proceed in 2 steps.
   This includes the creation of pkX and skX.
 - PDM data flow between Client and Server.
 
-These steps MAY be in the same session or in separate sessions.  That
-is, the cryptographic secrets MAY be created beforehand and used in
-the PDM data flow at the time of the "real" data session.
+The first step of cryptographic secret creation should happen beforehand
+separately. This can be done as a part of a PDMv2 registration protocol
+which is out-of-scope of this document. These secrets will be used in the
+PDMv2 data flow at the time of "real" data session, as mentioned in step 2.
 
 After-the-fact (or real-time) data analysis of PDM flow may occur by
 network diagnosticians or network devices.  The definition of how
