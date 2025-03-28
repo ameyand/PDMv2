@@ -166,6 +166,9 @@ The 5-tuple consists of:
 - DPORT: Port for the destination
 - PROTC: Upper-layer protocol (TCP, UDP, ICMP, etc.)
 
+For a PROTC, where SPORT and DPORT do not make sense, the 5-tuple
+boils down to the remaining triplet.
+
 Unlike PDM fields, Global Pointer (GLOBALPTR) field in PDMv2 is
 defined for the SADDR type for the node.  Two SADDR address types
 are used:
@@ -372,7 +375,7 @@ Note: a client may act as a server (have listening ports).
 
 # Protocol Flow
 
-The protocol will proceed in 2 steps.
+The protocol for encrypted PDMv2 will proceed in 3 steps.
 
 {:req1: counter="bar" style="format Step %d:"}
 
@@ -380,14 +383,14 @@ The protocol will proceed in 2 steps.
 
 - Creation of cryptographic secrets between Server and Client.
   This includes the creation of pkX and skX.
-- PDM data flow between Client and Server.
+- Encrypted PDMv2 data flow between Client and Server.
+- Offline decryption of all the collected packets.
 
-These steps MAY be in the same session or in separate sessions.  That
-is, the cryptographic secrets MAY be created beforehand and used in
-the PDM data flow at the time of the "real" data session.
-
-After-the-fact (or real-time) data analysis of PDM flow may occur by
-network diagnosticians or network devices.  The definition of how
+Step 1 SHOULD happen offline, before the session starts. This is done
+to avoid any extra processing when the a new session is created. PDMv2
+data must be encrypted on-the-fly but decryption SHOULD happen offline.
+The PSNTP in PDMv2 is unencrypted and can be read by destination to set
+it as PSNLR in the response packet. The definition of how
 this is done is out of scope for this document.
 
 ## Client - Server Negotiation
@@ -422,6 +425,9 @@ When the Epoch overflows, then collection of PDM data for this
 session will be stopped.  An error message MUST be sent as per	 		
 [RFC9180]: MessageLimitReachedError: Context AEAD sequence number	 		
 overflow.
+
+For a protocol like ICMP where SrcPort and DstPort don't play any
+role, only use the 3-tuple (SrcIP, DstIP, Protocol).
 
 ## Implementation Guidelines	 		
 
