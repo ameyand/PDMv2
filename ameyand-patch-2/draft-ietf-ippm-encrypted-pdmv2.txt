@@ -5,14 +5,14 @@
 Internet Engineering Task Force                                N. Elkins
 Internet-Draft                                     Inside Products, Inc.
 Intended status: Standards Track                            M. Ackermann
-Expires: 28 September 2025                                 BCBS Michigan
+Expires: 29 September 2025                                 BCBS Michigan
                                                             A. Deshpande
                                                    NITK Surathkal/Google
                                                             T. Pecorella
                                                   University of Florence
                                                                A. Rashid
                                                      Politecnico di Bari
-                                                           27 March 2025
+                                                           28 March 2025
 
 
  IPv6 Performance and Diagnostic Metrics Version 2 (PDMv2) Destination
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 September 2025.
+   This Internet-Draft will expire on 29 September 2025.
 
 Copyright Notice
 
@@ -207,6 +207,9 @@ Table of Contents
       DPORT: Port for the destination
 
       PROTC: Upper-layer protocol (TCP, UDP, ICMP, etc.)
+
+   For a PROTC, where SPORT and DPORT do not make sense, the 5-tuple
+   boils down to the remaining triplet.
 
    Unlike PDM fields, Global Pointer (GLOBALPTR) field in PDMv2 is
    defined for the SADDR type for the node.  Two SADDR address types are
@@ -406,22 +409,21 @@ Table of Contents
 
 5.  Protocol Flow
 
-   The protocol will proceed in 2 steps.
+   The protocol for encrypted PDMv2 will proceed in 3 steps.
 
    Step 1:  Creation of cryptographic secrets between Server and Client.
             This includes the creation of pkX and skX.
 
-   Step 2:  PDM data flow between Client and Server.
+   Step 2:  Encrypted PDMv2 data flow between Client and Server.
 
-   The first step of cryptographic secret creation should happen
-   beforehand separately.  This can be done as a part of a PDMv2
-   registration protocol which is out-of-scope of this document.  These
-   secrets will be used in the PDMv2 data flow at the time of "real"
-   data session, as mentioned in step 2.
+   Step 3:  Offline decryption of all the collected packets.
 
-   After-the-fact (or real-time) data analysis of PDM flow may occur by
-   network diagnosticians or network devices.  The definition of how
-   this is done is out of scope for this document.
+   Step 1 SHOULD happen offline, before the session starts.  This is
+   done to avoid any extra processing when the a new session is created.
+   PDMv2 data must be encrypted on-the-fly but decryption SHOULD happen
+   offline.  The PSNTP in PDMv2 is unencrypted and can be read by
+   destination to set it as PSNLR in the response packet.  The
+   definition of how this is done is out of scope for this document.
 
 5.1.  Client - Server Negotiation
 
@@ -457,6 +459,9 @@ Table of Contents
    session will be stopped.  An error message MUST be sent as per
    [RFC9180]: MessageLimitReachedError: Context AEAD sequence number
    overflow.
+
+   For a protocol like ICMP where SrcPort and DstPort don't play any
+   role, only use the 3-tuple (SrcIP, DstIP, Protocol).
 
 5.2.  Implementation Guidelines
 

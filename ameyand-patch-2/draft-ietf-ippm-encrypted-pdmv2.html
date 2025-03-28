@@ -1063,7 +1063,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Elkins, et al.</td>
-<td class="center">Expires 28 September 2025</td>
+<td class="center">Expires 29 September 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1076,12 +1076,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ippm-encrypted-pdmv2-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-03-27" class="published">27 March 2025</time>
+<time datetime="2025-03-28" class="published">28 March 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-09-28">28 September 2025</time></dd>
+<dd class="expires"><time datetime="2025-09-29">29 September 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1154,7 +1154,7 @@ are also defined.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 28 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 29 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1428,31 +1428,33 @@ to the identifying information called a "5-tuple".<a href="#section-3.2-3" class
             <p id="section-3.2-5.5.1">PROTC: Upper-layer protocol (TCP, UDP, ICMP, etc.)<a href="#section-3.2-5.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.2-6">Unlike PDM fields, Global Pointer (GLOBALPTR) field in PDMv2 is
+<p id="section-3.2-6">For a PROTC, where SPORT and DPORT do not make sense, the 5-tuple
+boils down to the remaining triplet.<a href="#section-3.2-6" class="pilcrow">¶</a></p>
+<p id="section-3.2-7">Unlike PDM fields, Global Pointer (GLOBALPTR) field in PDMv2 is
 defined for the SADDR type for the node.  Two SADDR address types
-are used:<a href="#section-3.2-6" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="olPercent" id="section-3.2-7">
+are used:<a href="#section-3.2-7" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="olPercent" id="section-3.2-8">
 <dt>a)</dt>
-<dd id="section-3.2-7.1">
-            <p id="section-3.2-7.1.1">Link-Local<a href="#section-3.2-7.1.1" class="pilcrow">¶</a></p>
+<dd id="section-3.2-8.1">
+            <p id="section-3.2-8.1.1">Link-Local<a href="#section-3.2-8.1.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 <dt>b)</dt>
-<dd id="section-3.2-7.2">
-            <p id="section-3.2-7.2.1">Global Unicast<a href="#section-3.2-7.2.1" class="pilcrow">¶</a></p>
+<dd id="section-3.2-8.2">
+            <p id="section-3.2-8.2.1">Global Unicast<a href="#section-3.2-8.2.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
-<p id="section-3.2-8">Hence, there are two Global Pointers.<a href="#section-3.2-8" class="pilcrow">¶</a></p>
-<p id="section-3.2-9">The Global Pointer is treated as a common entity over all the
+<p id="section-3.2-9">Hence, there are two Global Pointers.<a href="#section-3.2-9" class="pilcrow">¶</a></p>
+<p id="section-3.2-10">The Global Pointer is treated as a common entity over all the
 5-tuples with the same SADDR type.  It is initialised to the value 1
 and increments for every packet sent.  Global Pointer provides a
-measure of the amount of IPv6 traffic sent by the PDMv2 node.<a href="#section-3.2-9" class="pilcrow">¶</a></p>
-<p id="section-3.2-10">When the SADDR type is Link-Local, the PDMv2 node sends Global
+measure of the amount of IPv6 traffic sent by the PDMv2 node.<a href="#section-3.2-10" class="pilcrow">¶</a></p>
+<p id="section-3.2-11">When the SADDR type is Link-Local, the PDMv2 node sends Global
 Pointer defined for Link-Local addresses, and when the SADDR type is
 Global Unicast, it sends the one defined for Global Unicast
-addresses.<a href="#section-3.2-10" class="pilcrow">¶</a></p>
-<p id="section-3.2-11">The reason for the Global Pointers is to provide a rough estimation                   <br>
+addresses.<a href="#section-3.2-11" class="pilcrow">¶</a></p>
+<p id="section-3.2-12">The reason for the Global Pointers is to provide a rough estimation                   <br>
 of the load on the node in question.  That is, if the node is sending                 <br>
 many other packets to other destinations at the same time as this                     <br>
 particular session.  Given that goal, if we combine the Link Local                    <br>
@@ -1460,7 +1462,7 @@ and Global Unicast, the traffic traversing the path over the LAN or             
 VLAN (Link Local) would be combined with the traffic traversing the                   <br>
 path over the internet or wide area network.  The nature of Link-                     <br>
 Local and Global Unicast traffic is quite different, hence the two                    <br>
-separate counters.<a href="#section-3.2-11" class="pilcrow">¶</a></p>
+separate counters.<a href="#section-3.2-12" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="pdmv2-layout">
@@ -1670,7 +1672,7 @@ only the current session.<a href="#section-4-3.4.1" class="pilcrow">¶</a></p>
       <h2 id="name-protocol-flow">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-protocol-flow" class="section-name selfRef">Protocol Flow</a>
       </h2>
-<p id="section-5-1">The protocol will proceed in 2 steps.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-1">The protocol for encrypted PDMv2 will proceed in 3 steps.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="olPercent" id="section-5-2">
 <dt>Step 1:</dt>
 <dd id="section-5-2.1">
@@ -1680,17 +1682,21 @@ This includes the creation of pkX and skX.<a href="#section-5-2.1.1" class="pilc
         <dd class="break"></dd>
 <dt>Step 2:</dt>
 <dd id="section-5-2.2">
-          <p id="section-5-2.2.1">PDM data flow between Client and Server.<a href="#section-5-2.2.1" class="pilcrow">¶</a></p>
+          <p id="section-5-2.2.1">Encrypted PDMv2 data flow between Client and Server.<a href="#section-5-2.2.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt>Step 3:</dt>
+<dd id="section-5-2.3">
+          <p id="section-5-2.3.1">Offline decryption of all the collected packets.<a href="#section-5-2.3.1" class="pilcrow">¶</a></p>
 </dd>
       <dd class="break"></dd>
 </dl>
-<p id="section-5-3">The first step of cryptographic secret creation should happen beforehand
-separately. This can be done as a part of a PDMv2 registration protocol
-which is out-of-scope of this document. These secrets will be used in the
-PDMv2 data flow at the time of "real" data session, as mentioned in step 2.<a href="#section-5-3" class="pilcrow">¶</a></p>
-<p id="section-5-4">After-the-fact (or real-time) data analysis of PDM flow may occur by
-network diagnosticians or network devices.  The definition of how
-this is done is out of scope for this document.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-3">Step 1 <span class="bcp14">SHOULD</span> happen offline, before the session starts. This is done
+to avoid any extra processing when the a new session is created. PDMv2
+data must be encrypted on-the-fly but decryption <span class="bcp14">SHOULD</span> happen offline.
+The PSNTP in PDMv2 is unencrypted and can be read by destination to set
+it as PSNLR in the response packet. The definition of how
+this is done is out of scope for this document.<a href="#section-5-3" class="pilcrow">¶</a></p>
 <div id="client-server-negotiation">
 <section id="section-5.1">
         <h3 id="name-client-server-negotiation">
@@ -1725,6 +1731,8 @@ depending on the implementation and the security considerations.<a href="#sectio
 session will be stopped.  An error message <span class="bcp14">MUST</span> be sent as per                <br>
           <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>: MessageLimitReachedError: Context AEAD sequence number                     <br>
 overflow.<a href="#section-5.1-8" class="pilcrow">¶</a></p>
+<p id="section-5.1-9">For a protocol like ICMP where SrcPort and DstPort don't play any
+role, only use the 3-tuple (SrcIP, DstIP, Protocol).<a href="#section-5.1-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="implementation-guidelines">
