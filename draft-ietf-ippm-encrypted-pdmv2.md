@@ -8,7 +8,7 @@ submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
 number:
 date:
 consensus: true
-v: 9
+v: 10
 area: "Transport"
 workgroup: "Internet Engineering Task Force"
 keyword:
@@ -112,7 +112,24 @@ using PDM header, it can mislead by showing there are no unusual
 server delays.
 
 PDMv2 is an IPv6 Destination Options Extension Header which adds
-confidentiality, integrity and authentication to PDM.
+confidentiality, integrity and authentication to PDM [RFC8250]. PDMv2
+introduces optional encryption for the PDM data.
+
+PDMv2 extends the data collected by PDM, and allows a per-session
+encryption of the data, ensuring confidentiality and integrity.
+The optional encryption described here allows an offline decryption model,
+Where data is simply collected and analysed offline. Online decryption
+and analysis is possible, but its requirements will not be analysed.
+
+The packet format allows a per-session encryption with key rotation,
+where the keys are derived from a shared secret established between the
+parties.
+
+PDMv2 specifies an offline decryption model. Network devices sending,
+receiving or forwarding PDMv2 data operate on the encrypted data without
+performing decryption. The PDMv2 packets can be collected on either server
+or client and decrypted later to look for the PDM data. This design alleviates
+the requirement for real-time decryption processing on the measurement nodes.
 
 The procedures specified in RFC8250 for header placement,
 implementation, security considerations and so on continue to apply
