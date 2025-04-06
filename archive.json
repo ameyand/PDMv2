@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-03T01:46:55.808678+00:00",
+  "timestamp": "2025-04-06T01:52:47.143151+00:00",
   "repo": "ameyand/PDMv2",
   "labels": [
     {
@@ -1134,6 +1134,34 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 39,
+      "id": "PR_kwDOJCM9B86RbvlQ",
+      "title": "Update principles to draft-ietf-ippm-encrypted-pdmv2.md",
+      "url": "https://github.com/ameyand/PDMv2/pull/39",
+      "state": "MERGED",
+      "author": "ameyand",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-04-04T16:16:58Z",
+      "updatedAt": "2025-04-04T23:37:24Z",
+      "baseRepository": "ameyand/PDMv2",
+      "baseRefName": "main",
+      "baseRefOid": "529c0a1bfad6fe0b7356a8d7e78eaa978b613824",
+      "headRepository": "ameyand/PDMv2",
+      "headRefName": "ameyand-patch-3-1",
+      "headRefOid": "bf12fdcd2917503bf94ada0cf1d446d05a96379f",
+      "closedAt": "2025-04-04T23:37:23Z",
+      "mergedAt": "2025-04-04T23:37:23Z",
+      "mergedBy": "ameyand",
+      "mergeCommit": {
+        "oid": "0895af6f03f0b411f629c0cd999b2568a2987538"
+      },
       "comments": [],
       "reviews": []
     }
