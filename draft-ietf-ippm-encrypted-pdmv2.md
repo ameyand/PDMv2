@@ -89,8 +89,8 @@ The current Performance and Destinations Metrics (PDM) is an IPv6
 Destination Options header which provides information based on the
 metrics like Round-trip delay and Server delay.  This information
 helps to measure the Quality of Service (QoS) and to assist in
-diagnostics.  However, there are potential risks involved transmitting
-PDM data during a diagnostics session.
+diagnostics.  However, there are potential risks involved
+transmitting PDM data during a diagnostics session.
 
 PDM metrics can help an attacker understand about the type of machine
 and its processing capabilities.  For example, the operational
@@ -99,41 +99,89 @@ processing speed -- that is, if the system in question is very fast
 system or an older, slower device.
 
 Inferring from the PDM data, the attack can launch a timing attack.
-For example, if a cryptographic protocol is used, a timing attack
-may be launched against the keying material to obtain the secret.
+For example, if a cryptographic protocol is used, a timing attack may
+be launched against the keying material to obtain the secret.
 
-PDM metrics may also help the attacker find out about the network	 		
-speed or capabilities of the network path.  For example, are there	 		
-delays or blockages?  Are there alternate or multiple paths?
-Along with this, PDM does not provide integrity.  It is possible for
-a Machine-In-The-Middle (MITM) node to modify PDM headers leading to
+PDM metrics may also help the attacker find out about the network
+speed or capabilities of the network path.  For example, are there
+delays or blockages?  Are there alternate or multiple paths?  Along
+with this, PDM does not provide integrity.  It is possible for a
+Machine-In-The-Middle (MITM) node to modify PDM headers leading to
 incorrect conclusions.  For example, during the debugging process
 using PDM header, it can mislead by showing there are no unusual
 server delays.
 
-PDMv2 is an IPv6 Destination Options Extension Header which adds
-confidentiality, integrity and authentication to PDM [RFC8250]. PDMv2
-introduces optional encryption for the PDM data.
+PDMv2 is an IPv6 Destination Options Extension Header that enhances
+PDM [RFC8250] by adding confidentiality, integrity, and authentication
+to its measurement data. PDMv2 introduces optional encryption mechanisms
+to secure the collected data.
 
-PDMv2 extends the data collected by PDM, and allows a per-session
-encryption of the data, ensuring confidentiality and integrity.
-The optional encryption described here allows an offline decryption model,
-Where data is simply collected and analysed offline. Online decryption
-and analysis is possible, but its requirements will not be analysed.
+PDMv2 extends the capabilities of the original PDM by enabling
+per-session encryption, thereby ensuring data confidentiality and integrity.
+This encryption is built on the principle of offline decryption, where
+encrypted data is collected and analyzed after transmission. Real-time or
+online decryption is possible but not the focus of this specification and
+is not further analyzed here.
 
-The packet format allows a per-session encryption with key rotation,
-where the keys are derived from a shared secret established between the
-parties.
-
-PDMv2 specifies an offline decryption model. Network devices sending,
-receiving or forwarding PDMv2 data operate on the encrypted data without
-performing decryption. The PDMv2 packets can be collected on either server
-or client and decrypted later to look for the PDM data. This design alleviates
-the requirement for real-time decryption processing on the measurement nodes.
+PDMv2’s packet format supports per-session encryption with key rotation,
+where keys are derived from a shared secret established between parties via
+the base key registration process. All PDMv2 packets are intended to be
+processed without decryption by intermediate network devices. These encrypted
+packets can be collected at the client or server end and decrypted offline
+for diagnostic analysis. This architecture removes the need for real-time
+decryption at measurement points, improving scalability and deployment
+simplicity.
 
 The procedures specified in RFC8250 for header placement,
 implementation, security considerations and so on continue to apply
 for PDMv2.
+
+## PDMv2 Foundational Principles
+
+The design of PDMv2 adheres to a set of foundational principles which guide
+its architecture and operational model:
+
+{:req_p: counter="bar" style="format %d."}
+
+{: req_p}
+
+- Offline Decryption: All decryption of data occurs offline, eliminating
+the computational overhead of real-time decryption on network devices.
+
+- Speed of Handshake Processing: The goal of PDMv2 is to have as little
+time spent in handshake processing as possible.
+
+- Handshake at IP Layer: The establishment of session keys is at the IP layer
+not at the transport or session layers. However, keys will be changed when
+there is a change in the 5-tuple.  For ICMP and IPsec, sender-destination IP pair
+defines the session for key rotation purposes.
+
+- Separation of Encryption Layers: Encryption at the extension header level is
+designed to be independent of encryption in higher-layer protocols (e.g., TLS,
+QUIC). This avoids bootstrapping problems where key negotiation at one layer (IP)
+is dependent on information from another layer (TCP / TLS).
+
+- Key Reuse Avoidance: Keys are not reused between sessions. Each session
+uses a freshly derived key to enhance security and forward secrecy.
+
+- Base Key Registration: Master keys and device authentication are established
+through a registration process with an Authentication Server. A complementary
+draft will detail the full registration procedure and the operation of the
+Decryption Server that handles offline decryption.
+
+- Sequential Field for Key Derivation: Each packet may include a sequential
+field (in cleartext), which serves as input to a key derivation function (KDF).
+This supports dynamic keying mechanisms such as those used in Hybrid Public Key
+Encryption (HPKE).
+
+- Sample Key Derivation Implementation: A sample implementation using HPKE will
+be included to illustrate how these principles can be applied in practice.
+Alternative KDFs may be used, based on implementation needs.
+
+- Optional Sequential Field Usage: A field which may be used as a nonce and is
+sent in the clear will be provided.  Usage of this sequential field is optional and
+can be omitted if not required for the cryptographic scheme in use. It is required
+for HPKE but the implementor may choose another scheme.
 
 # Conventions used in this document
 
