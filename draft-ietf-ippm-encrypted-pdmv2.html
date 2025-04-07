@@ -1063,7 +1063,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Elkins, et al.</td>
-<td class="center">Expires 6 October 2025</td>
+<td class="center">Expires 9 October 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1076,12 +1076,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ippm-encrypted-pdmv2-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-04-04" class="published">4 April 2025</time>
+<time datetime="2025-04-07" class="published">7 April 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-10-06">6 October 2025</time></dd>
+<dd class="expires"><time datetime="2025-10-09">9 October 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1154,7 +1154,7 @@ are also defined.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 6 October 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 9 October 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1185,6 +1185,11 @@ are also defined.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <nav class="toc"><ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-pdmv2-foundational-principl" class="internal xref">PDMv2 Foundational Principles</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-used-in-this-do" class="internal xref">Conventions used in this document</a></p>
@@ -1193,7 +1198,7 @@ are also defined.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-pdmv2-destination-options" class="internal xref">PDMv2 Destination Options</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-destinations-option-header" class="internal xref">Destinations Option Header</a></p>
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-destinations-option-header" class="internal xref">Destinations Option Header</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
                 <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-metrics-information-in-pdmv" class="internal xref">Metrics information in PDMv2</a></p>
@@ -1323,43 +1328,121 @@ are also defined.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 Destination Options header which provides information based on the
 metrics like Round-trip delay and Server delay.  This information
 helps to measure the Quality of Service (QoS) and to assist in
-diagnostics.  However, there are potential risks involved transmitting
-PDM data during a diagnostics session.<a href="#section-1-1" class="pilcrow">¶</a></p>
+diagnostics.  However, there are potential risks involved
+transmitting PDM data during a diagnostics session.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">PDM metrics can help an attacker understand about the type of machine
 and its processing capabilities.  For example, the operational
 capabilities of either the client or server end hosts such as
 processing speed -- that is, if the system in question is very fast
 system or an older, slower device.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">Inferring from the PDM data, the attack can launch a timing attack.
-For example, if a cryptographic protocol is used, a timing attack
-may be launched against the keying material to obtain the secret.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">PDM metrics may also help the attacker find out about the network                     <br>
-speed or capabilities of the network path.  For example, are there                    <br>
-delays or blockages?  Are there alternate or multiple paths?
-Along with this, PDM does not provide integrity.  It is possible for
-a Machine-In-The-Middle (MITM) node to modify PDM headers leading to
+For example, if a cryptographic protocol is used, a timing attack may
+be launched against the keying material to obtain the secret.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">PDM metrics may also help the attacker find out about the network
+speed or capabilities of the network path.  For example, are there
+delays or blockages?  Are there alternate or multiple paths?  Along
+with this, PDM does not provide integrity.  It is possible for a
+Machine-In-The-Middle (MITM) node to modify PDM headers leading to
 incorrect conclusions.  For example, during the debugging process
 using PDM header, it can mislead by showing there are no unusual
 server delays.<a href="#section-1-4" class="pilcrow">¶</a></p>
-<p id="section-1-5">PDMv2 is an IPv6 Destination Options Extension Header which adds
-confidentiality, integrity and authentication to PDM <span>[<a href="#RFC8250" class="cite xref">RFC8250</a>]</span>. PDMv2
-introduces optional encryption for the PDM data.<a href="#section-1-5" class="pilcrow">¶</a></p>
-<p id="section-1-6">PDMv2 extends the data collected by PDM, and allows a per-session
-encryption of the data, ensuring confidentiality and integrity.
-The optional encryption described here allows an offline decryption model,
-Where data is simply collected and analysed offline. Online decryption
-and analysis is possible, but its requirements will not be analysed.<a href="#section-1-6" class="pilcrow">¶</a></p>
-<p id="section-1-7">The packet format allows a per-session encryption with key rotation,
-where the keys are derived from a shared secret established between the
-parties.<a href="#section-1-7" class="pilcrow">¶</a></p>
-<p id="section-1-8">PDMv2 specifies an offline decryption model. Network devices sending,
-receiving or forwarding PDMv2 data operate on the encrypted data without
-performing decryption. The PDMv2 packets can be collected on either server
-or client and decrypted later to look for the PDM data. This design alleviates
-the requirement for real-time decryption processing on the measurement nodes.<a href="#section-1-8" class="pilcrow">¶</a></p>
-<p id="section-1-9">The procedures specified in RFC8250 for header placement,
+<p id="section-1-5">PDMv2 is an IPv6 Destination Options Extension Header that enhances
+PDM <span>[<a href="#RFC8250" class="cite xref">RFC8250</a>]</span> by adding confidentiality, integrity, and authentication
+to its measurement data. PDMv2 introduces optional encryption mechanisms
+to secure the collected data.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-6">PDMv2 extends the capabilities of the original PDM by enabling
+per-session encryption, thereby ensuring data confidentiality and integrity.
+This encryption is built on the principle of offline decryption, where
+encrypted data is collected and analyzed after transmission. Real-time or
+online decryption is possible but not the focus of this specification and
+is not further analyzed here.<a href="#section-1-6" class="pilcrow">¶</a></p>
+<p id="section-1-7">PDMv2’s packet format supports per-session encryption with key rotation,
+where keys are derived from a shared secret established between parties via
+the base key registration process. All PDMv2 packets are intended to be
+processed without decryption by intermediate network devices. These encrypted
+packets can be collected at the client or server end and decrypted offline
+for diagnostic analysis. This architecture removes the need for real-time
+decryption at measurement points, improving scalability and deployment
+simplicity.<a href="#section-1-7" class="pilcrow">¶</a></p>
+<p id="section-1-8">The procedures specified in RFC8250 for header placement,
 implementation, security considerations and so on continue to apply
-for PDMv2.<a href="#section-1-9" class="pilcrow">¶</a></p>
+for PDMv2.<a href="#section-1-8" class="pilcrow">¶</a></p>
+<div id="pdmv2-foundational-principles">
+<section id="section-1.1">
+        <h3 id="name-pdmv2-foundational-principl">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-pdmv2-foundational-principl" class="section-name selfRef">PDMv2 Foundational Principles</a>
+        </h3>
+<p id="section-1.1-1">The design of PDMv2 adheres to a set of foundational principles which guide
+its architecture and operational model:<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="olPercent" id="section-1.1-2">
+<dt>1.</dt>
+<dd id="section-1.1-2.1">
+            <p id="section-1.1-2.1.1">Offline Decryption: All decryption of data occurs offline, eliminating
+the computational overhead of real-time decryption on network devices.<a href="#section-1.1-2.1.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt>2.</dt>
+<dd id="section-1.1-2.2">
+            <p id="section-1.1-2.2.1">Speed of Handshake Processing: The goal of PDMv2 is to have as little
+time spent in handshake processing as possible.<a href="#section-1.1-2.2.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt>3.</dt>
+<dd id="section-1.1-2.3">
+            <p id="section-1.1-2.3.1">Handshake at IP Layer: The establishment of session keys is at the IP layer
+not at the transport or session layers. However, keys will be changed when
+there is a change in the 5-tuple.  For ICMP and IPsec, sender-destination IP pair
+defines the session for key rotation purposes.<a href="#section-1.1-2.3.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt>4.</dt>
+<dd id="section-1.1-2.4">
+            <p id="section-1.1-2.4.1">Separation of Encryption Layers: Encryption at the extension header level is
+designed to be independent of encryption in higher-layer protocols (e.g., TLS,
+QUIC). This avoids bootstrapping problems where key negotiation at one layer (IP)
+is dependent on information from another layer (TCP / TLS).<a href="#section-1.1-2.4.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt>5.</dt>
+<dd id="section-1.1-2.5">
+            <p id="section-1.1-2.5.1">Key Reuse Avoidance: Keys are not reused between sessions. Each session
+uses a freshly derived key to enhance security and forward secrecy.<a href="#section-1.1-2.5.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt>6.</dt>
+<dd id="section-1.1-2.6">
+            <p id="section-1.1-2.6.1">Base Key Registration: Master keys and device authentication are established
+through a registration process with an Authentication Server. A complementary
+draft will detail the full registration procedure and the operation of the
+Decryption Server that handles offline decryption.<a href="#section-1.1-2.6.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt>7.</dt>
+<dd id="section-1.1-2.7">
+            <p id="section-1.1-2.7.1">Sequential Field for Key Derivation: Each packet may include a sequential
+field (in cleartext), which serves as input to a key derivation function (KDF).
+This supports dynamic keying mechanisms such as those used in Hybrid Public Key
+Encryption (HPKE).<a href="#section-1.1-2.7.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt>8.</dt>
+<dd id="section-1.1-2.8">
+            <p id="section-1.1-2.8.1">Sample Key Derivation Implementation: A sample implementation using HPKE will
+be included to illustrate how these principles can be applied in practice.
+Alternative KDFs may be used, based on implementation needs.<a href="#section-1.1-2.8.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt>9.</dt>
+<dd id="section-1.1-2.9">
+            <p id="section-1.1-2.9.1">Optional Sequential Field Usage: A field which may be used as a nonce and is
+sent in the clear will be provided.  Usage of this sequential field is optional and
+can be omitted if not required for the cryptographic scheme in use. It is required
+for HPKE but the implementor may choose another scheme.<a href="#section-1.1-2.9.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</section>
+</div>
 </section>
 </div>
 <div id="conventions-used-in-this-document">
@@ -1686,13 +1769,13 @@ only the current session.<a href="#section-4-3.4.1" class="pilcrow">¶</a></p>
       </h2>
 <p id="section-5-1">The protocol will proceed in 2 steps.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="olPercent" id="section-5-2">
-<dt>Step 1:</dt>
+<dt>Step 10:</dt>
 <dd id="section-5-2.1">
           <p id="section-5-2.1.1">Creation of cryptographic secrets between Server and Client.
 This includes the creation of pkX and skX.<a href="#section-5-2.1.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt>Step 2:</dt>
+<dt>Step 11:</dt>
 <dd id="section-5-2.2">
           <p id="section-5-2.2.1">PDM data flow between Client and Server.<a href="#section-5-2.2.1" class="pilcrow">¶</a></p>
 </dd>
