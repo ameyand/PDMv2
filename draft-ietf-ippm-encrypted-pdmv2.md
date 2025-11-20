@@ -58,6 +58,12 @@ author:
     organization: Politecnico di Bari
     email: "adnan.rashid@poliba.it"
 
+ -
+    fullname: Lorenzo Fedi
+    country: Italy
+    organization: University of Florence
+    email: "lorenzo.fedi3@edu.unifi.it"
+
 normative:
  RFC3552:
  RFC8250:
