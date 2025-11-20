@@ -5,14 +5,16 @@
 Internet Engineering Task Force                                N. Elkins
 Internet-Draft                                     Inside Products, Inc.
 Intended status: Standards Track                            M. Ackermann
-Expires: 13 April 2026                                     BCBS Michigan
+Expires: 24 May 2026                                       BCBS Michigan
                                                             A. Deshpande
                                                    NITK Surathkal/Google
                                                             T. Pecorella
                                                   University of Florence
                                                                A. Rashid
                                                      Politecnico di Bari
-                                                         10 October 2025
+                                                                 L. Fedi
+                                                  University of Florence
+                                                        20 November 2025
 
 
  IPv6 Performance and Diagnostic Metrics Version 2 (PDMv2) Destination
@@ -62,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 April 2026.
+   This Internet-Draft will expire on 24 May 2026.
 
 Copyright Notice
 
@@ -1040,3 +1042,9 @@ Authors' Addresses
    Politecnico di Bari
    Italy
    Email: adnan.rashid@poliba.it
+
+
+   Lorenzo Fedi
+   University of Florence
+   Italy
+   Email: lorenzo.fedi3@edu.unifi.it
