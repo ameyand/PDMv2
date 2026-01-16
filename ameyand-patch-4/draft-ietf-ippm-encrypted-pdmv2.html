@@ -1,0 +1,1948 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>IPv6 Performance and Diagnostic Metrics Version 2 (PDMv2) Destination Option</title>
+<meta content="Nalini Elkins" name="author">
+<meta content="Michael Ackermann" name="author">
+<meta content="Ameya Deshpande" name="author">
+<meta content="Tommaso Pecorella" name="author">
+<meta content="Adnan Rashid" name="author">
+<meta content="Lorenzo Fedi" name="author">
+<meta content="
+       RFC 8250 defines an IPv6 Destination Option that carries Performance and
+Diagnostic Metrics (PDM) such as sequence numbers and timing information.
+While useful for measurement and troubleshooting, clear-text PDM data may
+expose operational characteristics of endpoints and networks. 
+       This document defines  PDMv2 , a revised version of PDM that introduces a
+ registration-based security model . Instead of specifying cryptographic
+algorithms or inline key negotiation, PDMv2 relies on a  prior registration
+process  to authenticate entities, authorize participation, and establish
+shared secrets. These secrets are then used by endpoints and authorized
+analyzers to protect and interpret PDMv2 data according to local policy. 
+       This document specifies the PDMv2 semantics, header structure, and operational
+model. Cryptographic algorithms, key derivation functions, and cipher
+negotiation are explicitly out of scope. 
+    " name="description">
+<meta content="xml2rfc 3.31.0" name="generator">
+<meta content="Extension Headers" name="keyword">
+<meta content="IPv6" name="keyword">
+<meta content="PDMv2" name="keyword">
+<meta content="Performance" name="keyword">
+<meta content="Diagnostic" name="keyword">
+<meta content="draft-ietf-ippm-encrypted-pdmv2-latest" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.31.0
+    Python 3.12.12
+    ConfigArgParse 1.7
+    google-i18n-address 3.1.1
+    intervaltree 3.2.1
+    Jinja2 3.1.6
+    lxml 6.0.2
+    platformdirs 4.5.1
+    pycountry 24.6.1
+    PyYAML 6.0.3
+    requests 2.32.5
+    wcwidth 0.2.14
+-->
+<link href="draft-ietf-ippm-encrypted-pdmv2.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Lora SemiBold'), local('Lora-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light dark;
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --pilcrow-weak: #ddd;
+  --pilcrow-strong: #bbb;
+  --small-font-size: 14.5px;
+  --font-mono: 'Oxygen Mono', monospace;
+  --font-title: "Sofia Sans Semi Condensed", sans-serif;
+  scrollbar-color: #bbb #eee;
+}
+body {
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+section {
+  clear: both;
+}
+.section-number {
+  padding-right: 0.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  font-weight: 680;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+h1#title {
+  font-size: 32px;
+  line-height: 40px;
+  clear: both;
+}
+h1#title, h1#rfcnum {
+  margin: 1.5em 0 0.2em;
+}
+h1#rfcnum + h1#title {
+  margin: 0.2em 0;
+}
+
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 27px;
+}
+h4, h5, h6 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+#abstract+p {
+  font-size: 18px;
+  line-height: 24px;
+}
+#abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 16px;
+  line-height: 0;
+}
+
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+/* font-family isn't space-separated, but =~ will have to do */
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
+.alignCenter.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 0.5em 2em;
+  & :is(ol, ul) {
+    margin-left: 1em;
+  }
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+  & li {
+    margin-top: 0.5em;
+  }
+}
+:is(ul, ol).compact, .ulCompact, .olCompact {
+  margin: 0 0 0 2em;
+  & li {
+    margin: 0;
+    & :first-child { margin-top: 0; }
+    & :last-child { margin-bottom: 0; }
+  }
+}
+
+/* definition lists */
+dl {
+  clear: left;
+  --indent: 3ch;
+  /* --indent: attr(indent ch); not supported in any browser, but we can dream */
+  &.olPercent {
+    --indent: 5ch;
+    & > dt {
+      min-width: calc(var(--indent) - 2ch);
+    }
+  }
+  &.olPercent > dt {
+    float: none;
+  }
+
+  dl > dd > & {
+    margin-top: 0.5em;
+    margin-bottom: 0;
+  }
+}
+dl:not(.dlNewline) > dt {
+  float: left;
+  margin-right: 2ch;
+  min-width: 8ch;
+}
+dl > dd {
+  margin-bottom: .8em;
+  margin-left: var(--indent) !important; /* stupid element overrides */
+  min-height: 2ex;
+}
+:is(dl.compact, .dlCompact) > dd {
+  margin-bottom: 0;
+  & > :is(:first-child, .break:first-child + *) {
+    margin-top: 0;
+  }
+  & > :is(:last-child) {
+    margin-bottom: 0;
+  }
+}
+:is(dd, span).break {
+  display: none;
+}
+
+/* links */
+a, a[href].selfRef:hover {
+  text-decoration: none;
+}
+a[href] {
+  color: var(--link-color);
+}
+a[href].selfRef, .iref + a[href].internal {
+  color: var(--text-color);
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+a[href].selfRef:hover {
+  background-color: var(--highlight-color);
+}
+a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px var(--font-mono);
+}
+tt, code {
+  /* changing the font for inline elements leads to different ascender
+     and descender heights; as we want to retain baseline alignment,
+     remove leading to avoid altering the final height of lines
+     note: this fails if these blocks take an entire line,
+     a different solution would be great */
+  line-height: 0;
+}
+:is(h1, h2, h3, h4, h5, h6) :is(tt, code) {
+  font-size: 84%;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+  padding: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+  caption-side: bottom;
+}
+@media screen {
+  /* Auto-collapse boilerplate. */
+  :is(#status-of-memo, #copyright) p {
+    margin: -2px 0;
+    max-height: 0;
+    transition: max-height 2s ease, margin 0.5s ease 0.5s;
+    overflow: hidden;
+  }
+  :is(#status-of-memo, #copyright):hover p,
+  :is(#status-of-memo, #copyright) h2:target ~ p {
+    margin: 0.5em 0;
+    max-height: 500px;
+    overflow: auto;
+  }
+  pre, svg {
+    display: inline-block;
+    /* In the horizontal direction, sometimes people make over-sized figures.
+       Scrollbars for those is therefore necessary: auto adds them as necessary..
+       In the vertical direction, the line-height can combine with the font
+       asender/descender height to produce scrollbars: hidden avoids that. */
+    overflow: auto hidden;
+  }
+  pre {
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  svg {
+    max-width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  :is(pre, svg) + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  margin: 1em 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  width: auto;
+  max-width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+}
+table.right {
+  margin-left: auto;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+table.left {
+  margin-right: auto;
+}
+table .text-left {
+  text-align: left;
+}
+table .text-center {
+  text-align: center;
+}
+table .text-right {
+  text-align: right;
+}
+
+thead, tbody {
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 10px;
+}
+th {
+  background-color: var(--line-color);
+}
+:is(tr:nth-child(2n), thead+tbody > tr:nth-child(2n+1)) > td {
+  background-color: var(--background-color);
+}
+:is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
+  background-color: var(--highlight-color);
+}
+table caption {
+  margin: 0;
+  padding: 3px 0 3px 1em;
+}
+table p {
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  opacity: 0.2;
+  user-select: none;
+  &[href] {
+    color: var(--pilcrow-weak);
+    &:hover { text-decoration: none; }
+  }
+}
+@media not print {
+  :hover > a.pilcrow {
+    opacity: 1;
+  }
+  a.pilcrow[href]:hover {
+    color: var(--pilcrow-strong);
+    background-color: transparent;
+  }
+}
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: 600;
+  font-size: var(--small-font-size);
+}
+.role {
+  font-variant: all-small-caps;
+}
+sub, sup {
+  line-height: 1;
+  font-size: 80%;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 15ch;
+  & dt {
+    width: var(--identifier-width);
+    min-width: var(--identifier-width);
+    clear: left;
+    float: left;
+    text-align: right;
+    margin-right: 1ch;
+  }
+  & dd {
+    margin: 0;
+    margin-left: calc(1em + var(--identifier-width)) !important;
+    min-width: 5em;
+  }
+  & .authors {
+    & .author {
+      display: inline-block;
+      margin-right: 1.5em;
+    }
+    & .org {
+      font-style: italic;
+    }
+  }
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+
+  & nav {
+    & ul {
+      margin: 0 0.5em 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    & li {
+      line-height: 1.3em;
+      margin: 2px 0;
+      padding-left: 1.2em;
+      text-indent: -1.2em;
+    }
+  }
+  & a.xref {
+    white-space: normal;
+  }
+}
+
+.references {
+  & > dt {
+    text-align: right;
+    font-weight: bold;
+    min-width: 10ch;
+    margin-right: 1.5ch;
+    &:target::before {
+      content: "⇒";
+      margin: 0 10px 0 -25px;
+    }
+  }
+  & > dd {
+    margin-left: 12ch !important;
+    overflow: visible;
+    & .refInstance {
+      margin-bottom: 0.8em;
+    }
+    & .ascii {
+      margin-bottom: 0.25em;
+    }
+  }
+}
+
+#rfc\.index\.index + ul {
+  margin-left: 0;
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  max-width: 20em;
+  margin: 1em auto 1em 0;
+
+  & .nameRole {
+    font-weight: 700;
+    margin-left: 0;
+  }
+  & .label {
+    margin: 0.5em 0;
+  }
+  & .type {
+    display: none;
+  }
+  & .alternative-contact {
+    margin: 0.5em 0 0.25em 0;
+  }
+  & .non-ascii {
+    margin: 0 0 0 2em;
+  }
+  & div.left {
+    text-align: left;
+  }
+  & div.right {
+    text-align: right;
+  }
+}
+
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses > section {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  #authors-addresses > section > h2 {
+    column-span: all;
+  }
+  /* hack for break-inside: avoid-column */
+  #authors-addresses address {
+    display: inline-block;
+    break-inside: avoid-column;
+  }
+}
+
+/* Comments */
+.rfcEditorRemove p:first-of-type {
+  font-style: italic;
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+
+@media screen {
+  #toc nav {
+    font-family: var(--font-title);
+    font-weight: 360;
+    & > ul { margin-bottom: 2em; }
+    & ul {
+      margin: 0 0 0 4px;
+      & :is(p, li) {
+        margin: 2px 0;
+      }
+    }
+  }
+  #toc a.toplink {
+    float: right;
+  }
+}
+@media not screen {
+  #toc a.toplink {
+    display: none;
+  }
+}
+
+
+/* TOC layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 1px 0 0 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 2px 0 2px 6px;
+    padding-right: 1em;
+    font-size: 18px;
+    line-height: 24px;
+    min-width: 190px;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+    &::before { /* css hamburger */
+      float: right;
+      position: relative;
+      width: 1em;
+      height: 1px;
+      left: -164px;
+      margin: 8px 0 0 0;
+      background: white none repeat scroll 0 0;
+      box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+      content: "";
+    }
+  }
+  #toc nav {
+    display: none;
+    background-color: var(--background-color);
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+  #toc.active {
+    opacity: 1;
+    & nav { display: block; }
+  }
+  /* Make the collapsed ToC header render white on gray also when it's a link */
+  #toc h2 a,
+  #toc h2 a:is(:link, :focus, :hover),
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+  #toc a.toplink {
+    margin: 2px 0.5em 0;
+  }
+}
+
+/* TOC layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 2em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+  #toc a.toplink {
+    margin: 8px 0.5em 0;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre, .vcard {
+    page-break-inside: avoid;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  :is(h2, h3, h4, h5, h6)+*, dd {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Dark mode. */
+@media (prefers-color-scheme: dark) {
+:root {
+  --background-color: #121212;
+  --text-color: #f0f0f0;
+  --title-color: #fff;
+  --link-color: #4da4f0;
+  --highlight-color: #282828;
+  --line-color: #444;
+  --pilcrow-weak: #444;
+  --pilcrow-strong: #666;
+  scrollbar-color: #777 #333;
+}
+}
+
+/* SVG Trick: a prefix match works because only black and white are allowed */
+svg :is([stroke="black"], [stroke^="#000"]) {
+  stroke: var(--text-color);
+}
+svg :is([stroke="white"], [stroke^="#fff"]) {
+  stroke: var(--background-color);
+}
+svg :is([fill="black"], [fill^="#000"], :not([fill])) {
+  fill: var(--text-color);
+}
+svg :is([fill="white"], [fill^="#fff"]) {
+  fill: var(--background-color);
+}
+</style>
+
+</head>
+<body class="xml2rfc">
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">draft-ietf-ippm-encrypted-pdmv2</td>
+<td class="right">January 2026</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Elkins, et al.</td>
+<td class="center">Expires 20 July 2026</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">Internet Engineering Task Force</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-ietf-ippm-encrypted-pdmv2-latest</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2026-01-16" class="published">16 January 2026</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Standards Track</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2026-07-20">20 July 2026</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">N. Elkins</div>
+<div class="org">Inside Products, Inc.</div>
+</div>
+<div class="author">
+      <div class="author-name">M. Ackermann</div>
+<div class="org">BCBS Michigan</div>
+</div>
+<div class="author">
+      <div class="author-name">A. Deshpande</div>
+<div class="org">NITK Surathkal/Google</div>
+</div>
+<div class="author">
+      <div class="author-name">T. Pecorella</div>
+<div class="org">University of Florence</div>
+</div>
+<div class="author">
+      <div class="author-name">A. Rashid</div>
+<div class="org">Politecnico di Bari</div>
+</div>
+<div class="author">
+      <div class="author-name">L. Fedi</div>
+<div class="org">University of Florence</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">IPv6 Performance and Diagnostic Metrics Version 2 (PDMv2) Destination Option</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">RFC 8250 defines an IPv6 Destination Option that carries Performance and
+Diagnostic Metrics (PDM) such as sequence numbers and timing information.
+While useful for measurement and troubleshooting, clear-text PDM data may
+expose operational characteristics of endpoints and networks.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">This document defines  PDMv2 , a revised version of PDM that introduces a
+ registration-based security model . Instead of specifying cryptographic
+algorithms or inline key negotiation, PDMv2 relies on a  prior registration
+process  to authenticate entities, authorize participation, and establish
+shared secrets. These secrets are then used by endpoints and authorized
+analyzers to protect and interpret PDMv2 data according to local policy.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-3">This document specifies the PDMv2 semantics, header structure, and operational
+model. Cryptographic algorithms, key derivation functions, and cipher
+negotiation are explicitly out of scope.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-about-this-document">
+<a href="#name-about-this-document" class="section-name selfRef">About This Document</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">
+        The latest revision of this draft can be found at <span><a href="https://ameyand.github.io/PDMv2/draft-elkins-ippm-encrypted-pdmv2.html">https://ameyand.github.io/PDMv2/draft-elkins-ippm-encrypted-pdmv2.html</a></span>.
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-ietf-ippm-encrypted-pdmv2/">https://datatracker.ietf.org/doc/draft-ietf-ippm-encrypted-pdmv2/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+<p id="section-note.1-3">
+        Discussion of this document takes place on the
+        IP Performance Measurement Working Group mailing list (<span><a href="mailto:ippm@ietf.org">mailto:ippm@ietf.org</a></span>),
+        which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/ippm/">https://mailarchive.ietf.org/arch/browse/ippm/</a></span>.
+        Subscribe at <span><a href="https://www.ietf.org/mailman/listinfo/ippm/">https://www.ietf.org/mailman/listinfo/ippm/</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+<p id="section-note.1-4">Source for this draft and an issue tracker can be found at
+        <span><a href="https://github.com/ameyand/PDMv2">https://github.com/ameyand/PDMv2</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 20 July 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2026 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Revised BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-used-in-this-do" class="internal xref">Conventions used in this document</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-design-goals" class="internal xref">Design Goals</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-pdmv2-foundational-principl" class="internal xref">PDMv2 Foundational Principles</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-registration-framework-over" class="internal xref">Registration Framework Overview</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-registration-objectives" class="internal xref">Registration Objectives</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-registration-participants" class="internal xref">Registration Participants</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-registration-transport" class="internal xref">Registration Transport</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-pdmv2-destination-options" class="internal xref">PDMv2 Destination Options</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-use-of-ipv6-destination-opt" class="internal xref">Use of IPv6 Destination Options</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-metrics" class="internal xref">Metrics</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.3">
+                <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="auto internal xref">6.3</a>.  <a href="#name-global-pointer" class="internal xref">Global Pointer</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-pdmv2-header-format" class="internal xref">PDMv2 Header Format</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-operational-model" class="internal xref">Operational Model</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-registration-phase" class="internal xref">Registration Phase</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-measurement-phase" class="internal xref">Measurement Phase</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3">
+                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-analysis-phase" class="internal xref">Analysis Phase</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-privacy-considerations" class="internal xref">Privacy Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#section-12" class="auto internal xref">12</a>. <a href="#name-contributors" class="internal xref">Contributors</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
+            <p id="section-toc.1-1.13.1"><a href="#section-13" class="auto internal xref">13</a>. <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.1">
+                <p id="section-toc.1-1.13.2.1.1"><a href="#section-13.1" class="auto internal xref">13.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2">
+                <p id="section-toc.1-1.13.2.2.1"><a href="#section-13.2" class="auto internal xref">13.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
+            <p id="section-toc.1-1.14.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-change-log" class="internal xref">Change Log</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15">
+            <p id="section-toc.1-1.15.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-open-issues" class="internal xref">Open Issues</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16">
+            <p id="section-toc.1-1.16.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">The Performance and Diagnostic Metrics (PDM) Destination Option defined in
+RFC 8250 provides packet sequence numbers and timing information to support
+performance measurement and diagnostics. While effective, transmitting such
+information in clear text can reveal details about endpoint behavior,
+processing capability, and network characteristics.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">PDMv2 enhances PDM by enabling secure operation through a
+registration-first architecture . Security-sensitive material is
+established out of band, prior to data transmission, and is not negotiated
+inline with PDMv2 traffic. This approach preserves the lightweight nature of
+PDM while avoiding tight coupling to transport-layer security protocols.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">PDMv2 operates entirely at the IPv6 layer and applies uniformly to TCP, UDP,
+ICMP, QUIC, and other upper-layer protocols. Intermediate devices are not
+required to decrypt or interpret PDMv2 contents.<a href="#section-1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="conventions-used-in-this-document">
+<section id="section-2">
+      <h2 id="name-conventions-used-in-this-do">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-conventions-used-in-this-do" class="section-name selfRef">Conventions used in this document</a>
+      </h2>
+<p id="section-2-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
+"<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
+described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
+appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="design-goals">
+<section id="section-3">
+      <h2 id="name-design-goals">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-design-goals" class="section-name selfRef">Design Goals</a>
+      </h2>
+<p id="section-3-1">PDMv2 is designed with the following goals:<a href="#section-3-1" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-3-2.1">
+          <p id="section-3-2.1.1">Maintain compatibility with the operational model of RFC 8250<a href="#section-3-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal ulEmpty" id="section-3-2.2">
+          <p id="section-3-2.2.1">Avoid inline cryptographic handshakes at the IP layer<a href="#section-3-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal ulEmpty" id="section-3-2.3">
+          <p id="section-3-2.3.1">Support heterogeneous transport protocols and non-transport flows<a href="#section-3-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal ulEmpty" id="section-3-2.4">
+          <p id="section-3-2.4.1">Enable offline analysis by authorized entities<a href="#section-3-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal ulEmpty" id="section-3-2.5">
+          <p id="section-3-2.5.1">Integrate cleanly with existing authentication and authorization
+infrastructures<a href="#section-3-2.5.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+</section>
+</div>
+<div id="pdmv2-foundational-principles">
+<section id="section-4">
+      <h2 id="name-pdmv2-foundational-principl">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-pdmv2-foundational-principl" class="section-name selfRef">PDMv2 Foundational Principles</a>
+      </h2>
+<p id="section-4-1">PDMv2 adheres to the following foundational principles:<a href="#section-4-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="olPercent" id="section-4-2">
+<dt>1.</dt>
+<dd id="section-4-2.1">
+          <p id="section-4-2.1.1">Registration-First Security:  All security context used by PDMv2 is
+established during a prior registration phase. No cryptographic
+negotiation occurs during PDMv2 packet exchange.<a href="#section-4-2.1.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt>2.</dt>
+<dd id="section-4-2.2">
+          <p id="section-4-2.2.1">IP-Layer Independence:  PDMv2 security does not depend on TCP, TLS,
+QUIC, or any specific transport protocol.<a href="#section-4-2.2.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt>3.</dt>
+<dd id="section-4-2.3">
+          <p id="section-4-2.3.1">Minimal On-Path Impact:  Routers and intermediate nodes forward PDMv2
+packets without decryption or inspection.<a href="#section-4-2.3.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt>4.</dt>
+<dd id="section-4-2.4">
+          <p id="section-4-2.4.1">Offline Decryption and Analysis:  PDMv2 data <span class="bcp14">MAY</span> be collected and
+analyzed after transmission. Real-time interpretation is optional and
+deployment-specific.<a href="#section-4-2.4.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt>5.</dt>
+<dd id="section-4-2.5">
+          <p id="section-4-2.5.1">Separation of Specification Scope:  This document defines protocol
+behavior and data formats, not cryptographic algorithms.<a href="#section-4-2.5.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt>6.</dt>
+<dd id="section-4-2.6">
+          <p id="section-4-2.6.1">Explicit Authorization:  Only registered and authorized entities may
+emit, receive, or analyze protected PDMv2 data.<a href="#section-4-2.6.1" class="pilcrow">¶</a></p>
+</dd>
+      <dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="registration-framework-overview">
+<section id="section-5">
+      <h2 id="name-registration-framework-over">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-registration-framework-over" class="section-name selfRef">Registration Framework Overview</a>
+      </h2>
+<p id="section-5-1">PDMv2 relies on an external registration system to establish trust and shared
+context between participating entities.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<div id="registration-objectives">
+<section id="section-5.1">
+        <h3 id="name-registration-objectives">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-registration-objectives" class="section-name selfRef">Registration Objectives</a>
+        </h3>
+<p id="section-5.1-1">A registration system used with PDMv2 <span class="bcp14">MUST</span>:<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-5.1-2.1">
+            <p id="section-5.1-2.1.1">Authenticate participating entities<a href="#section-5.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal ulEmpty" id="section-5.1-2.2">
+            <p id="section-5.1-2.2.1">Authorize PDMv2 usage<a href="#section-5.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal ulEmpty" id="section-5.1-2.3">
+            <p id="section-5.1-2.3.1">Establish one or more shared secrets or credentials<a href="#section-5.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal ulEmpty" id="section-5.1-2.4">
+            <p id="section-5.1-2.4.1">Enable analyzers to interpret PDMv2 data<a href="#section-5.1-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal ulEmpty" id="section-5.1-2.5">
+            <p id="section-5.1-2.5.1">Support revocation and lifecycle management<a href="#section-5.1-2.5.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="registration-participants">
+<section id="section-5.2">
+        <h3 id="name-registration-participants">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-registration-participants" class="section-name selfRef">Registration Participants</a>
+        </h3>
+<p id="section-5.2-1">The following logical roles are assumed:<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-5.2-2.1">
+            <p id="section-5.2-2.1.1">Client : An endpoint that initiates communication and emits PDMv2 data<a href="#section-5.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal ulEmpty" id="section-5.2-2.2">
+            <p id="section-5.2-2.2.1">Server : An endpoint that receives communication and emits PDMv2 data<a href="#section-5.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal ulEmpty" id="section-5.2-2.3">
+            <p id="section-5.2-2.3.1">Authentication Server (AS) : A trusted entity that performs
+  authentication and authorization<a href="#section-5.2-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal ulEmpty" id="section-5.2-2.4">
+            <p id="section-5.2-2.4.1">Analyzer : An authorized entity that interprets collected PDMv2 data<a href="#section-5.2-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-5.2-3">An implementation <span class="bcp14">MAY</span> combine roles within a single system.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="registration-transport">
+<section id="section-5.3">
+        <h3 id="name-registration-transport">
+<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-registration-transport" class="section-name selfRef">Registration Transport</a>
+        </h3>
+<p id="section-5.3-1">The registration exchange <span class="bcp14">MUST</span> be protected by a secure channel. The choice
+of transport and security protocol is out of scope for this document.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="pdmv2-destination-options">
+<section id="section-6">
+      <h2 id="name-pdmv2-destination-options">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-pdmv2-destination-options" class="section-name selfRef">PDMv2 Destination Options</a>
+      </h2>
+<div id="use-of-ipv6-destination-options">
+<section id="section-6.1">
+        <h3 id="name-use-of-ipv6-destination-opt">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-use-of-ipv6-destination-opt" class="section-name selfRef">Use of IPv6 Destination Options</a>
+        </h3>
+<p id="section-6.1-1">PDMv2 is carried as an IPv6 Destination Option within the Destination Options
+Header as defined in RFC 8200. Processing rules from RFC 8250 continue to
+apply unless explicitly updated by this document.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="metrics">
+<section id="section-6.2">
+        <h3 id="name-metrics">
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-metrics" class="section-name selfRef">Metrics</a>
+        </h3>
+<p id="section-6.2-1">PDMv2 supports the following metrics:<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-6.2-2.1">
+            <p id="section-6.2-2.1.1">Packet Sequence Number (This Packet)<a href="#section-6.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal ulEmpty" id="section-6.2-2.2">
+            <p id="section-6.2-2.2.1">Packet Sequence Number (Last Received)<a href="#section-6.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal ulEmpty" id="section-6.2-2.3">
+            <p id="section-6.2-2.3.1">Delta Time Last Received<a href="#section-6.2-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal ulEmpty" id="section-6.2-2.4">
+            <p id="section-6.2-2.4.1">Delta Time Last Sent<a href="#section-6.2-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal ulEmpty" id="section-6.2-2.5">
+            <p id="section-6.2-2.5.1">Global Pointer<a href="#section-6.2-2.5.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-6.2-3">These metrics have the same semantics as in RFC 8250, with the addition of
+the Global Pointer.<a href="#section-6.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="global-pointer">
+<section id="section-6.3">
+        <h3 id="name-global-pointer">
+<a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-global-pointer" class="section-name selfRef">Global Pointer</a>
+        </h3>
+<p id="section-6.3-1">The Global Pointer provides a coarse indicator of packet transmission
+activity by an endpoint. Separate counters are maintained for link-local
+and global unicast source addresses.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="pdmv2-header-format">
+<section id="section-7">
+      <h2 id="name-pdmv2-header-format">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-pdmv2-header-format" class="section-name selfRef">PDMv2 Header Format</a>
+      </h2>
+<p id="section-7-1">PDMv2 uses a single header format. Whether metric contents are protected
+or unprotected is determined by local policy and registration context.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7-2">
+<pre>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |  Option Type  | Option Length | Version |        Epoch        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                Packet Sequence Number (This)                  |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                Packet Sequence Number (Last)                  |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                       Global Pointer                          |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |  ScaleDTLR    |  ScaleDTLS    |           Reserved            |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |   Delta Time Last Received    |    Delta Time Last Sent       |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</pre><a href="#section-7-2" class="pilcrow">¶</a>
+</div>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-7-3.1">
+          <p id="section-7-3.1.1">Option Type<a href="#section-7-3.1.1" class="pilcrow">¶</a></p>
+<p id="section-7-3.1.2">
+0x0F<a href="#section-7-3.1.2" class="pilcrow">¶</a></p>
+<p id="section-7-3.1.3">
+8-bit unsigned integer.  The Option Type is adopted from RFC 8250 <span>[<a href="#RFC8250" class="cite xref">RFC8250</a>]</span>.<a href="#section-7-3.1.3" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal ulEmpty" id="section-7-3.2">
+          <p id="section-7-3.2.1">Option Length<a href="#section-7-3.2.1" class="pilcrow">¶</a></p>
+<p id="section-7-3.2.2">
+0x22: Unencrypted PDM<a href="#section-7-3.2.2" class="pilcrow">¶</a></p>
+<p id="section-7-3.2.3">
+0x22: Encrypted PDM<a href="#section-7-3.2.3" class="pilcrow">¶</a></p>
+<p id="section-7-3.2.4">
+8-bit unsigned integer.  Length of the option, in octets, excluding the Option
+  Type and Option Length fields.<a href="#section-7-3.2.4" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal ulEmpty" id="section-7-3.3">
+          <p id="section-7-3.3.1">Version Number<a href="#section-7-3.3.1" class="pilcrow">¶</a></p>
+<p id="section-7-3.3.2">
+0x2<a href="#section-7-3.3.2" class="pilcrow">¶</a></p>
+<p id="section-7-3.3.3">
+4-bit unsigned number.<a href="#section-7-3.3.3" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal ulEmpty" id="section-7-3.4">
+          <p id="section-7-3.4.1">Epoch<a href="#section-7-3.4.1" class="pilcrow">¶</a></p>
+<p id="section-7-3.4.2">
+12-bit unsigned number.<a href="#section-7-3.4.2" class="pilcrow">¶</a></p>
+<p id="section-7-3.4.3">
+Epoch field is used to indicate the valid SessionTemporaryKey.<a href="#section-7-3.4.3" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal ulEmpty" id="section-7-3.5">
+          <p id="section-7-3.5.1">Packet Sequence Number This Packet (PSNTP)<a href="#section-7-3.5.1" class="pilcrow">¶</a></p>
+<p id="section-7-3.5.2">
+32-bit unsigned number.<a href="#section-7-3.5.2" class="pilcrow">¶</a></p>
+<p id="section-7-3.5.3">
+This field is initialized at a random number and is incremented
+  sequentially for each packet of the 5-tuple.<a href="#section-7-3.5.3" class="pilcrow">¶</a></p>
+<p id="section-7-3.5.4">
+This field + Epoch are used in the Encrypted PDMv2 as the encryption
+  nonce. The nonce <span class="bcp14">MUST NOT</span> be reused in different sessions.<a href="#section-7-3.5.4" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal ulEmpty" id="section-7-3.6">
+          <p id="section-7-3.6.1">Packet Sequence Number Last Received (PSNLR)<a href="#section-7-3.6.1" class="pilcrow">¶</a></p>
+<p id="section-7-3.6.2">
+32-bit unsigned number.<a href="#section-7-3.6.2" class="pilcrow">¶</a></p>
+<p id="section-7-3.6.3">
+This field is the PSNTP of the last received packet on the                <br>
+  5-tuple.<a href="#section-7-3.6.3" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal ulEmpty" id="section-7-3.7">
+          <p id="section-7-3.7.1">Global Pointer<a href="#section-7-3.7.1" class="pilcrow">¶</a></p>
+<p id="section-7-3.7.2">
+32-bit unsigned number.<a href="#section-7-3.7.2" class="pilcrow">¶</a></p>
+<p id="section-7-3.7.3">
+Global Pointer is initialized to 1 for the different source
+  address types and incremented sequentially for each packet with                   <br>
+  the corresponding source address type.<a href="#section-7-3.7.3" class="pilcrow">¶</a></p>
+<p id="section-7-3.7.4">
+This field stores the Global Pointer type corresponding to the
+  SADDR type of the packet.<a href="#section-7-3.7.4" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal ulEmpty" id="section-7-3.8">
+          <p id="section-7-3.8.1">Scale Delta Time Last Received (SCALEDTLR)<a href="#section-7-3.8.1" class="pilcrow">¶</a></p>
+<p id="section-7-3.8.2">
+8-bit unsigned number.<a href="#section-7-3.8.2" class="pilcrow">¶</a></p>
+<p id="section-7-3.8.3">
+This is the scaling value for the Delta Time Last Sent
+  (DELTATLS) field.<a href="#section-7-3.8.3" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal ulEmpty" id="section-7-3.9">
+          <p id="section-7-3.9.1">Scale Delta Time Last Sent (SCALEDTLS)<a href="#section-7-3.9.1" class="pilcrow">¶</a></p>
+<p id="section-7-3.9.2">
+8-bit unsigned number.<a href="#section-7-3.9.2" class="pilcrow">¶</a></p>
+<p id="section-7-3.9.3">
+This is the scaling value for the Delta Time Last Sent
+  (DELTATLS) field.<a href="#section-7-3.9.3" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal ulEmpty" id="section-7-3.10">
+          <p id="section-7-3.10.1">Reserved Bits<a href="#section-7-3.10.1" class="pilcrow">¶</a></p>
+<p id="section-7-3.10.2">
+16-bits.<a href="#section-7-3.10.2" class="pilcrow">¶</a></p>
+<p id="section-7-3.10.3">
+Reserved bits for future use.  They <span class="bcp14">MUST</span> be set to zero on
+  transmission and ignored on receipt per <span>[<a href="#RFC3552" class="cite xref">RFC3552</a>]</span>.<a href="#section-7-3.10.3" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal ulEmpty" id="section-7-3.11">
+          <p id="section-7-3.11.1">Delta Time Last Received (DELTATLR)<a href="#section-7-3.11.1" class="pilcrow">¶</a></p>
+<p id="section-7-3.11.2">
+16-bit unsigned integer.<a href="#section-7-3.11.2" class="pilcrow">¶</a></p>
+<p id="section-7-3.11.3">
+The value is set according to the scale in SCALEDTLR.<a href="#section-7-3.11.3" class="pilcrow">¶</a></p>
+<p id="section-7-3.11.4">
+Delta Time Last Received =
+  (send time packet n - receive time packet (n - 1))<a href="#section-7-3.11.4" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal ulEmpty" id="section-7-3.12">
+          <p id="section-7-3.12.1">Delta Time Last Sent (DELTATLS)<a href="#section-7-3.12.1" class="pilcrow">¶</a></p>
+<p id="section-7-3.12.2">
+16-bit unsigned integer.<a href="#section-7-3.12.2" class="pilcrow">¶</a></p>
+<p id="section-7-3.12.3">
+The value is set according to the scale in SCALEDTLS.<a href="#section-7-3.12.3" class="pilcrow">¶</a></p>
+<p id="section-7-3.12.4">
+Delta Time Last Sent =
+  (receive time packet n - send time packet (n - 1))<a href="#section-7-3.12.4" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+</section>
+</div>
+<div id="operational-model">
+<section id="section-8">
+      <h2 id="name-operational-model">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-operational-model" class="section-name selfRef">Operational Model</a>
+      </h2>
+<div id="registration-phase">
+<section id="section-8.1">
+        <h3 id="name-registration-phase">
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-registration-phase" class="section-name selfRef">Registration Phase</a>
+        </h3>
+<p id="section-8.1-1">Prior to sending PDMv2 data:<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="olPercent" id="section-8.1-2">
+<dt>7.</dt>
+<dd id="section-8.1-2.1">
+            <p id="section-8.1-2.1.1">The endpoint authenticates to an Authentication Server<a href="#section-8.1-2.1.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt>8.</dt>
+<dd id="section-8.1-2.2">
+            <p id="section-8.1-2.2.1">Authorization for PDMv2 usage is evaluated<a href="#section-8.1-2.2.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt>9.</dt>
+<dd id="section-8.1-2.3">
+            <p id="section-8.1-2.3.1">Shared secret(s) or credentials are provisioned<a href="#section-8.1-2.3.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="measurement-phase">
+<section id="section-8.2">
+        <h3 id="name-measurement-phase">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-measurement-phase" class="section-name selfRef">Measurement Phase</a>
+        </h3>
+<span class="break"></span><dl class="olPercent" id="section-8.2-1">
+<dt>10.</dt>
+<dd id="section-8.2-1.1">
+            <p id="section-8.2-1.1.1">Endpoints send PDMv2 headers according to local policy<a href="#section-8.2-1.1.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt>11.</dt>
+<dd id="section-8.2-1.2">
+            <p id="section-8.2-1.2.1">No cryptographic negotiation occurs on the wire<a href="#section-8.2-1.2.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt>12.</dt>
+<dd id="section-8.2-1.3">
+            <p id="section-8.2-1.3.1">Intermediate devices forward packets unchanged<a href="#section-8.2-1.3.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="analysis-phase">
+<section id="section-8.3">
+        <h3 id="name-analysis-phase">
+<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-analysis-phase" class="section-name selfRef">Analysis Phase</a>
+        </h3>
+<span class="break"></span><dl class="olPercent" id="section-8.3-1">
+<dt>13.</dt>
+<dd id="section-8.3-1.1">
+            <p id="section-8.3-1.1.1">Authorized analyzers access collected data<a href="#section-8.3-1.1.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt>14.</dt>
+<dd id="section-8.3-1.2">
+            <p id="section-8.3-1.2.1">Interpretation uses registration-derived context<a href="#section-8.3-1.2.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</section>
+</div>
+</section>
+</div>
+<div id="security-considerations">
+<section id="section-9">
+      <h2 id="name-security-considerations">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-9-1">PDMv2 reduces exposure of sensitive operational metadata by ensuring that
+only registered and authorized entities can meaningfully interpret
+measurement data.<a href="#section-9-1" class="pilcrow">¶</a></p>
+<p id="section-9-2">This document intentionally does not specify cryptographic mechanisms.
+Security strength therefore depends on the chosen registration system, its
+authentication methods, and its key management practices.<a href="#section-9-2" class="pilcrow">¶</a></p>
+<p id="section-9-3">Implementations <span class="bcp14">SHOULD</span> support:<a href="#section-9-3" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="olPercent" id="section-9-4">
+<dt>15.</dt>
+<dd id="section-9-4.1">
+          <p id="section-9-4.1.1">Key rotation<a href="#section-9-4.1.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt>16.</dt>
+<dd id="section-9-4.2">
+          <p id="section-9-4.2.1">Credential revocation<a href="#section-9-4.2.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt>17.</dt>
+<dd id="section-9-4.3">
+          <p id="section-9-4.3.1">Logging of anomalous PDMv2 behavior<a href="#section-9-4.3.1" class="pilcrow">¶</a></p>
+</dd>
+      <dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="privacy-considerations">
+<section id="section-10">
+      <h2 id="name-privacy-considerations">
+<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-privacy-considerations" class="section-name selfRef">Privacy Considerations</a>
+      </h2>
+<p id="section-10-1">PDMv2 metrics may reveal traffic patterns or operational characteristics.
+Registration-based authorization limits access to such data to approved
+entities. Deployments <span class="bcp14">SHOULD</span> consider enabling PDMv2 on multiple flows to
+reduce metadata distinguishability.<a href="#section-10-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="section-11">
+      <h2 id="name-iana-considerations">
+<a href="#section-11" class="section-number selfRef">11. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-11-1">No new IANA actions are required by this document.<a href="#section-11-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="contributors">
+<section id="section-12">
+      <h2 id="name-contributors">
+<a href="#section-12" class="section-number selfRef">12. </a><a href="#name-contributors" class="section-name selfRef">Contributors</a>
+      </h2>
+<p id="section-12-1">The authors wish to thank NITK Surathkal for their support and
+assistance in coding and review.  In particular Dr. Mohit Tahiliani
+and Abhishek Kumar (now with Google).  Thanks also to Priyanka Sinha
+for her comments.  Thanks to the India Internet Engineering Society
+(iiesoc.in), in particular Dhruv Dhody, for his comments and for
+providing the funding for servers needed for protocol development.
+Thanks to Balajinaidu V, Amogh Umesh, and Chinmaya Sharma of NITK for
+developing the PDMv2 implementation for testing.<a href="#section-12-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-combined-references">
+<section id="section-13">
+      <h2 id="name-references">
+<a href="#section-13" class="section-number selfRef">13. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<div id="sec-normative-references">
+<section id="section-13.1">
+        <h3 id="name-normative-references">
+<a href="#section-13.1" class="section-number selfRef">13.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
+<dl class="references">
+<dt id="RFC2119">[RFC2119]</dt>
+        <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC3552">[RFC3552]</dt>
+        <dd>
+<span class="refAuthor">Rescorla, E.</span> and <span class="refAuthor">B. Korver</span>, <span class="refTitle">"Guidelines for Writing RFC Text on Security Considerations"</span>, <span class="seriesInfo">BCP 72</span>, <span class="seriesInfo">RFC 3552</span>, <span class="seriesInfo">DOI 10.17487/RFC3552</span>, <time datetime="2003-07" class="refDate">July 2003</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc3552">https://www.rfc-editor.org/rfc/rfc3552</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8174">[RFC8174]</dt>
+        <dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8200">[RFC8200]</dt>
+        <dd>
+<span class="refAuthor">Deering, S.</span> and <span class="refAuthor">R. Hinden</span>, <span class="refTitle">"Internet Protocol, Version 6 (IPv6) Specification"</span>, <span class="seriesInfo">STD 86</span>, <span class="seriesInfo">RFC 8200</span>, <span class="seriesInfo">DOI 10.17487/RFC8200</span>, <time datetime="2017-07" class="refDate">July 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8200">https://www.rfc-editor.org/rfc/rfc8200</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8250">[RFC8250]</dt>
+      <dd>
+<span class="refAuthor">Elkins, N.</span>, <span class="refAuthor">Hamilton, R.</span>, and <span class="refAuthor">M. Ackermann</span>, <span class="refTitle">"IPv6 Performance and Diagnostic Metrics (PDM) Destination Option"</span>, <span class="seriesInfo">RFC 8250</span>, <span class="seriesInfo">DOI 10.17487/RFC8250</span>, <time datetime="2017-09" class="refDate">September 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8250">https://www.rfc-editor.org/rfc/rfc8250</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="sec-informative-references">
+<section id="section-13.2">
+        <h3 id="name-informative-references">
+<a href="#section-13.2" class="section-number selfRef">13.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="RFC1421">[RFC1421]</dt>
+        <dd>
+<span class="refAuthor">Linn, J.</span>, <span class="refTitle">"Privacy Enhancement for Internet Electronic Mail: Part I: Message Encryption and Authentication Procedures"</span>, <span class="seriesInfo">RFC 1421</span>, <span class="seriesInfo">DOI 10.17487/RFC1421</span>, <time datetime="1993-02" class="refDate">February 1993</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc1421">https://www.rfc-editor.org/rfc/rfc1421</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4303">[RFC4303]</dt>
+        <dd>
+<span class="refAuthor">Kent, S.</span>, <span class="refTitle">"IP Encapsulating Security Payload (ESP)"</span>, <span class="seriesInfo">RFC 4303</span>, <span class="seriesInfo">DOI 10.17487/RFC4303</span>, <time datetime="2005-12" class="refDate">December 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4303">https://www.rfc-editor.org/rfc/rfc4303</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6973">[RFC6973]</dt>
+        <dd>
+<span class="refAuthor">Cooper, A.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Aboba, B.</span>, <span class="refAuthor">Peterson, J.</span>, <span class="refAuthor">Morris, J.</span>, <span class="refAuthor">Hansen, M.</span>, and <span class="refAuthor">R. Smith</span>, <span class="refTitle">"Privacy Considerations for Internet Protocols"</span>, <span class="seriesInfo">RFC 6973</span>, <span class="seriesInfo">DOI 10.17487/RFC6973</span>, <time datetime="2013-07" class="refDate">July 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6973">https://www.rfc-editor.org/rfc/rfc6973</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9180">[RFC9180]</dt>
+        <dd>
+<span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Bhargavan, K.</span>, <span class="refAuthor">Lipp, B.</span>, and <span class="refAuthor">C. Wood</span>, <span class="refTitle">"Hybrid Public Key Encryption"</span>, <span class="seriesInfo">RFC 9180</span>, <span class="seriesInfo">DOI 10.17487/RFC9180</span>, <time datetime="2022-02" class="refDate">February 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9180">https://www.rfc-editor.org/rfc/rfc9180</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9288">[RFC9288]</dt>
+      <dd>
+<span class="refAuthor">Gont, F.</span> and <span class="refAuthor">W. Liu</span>, <span class="refTitle">"Recommendations on the Filtering of IPv6 Packets Containing IPv6 Extension Headers at Transit Routers"</span>, <span class="seriesInfo">RFC 9288</span>, <span class="seriesInfo">DOI 10.17487/RFC9288</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9288">https://www.rfc-editor.org/rfc/rfc9288</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+</section>
+</div>
+<div id="change-log">
+<section id="appendix-A">
+      <h2 id="name-change-log">
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-change-log" class="section-name selfRef">Change Log</a>
+      </h2>
+<p id="appendix-A-1">Note to RFC Editor: if this document does not obsolete an existing
+RFC, please remove this appendix before publication as an RFC.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="open-issues">
+<section id="appendix-B">
+      <h2 id="name-open-issues">
+<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-open-issues" class="section-name selfRef">Open Issues</a>
+      </h2>
+<p id="appendix-B-1">Note to RFC Editor: please remove this appendix before publication as
+an RFC.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-C">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Nalini Elkins</span></div>
+<div dir="auto" class="left"><span class="org">Inside Products, Inc.</span></div>
+<div dir="auto" class="left"><span class="country-name">United States</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:nalini.elkins@insidethestack.com" class="email">nalini.elkins@insidethestack.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Michael Ackermann</span></div>
+<div dir="auto" class="left"><span class="org">BCBS Michigan</span></div>
+<div dir="auto" class="left"><span class="country-name">United States</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:mackermann@bcbsm.com" class="email">mackermann@bcbsm.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Ameya Deshpande</span></div>
+<div dir="auto" class="left"><span class="org">NITK Surathkal/Google</span></div>
+<div dir="auto" class="left"><span class="country-name">India</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:ameyanrd@gmail.com" class="email">ameyanrd@gmail.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Tommaso Pecorella</span></div>
+<div dir="auto" class="left"><span class="org">University of Florence</span></div>
+<div dir="auto" class="left"><span class="country-name">Italy</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:tommaso.pecorella@unifi.it" class="email">tommaso.pecorella@unifi.it</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Adnan Rashid</span></div>
+<div dir="auto" class="left"><span class="org">Politecnico di Bari</span></div>
+<div dir="auto" class="left"><span class="country-name">Italy</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:adnan.rashid@poliba.it" class="email">adnan.rashid@poliba.it</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Lorenzo Fedi</span></div>
+<div dir="auto" class="left"><span class="org">University of Florence</span></div>
+<div dir="auto" class="left"><span class="country-name">Italy</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:lorenzo.fedi3@edu.unifi.it" class="email">lorenzo.fedi3@edu.unifi.it</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
