@@ -160,6 +160,7 @@ behavior and data formats, not cryptographic algorithms.
 
 - Explicit Authorization:  Only registered and authorized entities may
 emit, receive, or analyze protected PDMv2 data.
+{: req_p}
 
 # Registration Framework Overview
 
@@ -367,6 +368,7 @@ Prior to sending PDMv2 data:
 - The endpoint authenticates to an Authentication Server
 - Authorization for PDMv2 usage is evaluated
 - Shared secret(s) or credentials are provisioned
+{: req_om_rp}
 
 ## Measurement Phase
 
