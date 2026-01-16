@@ -435,8 +435,8 @@ developing the PDMv2 implementation for testing.
 
 # Example: RADIUS / EAP-Based Registration
 
-This appendix illustrates one possible registration mechanism that 
-satisfies the requirements defined in Section 4. Other mechanisms 
+This appendix illustrates one possible registration mechanism that
+satisfies the requirements defined in Section 4. Other mechanisms
 may be used.
 
 
@@ -457,11 +457,11 @@ infrastructure and operational experience.
 
 The following entities participate in this example:
 
--  PDMv2 Endpoint   
+-  PDMv2 Endpoint
   A Client or Server that will emit or receive PDMv2 data.
--  Authentication Server (AS)   
+-  Authentication Server (AS)
   A RADIUS server that performs authentication and authorization using EAP.
--  Analyzer   
+-  Analyzer
   An authorized entity that may interpret or decrypt collected PDMv2 data
   using registration-derived context.
 
@@ -475,32 +475,32 @@ A typical registration flow proceeds as follows:
 
 {: req_rf}
 
-- Secure Channel Establishment   
+- Secure Channel Establishment
    The PDMv2 endpoint establishes a secure exchange with the Authentication
    Server. In many deployments this occurs implicitly as part of an EAP method
    protected by TLS (e.g., EAP-TLS or PEAP).
 
-- Endpoint Authentication   
+- Endpoint Authentication
    The endpoint authenticates using credentials appropriate to the deployment,
    such as certificates, credentials, tokens, or federated identity.
 
-- Authorization Decision   
+- Authorization Decision
    The Authentication Server determines whether the endpoint is authorized
    to:
    - Send PDMv2 data
    - Receive PDMv2 data
    - Participate in specific measurement domains
 
-- Master Secret Establishment   
+- Master Secret Establishment
    Upon successful authentication, EAP produces keying material (e.g., a
    Master Session Key). This keying material is made available to the endpoint
    and retained by the Authentication Server according to local policy.
 
-- Provisioning of Context   
+- Provisioning of Context
    The endpoint associates the received master secret with local PDMv2 policy,
    such as permitted peers, scope, and lifetime.
 
-- Analyzer Enablement (Optional)   
+- Analyzer Enablement (Optional)
    If offline analysis is required, the Authentication Server provisions
    appropriate authorization or keying context to approved analyzers.
 
