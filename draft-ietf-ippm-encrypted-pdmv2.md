@@ -504,8 +504,6 @@ A typical registration flow proceeds as follows:
    If offline analysis is required, the Authentication Server provisions
    appropriate authorization or keying context to approved analyzers.
 
-{: req_rf}
-
 ## Registration Flow (Illustrative ASCII Diagram)
 
 The following diagram illustrates the example flow. It is provided for
