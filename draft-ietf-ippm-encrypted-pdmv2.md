@@ -405,8 +405,7 @@ Implementations SHOULD support:
 
 {: req_sc}
 
-- Key rotation
-- Credential revocation
+- Forward Secracy
 - Logging of anomalous PDMv2 behavior
 
 # Privacy Considerations
@@ -433,6 +432,171 @@ developing the PDMv2 implementation for testing.
 
 
 --- back
+
+# Example: RADIUS / EAP-Based Registration
+
+This appendix illustrates one possible registration mechanism that 
+satisfies the requirements defined in Section 4. Other mechanisms 
+may be used.
+
+
+## Overview
+
+This appendix describes an example registration system for PDMv2 based on
+RADIUS with Extensible Authentication Protocol (EAP). This approach has been
+implemented and validated in a prototype environment and demonstrates that
+a shared master secret can be established prior to PDMv2 operation without
+introducing inline cryptographic negotiation at the IP layer.
+
+RADIUS and EAP are widely deployed for Authentication, Authorization, and
+Accounting (AAA) in enterprise, service provider, and federated environments
+(e.g., eduroam). Their use here is illustrative and leverages existing
+infrastructure and operational experience.
+
+## Participants
+
+The following entities participate in this example:
+
+-  PDMv2 Endpoint   
+  A Client or Server that will emit or receive PDMv2 data.
+-  Authentication Server (AS)   
+  A RADIUS server that performs authentication and authorization using EAP.
+-  Analyzer   
+  An authorized entity that may interpret or decrypt collected PDMv2 data
+  using registration-derived context.
+
+An implementation MAY combine multiple roles within a single system.
+
+## Registration Flow (Example)
+
+A typical registration flow proceeds as follows:
+
+{:req_rf: counter="bar" style="format %d."}
+
+{: req_rf}
+
+- Secure Channel Establishment   
+   The PDMv2 endpoint establishes a secure exchange with the Authentication
+   Server. In many deployments this occurs implicitly as part of an EAP method
+   protected by TLS (e.g., EAP-TLS or PEAP).
+
+- Endpoint Authentication   
+   The endpoint authenticates using credentials appropriate to the deployment,
+   such as certificates, credentials, tokens, or federated identity.
+
+- Authorization Decision   
+   The Authentication Server determines whether the endpoint is authorized
+   to:
+   - Send PDMv2 data
+   - Receive PDMv2 data
+   - Participate in specific measurement domains
+
+- Master Secret Establishment   
+   Upon successful authentication, EAP produces keying material (e.g., a
+   Master Session Key). This keying material is made available to the endpoint
+   and retained by the Authentication Server according to local policy.
+
+- Provisioning of Context   
+   The endpoint associates the received master secret with local PDMv2 policy,
+   such as permitted peers, scope, and lifetime.
+
+- Analyzer Enablement (Optional)   
+   If offline analysis is required, the Authentication Server provisions
+   appropriate authorization or keying context to approved analyzers.
+
+{: req_rf}
+
+## Registration Flow (Illustrative ASCII Diagram)
+
+The following diagram illustrates the example flow. It is provided for
+clarity only and does not define protocol behavior.
+
+~~~
+PDMv2 Endpoint              Authentication Server             Analyzer
+|                              |                               |
+|--- EAP Authentication -----> |                               |
+|<-- EAP Success / Keys ------ |                               |
+|                              |                               |
+|   (Registration Complete)    |                               |
+|                              |                               |
+|====== PDMv2 Data Flow =====> |           (out of path)       |
+|                              |                               |
+|                              |------- Authorized Access ---->|
+|                              |<------ Analysis Results ------|
+~~~
+
+## Use with PDMv2 Traffic
+
+After registration:
+
+- PDMv2 packets are sent without any inline authentication or negotiation.
+- Endpoints locally derive any session-specific context needed to protect or
+  interpret PDMv2 metrics.
+- Intermediate routers forward packets without modification or inspection.
+- Analyzers use registration-derived context to interpret collected data.
+
+The registration system is not involved in the PDMv2 data path.
+
+## Key Lifecycle Considerations
+
+In this example, the RADIUS/EAP infrastructure can support:
+
+- Periodic re-registration to refresh secrets
+- Revocation of authorization by disabling credentials
+- Federation across administrative domains
+- Separation of endpoint and analyzer privileges
+
+Specific key derivation, transformation, or protection mechanisms are
+implementation-specific and intentionally outside the scope of this document.
+
+## Example Deployment: Federated Environments (eduroam-Style)
+
+In federated environments such as global research and education networks,
+RADIUS is commonly deployed in a hierarchical or proxy-based architecture.
+An endpoint authenticates using credentials issued by its home organization,
+while authorization decisions may be enforced by visited or intermediate
+domains.
+
+This model maps naturally to PDMv2 registration:
+
+- Endpoints authenticate using existing institutional credentials
+- Authorization for PDMv2 usage can be scoped by domain, role, or policy
+- Registration secrets are derived without requiring bilateral agreements
+  between all participating domains
+
+This example demonstrates that PDMv2 registration can scale across
+organizational and administrative boundaries.
+
+## Why TLS Session Keys Are Not Reused (Informative)
+
+It may appear attractive to reuse TLS session keys for protecting PDMv2
+metrics. However, this approach is not suitable for PDMv2 for several reasons:
+
+-  Layering : PDMv2 operates at the IPv6 layer, while TLS is bound to
+  transport-layer protocols such as TCP or QUIC.
+
+-  Protocol Coverage : PDMv2 applies equally to UDP, ICMP, and other
+  non-TLS-capable protocols.
+
+-  Multiplicity of Flows : A single endpoint may emit PDMv2 data for
+  multiple concurrent flows that do not share a common TLS session.
+
+-  Analyzer Access : Offline analyzers may require access to PDMv2 data
+  without participating in live TLS sessions.
+
+-  Operational Simplicity : Registration decouples security establishment
+  from traffic patterns and avoids inline negotiation complexity.
+
+For these reasons, PDMv2 adopts a registration-based security model rather than
+reusing transport-layer session keys.
+
+## Summary
+
+This appendix demonstrates that a RADIUS/EAP-based registration system can
+satisfy the PDMv2 registration requirements defined in this document. The
+example shows that secure, scalable, and federated registration can be
+achieved using existing AAA infrastructure, without constraining PDMv2 to a
+specific authentication or cryptographic technology.
 
 
 # Change Log
