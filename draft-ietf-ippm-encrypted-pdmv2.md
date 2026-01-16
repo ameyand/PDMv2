@@ -133,6 +133,8 @@ PDMv2 is designed with the following goals:
 - Integrate cleanly with existing authentication and authorization
   infrastructures
 
+{: req_dg}
+
 # PDMv2 Foundational Principles
 
 PDMv2 adheres to the following foundational principles:
@@ -161,6 +163,8 @@ behavior and data formats, not cryptographic algorithms.
 - Explicit Authorization:  Only registered and authorized entities may
 emit, receive, or analyze protected PDMv2 data.
 
+{: req_p}
+
 # Registration Framework Overview
 
 PDMv2 relies on an external registration system to establish trust and shared
@@ -180,6 +184,8 @@ A registration system used with PDMv2 MUST:
 - Enable analyzers to interpret PDMv2 data
 - Support revocation and lifecycle management
 
+{: req_ro}
+
 ## Registration Participants
 
 The following logical roles are assumed:
@@ -193,6 +199,8 @@ The following logical roles are assumed:
 -  Authentication Server (AS) : A trusted entity that performs
   authentication and authorization
 -  Analyzer : An authorized entity that interprets collected PDMv2 data
+
+{: req_rp}
 
 An implementation MAY combine roles within a single system.
 
@@ -222,6 +230,8 @@ PDMv2 supports the following metrics:
 - Delta Time Last Received
 - Delta Time Last Sent
 - Global Pointer
+
+{: req4}
 
 These metrics have the same semantics as in RFC 8250, with the addition of
 the Global Pointer.
@@ -368,6 +378,8 @@ Prior to sending PDMv2 data:
 - Authorization for PDMv2 usage is evaluated
 - Shared secret(s) or credentials are provisioned
 
+{: req_om_rp}
+
 ## Measurement Phase
 
 {:req_om_mp: counter="bar" style="format %d."}
@@ -378,6 +390,8 @@ Prior to sending PDMv2 data:
 - No cryptographic negotiation occurs on the wire
 - Intermediate devices forward packets unchanged
 
+{: req_om_mp}
+
 ## Analysis Phase
 
 {:req_om_ap: counter="bar" style="format %d."}
@@ -386,6 +400,8 @@ Prior to sending PDMv2 data:
 
 - Authorized analyzers access collected data
 - Interpretation uses registration-derived context
+
+{: req_om_ap}
 
 # Security Considerations
 
@@ -406,6 +422,8 @@ Implementations SHOULD support:
 - Key rotation
 - Credential revocation
 - Logging of anomalous PDMv2 behavior
+
+{: req_sc}
 
 # Privacy Considerations
 
