@@ -67,14 +67,7 @@ author:
 normative:
  RFC3552:
  RFC8250:
- RFC8200:
 
-informative:
- RFC9180:
- RFC4303:
- RFC1421:
- RFC6973:
- RFC9288:
 
 --- abstract
 
@@ -83,8 +76,8 @@ Diagnostic Metrics (PDM) such as sequence numbers and timing information.
 While useful for measurement and troubleshooting, clear-text PDM data may
 expose operational characteristics of endpoints and networks.
 
-This document defines  PDMv2 , a revised version of PDM that introduces a
- registration-based security model . Instead of specifying cryptographic
+This document defines  PDMv2, a revised version of PDM that introduces a
+ registration-based security model. Instead of specifying cryptographic
 algorithms or inline key negotiation, PDMv2 relies on a  prior registration
 process  to authenticate entities, authorize participation, and establish
 shared secrets. These secrets are then used by endpoints and authorized
@@ -105,7 +98,7 @@ information in clear text can reveal details about endpoint behavior,
 processing capability, and network characteristics.
 
 PDMv2 enhances PDM by enabling secure operation through a
-registration-first architecture . Security-sensitive material is
+registration-first architecture. Security-sensitive material is
 established out of band, prior to data transmission, and is not negotiated
 inline with PDMv2 traffic. This approach preserves the lightweight nature of
 PDM while avoiding tight coupling to transport-layer security protocols.
@@ -132,6 +125,7 @@ PDMv2 is designed with the following goals:
 - Enable offline analysis by authorized entities
 - Integrate cleanly with existing authentication and authorization
   infrastructures
+{: req_dg}
 
 # PDMv2 Foundational Principles
 
@@ -180,6 +174,7 @@ A registration system used with PDMv2 MUST:
 - Establish one or more shared secrets or credentials
 - Enable analyzers to interpret PDMv2 data
 - Support revocation and lifecycle management
+{: req_ro}
 
 ## Registration Participants
 
@@ -194,6 +189,8 @@ The following logical roles are assumed:
 -  Authentication Server (AS) : A trusted entity that performs
   authentication and authorization
 -  Analyzer : An authorized entity that interprets collected PDMv2 data
+
+{: req_rp}
 
 An implementation MAY combine roles within a single system.
 
@@ -223,6 +220,8 @@ PDMv2 supports the following metrics:
 - Delta Time Last Received
 - Delta Time Last Sent
 - Global Pointer
+
+{: req4}
 
 These metrics have the same semantics as in RFC 8250, with the addition of
 the Global Pointer.
@@ -361,30 +360,18 @@ or unprotected is determined by local policy and registration context.
 
 Prior to sending PDMv2 data:
 
-{:req_om_rp: counter="bar" style="format %d."}
-
-{: req_om_rp}
 
 - The endpoint authenticates to an Authentication Server
 - Authorization for PDMv2 usage is evaluated
 - Shared secret(s) or credentials are provisioned
-{: req_om_rp}
 
 ## Measurement Phase
-
-{:req_om_mp: counter="bar" style="format %d."}
-
-{: req_om_mp}
 
 - Endpoints send PDMv2 headers according to local policy
 - No cryptographic negotiation occurs on the wire
 - Intermediate devices forward packets unchanged
 
 ## Analysis Phase
-
-{:req_om_ap: counter="bar" style="format %d."}
-
-{: req_om_ap}
 
 - Authorized analyzers access collected data
 - Interpretation uses registration-derived context
@@ -417,7 +404,15 @@ reduce metadata distinguishability.
 
 # IANA Considerations
 
-No new IANA actions are required by this document.
+This document requests the allocation of a new IPv6 Destination
+Options Header Option Type from the "Destination Options and Hop-by-	 		
+Hop Options" registry maintained by the Internet Assigned Numbers	 		
+Authority.	 		
+ 		
+The requested allocation is for the Performance and Diagnostic	 		
+Metrics Version 2 (PDMv2) option.  This option is distinct from and	 		
+independent of the Performance and Diagnostic Metrics option defined	 		
+in RFC 8250.
 
 # Contributors
 
@@ -458,11 +453,11 @@ infrastructure and operational experience.
 The following entities participate in this example:
 
 -  PDMv2 Endpoint
-  A Client or Server that will emit or receive PDMv2 data.
+A Client or Server that will emit or receive PDMv2 data.
 -  Authentication Server (AS)
-  A RADIUS server that performs authentication and authorization using EAP.
+A RADIUS server that performs authentication and authorization using EAP.
 -  Analyzer
-  An authorized entity that may interpret or decrypt collected PDMv2 data
+An authorized entity that may interpret or decrypt collected PDMv2 data
   using registration-derived context.
 
 An implementation MAY combine multiple roles within a single system.
@@ -471,9 +466,6 @@ An implementation MAY combine multiple roles within a single system.
 
 A typical registration flow proceeds as follows:
 
-{:req_rf: counter="bar" style="format %d."}
-
-{: req_rf}
 
 - Secure Channel Establishment
    The PDMv2 endpoint establishes a secure exchange with the Authentication
