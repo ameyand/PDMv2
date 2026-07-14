@@ -68,6 +68,7 @@ normative:
  RFC3552:
  RFC8250:
 
+
 --- abstract
 
 RFC 8250 defines an IPv6 Destination Option that carries Performance and
@@ -121,6 +122,7 @@ PDMv2 is designed with the following goals:
 - Enable offline analysis by authorized entities
 - Integrate cleanly with existing authentication and authorization
   infrastructures
+{: req_dg}
 
 # PDMv2 Foundational Principles
 
@@ -162,6 +164,7 @@ A registration system used with PDMv2 MUST:
 - Establish one or more shared secrets or credentials
 - Enable analyzers to interpret PDMv2 data
 - Support revocation and lifecycle management
+{: req_ro}
 
 ## Registration Participants
 
@@ -173,6 +176,7 @@ The following logical roles are assumed:
 -  Authentication Server (AS) : A trusted entity that performs
   authentication and authorization
 -  Analyzer : An authorized entity that interprets collected PDMv2 data
+
 
 
 An implementation MAY combine roles within a single system.
@@ -200,6 +204,7 @@ PDMv2 supports the following metrics:
 - Delta Time Last Received
 - Delta Time Last Sent
 - Global Pointer
+
 
 
 These metrics have the same semantics as in RFC 8250, with the addition of
@@ -426,11 +431,11 @@ infrastructure and operational experience.
 The following entities participate in this example:
 
 -  PDMv2 Endpoint
-  A Client or Server that will emit or receive PDMv2 data.
+A Client or Server that will emit or receive PDMv2 data.
 -  Authentication Server (AS)
-  A RADIUS server that performs authentication and authorization using EAP.
+A RADIUS server that performs authentication and authorization using EAP.
 -  Analyzer
-  An authorized entity that may interpret or decrypt collected PDMv2 data
+An authorized entity that may interpret or decrypt collected PDMv2 data
   using registration-derived context.
 
 An implementation MAY combine multiple roles within a single system.
