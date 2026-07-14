@@ -121,7 +121,6 @@ PDMv2 is designed with the following goals:
 - Enable offline analysis by authorized entities
 - Integrate cleanly with existing authentication and authorization
   infrastructures
-{: req_dg}
 
 # PDMv2 Foundational Principles
 
@@ -163,7 +162,6 @@ A registration system used with PDMv2 MUST:
 - Establish one or more shared secrets or credentials
 - Enable analyzers to interpret PDMv2 data
 - Support revocation and lifecycle management
-{: req_ro}
 
 ## Registration Participants
 
