@@ -5,7 +5,7 @@
 Internet Engineering Task Force                                N. Elkins
 Internet-Draft                                     Inside Products, Inc.
 Intended status: Standards Track                            M. Ackermann
-Expires: 20 July 2026                                      BCBS Michigan
+Expires: 15 January 2027                                   BCBS Michigan
                                                             A. Deshpande
                                                    NITK Surathkal/Google
                                                             T. Pecorella
@@ -14,7 +14,7 @@ Expires: 20 July 2026                                      BCBS Michigan
                                                      Politecnico di Bari
                                                                  L. Fedi
                                                   University of Florence
-                                                         16 January 2026
+                                                            14 July 2026
 
 
  IPv6 Performance and Diagnostic Metrics Version 2 (PDMv2) Destination
@@ -73,7 +73,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 July 2026.
+   This Internet-Draft will expire on 15 January 2027.
 
 Copyright Notice
 
