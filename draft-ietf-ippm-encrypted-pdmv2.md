@@ -237,100 +237,99 @@ or unprotected is determined by local policy and registration context.
 ~~~
 
 
-{:req7: style="empty"}
-- Option Type
+Option Type
 
-    0x0F
+0x0F
 
-    8-bit unsigned integer.  The Option Type is adopted from RFC 8250 [RFC8250].
+8-bit unsigned integer.  The Option Type is adopted from RFC 8250 [RFC8250].
 
-- Option Length
+Option Length
 
-    0x22: Unencrypted PDM
+0x22: Unencrypted PDM
 
-    0x22: Encrypted PDM
+0x22: Encrypted PDM
 
-    8-bit unsigned integer.  Length of the option, in octets, excluding the Option
-    Type and Option Length fields.
+8-bit unsigned integer.  Length of the option, in octets, excluding the Option
+Type and Option Length fields.
 
-- Version Number
+Version Number
 
-    0x2
+0x2
 
-    4-bit unsigned number.
+4-bit unsigned number.
 
-- Epoch
+Epoch
 
-    12-bit unsigned number.
+12-bit unsigned number.
 
-    Epoch field is used to indicate the valid SessionTemporaryKey.
+Epoch field is used to indicate the valid SessionTemporaryKey.
 
-- Packet Sequence Number This Packet (PSNTP)
+Packet Sequence Number This Packet (PSNTP)
 
-    32-bit unsigned number.
+32-bit unsigned number.
 
-    This field is initialized at a random number and is incremented
-    sequentially for each packet of the 5-tuple.
+This field is initialized at a random number and is incremented
+sequentially for each packet of the 5-tuple.
 
-    This field + Epoch are used in the Encrypted PDMv2 as the encryption
-    nonce. The nonce MUST NOT be reused in different sessions.
+This field + Epoch are used in the Encrypted PDMv2 as the encryption
+nonce. The nonce MUST NOT be reused in different sessions.
 
-- Packet Sequence Number Last Received (PSNLR)	 		
- 		
-    32-bit unsigned number.	 		
+Packet Sequence Number Last Received (PSNLR)
 
-    This field is the PSNTP of the last received packet on the	 		
-    5-tuple.
+32-bit unsigned number.
 
-- Global Pointer	 		
- 		
-    32-bit unsigned number.
+This field is the PSNTP of the last received packet on the
+5-tuple.
 
-    Global Pointer is initialized to 1 for the different source
-    address types and incremented sequentially for each packet with	 		
-    the corresponding source address type.
- 		
-    This field stores the Global Pointer type corresponding to the
-    SADDR type of the packet.
+Global Pointer
 
-- Scale Delta Time Last Received (SCALEDTLR)
+32-bit unsigned number.
 
-    8-bit unsigned number.
+Global Pointer is initialized to 1 for the different source
+address types and incremented sequentially for each packet with
+the corresponding source address type.
 
-    This is the scaling value for the Delta Time Last Sent
-    (DELTATLS) field.
+This field stores the Global Pointer type corresponding to the
+SADDR type of the packet.
 
-- Scale Delta Time Last Sent (SCALEDTLS)
+Scale Delta Time Last Received (SCALEDTLR)
 
-    8-bit unsigned number.
+8-bit unsigned number.
 
-    This is the scaling value for the Delta Time Last Sent
-    (DELTATLS) field.
+This is the scaling value for the Delta Time Last Sent
+(DELTATLS) field.
 
-- Reserved Bits
+Scale Delta Time Last Sent (SCALEDTLS)
 
-    16-bits.
+8-bit unsigned number.
 
-    Reserved bits for future use.  They MUST be set to zero on
-    transmission and ignored on receipt per [RFC3552].
+This is the scaling value for the Delta Time Last Sent
+(DELTATLS) field.
 
-- Delta Time Last Received (DELTATLR)
+Reserved Bits
 
-    16-bit unsigned integer.
+16-bits.
 
-    The value is set according to the scale in SCALEDTLR.
+Reserved bits for future use.  They MUST be set to zero on
+transmission and ignored on receipt per [RFC3552].
 
-    Delta Time Last Received =
-    (send time packet n - receive time packet (n - 1))
+Delta Time Last Received (DELTATLR)
 
-- Delta Time Last Sent (DELTATLS)
+16-bit unsigned integer.
 
-    16-bit unsigned integer.
+The value is set according to the scale in SCALEDTLR.
 
-    The value is set according to the scale in SCALEDTLS.
+Delta Time Last Received =
+(send time packet n - receive time packet (n - 1))
 
-    Delta Time Last Sent =
-    (receive time packet n - send time packet (n - 1))
+Delta Time Last Sent (DELTATLS)
+
+16-bit unsigned integer.
+
+The value is set according to the scale in SCALEDTLS.
+
+Delta Time Last Sent =
+(receive time packet n - send time packet (n - 1))
 
 # Operational Model
 
@@ -428,12 +427,15 @@ infrastructure and operational experience.
 The following entities participate in this example:
 
 -  PDMv2 Endpoint
-  A Client or Server that will emit or receive PDMv2 data.
+
+   A Client or Server that will emit or receive PDMv2 data.
 -  Authentication Server (AS)
-  A RADIUS server that performs authentication and authorization using EAP.
+
+   A RADIUS server that performs authentication and authorization using EAP.
 -  Analyzer
-  An authorized entity that may interpret or decrypt collected PDMv2 data
-  using registration-derived context.
+
+   An authorized entity that may interpret or decrypt collected PDMv2 data
+   using registration-derived context.
 
 An implementation MAY combine multiple roles within a single system.
 
