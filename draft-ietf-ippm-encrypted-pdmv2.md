@@ -67,14 +67,6 @@ author:
 normative:
  RFC3552:
  RFC8250:
- RFC8200:
-
-informative:
- RFC9180:
- RFC4303:
- RFC1421:
- RFC6973:
- RFC9288:
 
 --- abstract
 
@@ -83,8 +75,8 @@ Diagnostic Metrics (PDM) such as sequence numbers and timing information.
 While useful for measurement and troubleshooting, clear-text PDM data may
 expose operational characteristics of endpoints and networks.
 
-This document defines  PDMv2 , a revised version of PDM that introduces a
- registration-based security model . Instead of specifying cryptographic
+This document defines  PDMv2, a revised version of PDM that introduces a
+registration-based security model. Instead of specifying cryptographic
 algorithms or inline key negotiation, PDMv2 relies on a  prior registration
 process  to authenticate entities, authorize participation, and establish
 shared secrets. These secrets are then used by endpoints and authorized
@@ -105,7 +97,7 @@ information in clear text can reveal details about endpoint behavior,
 processing capability, and network characteristics.
 
 PDMv2 enhances PDM by enabling secure operation through a
-registration-first architecture . Security-sensitive material is
+registration-first architecture. Security-sensitive material is
 established out of band, prior to data transmission, and is not negotiated
 inline with PDMv2 traffic. This approach preserves the lightweight nature of
 PDM while avoiding tight coupling to transport-layer security protocols.
@@ -123,9 +115,6 @@ required to decrypt or interpret PDMv2 contents.
 PDMv2 is designed with the following goals:
 
 {:req_dg: style="empty"}
-
-{: req_dg}
-
 - Maintain compatibility with the operational model of RFC 8250
 - Avoid inline cryptographic handshakes at the IP layer
 - Support heterogeneous transport protocols and non-transport flows
@@ -138,9 +127,6 @@ PDMv2 is designed with the following goals:
 PDMv2 adheres to the following foundational principles:
 
 {:req_p: counter="bar" style="format %d."}
-
-{: req_p}
-
 - Registration-First Security:  All security context used by PDMv2 is
 established during a prior registration phase. No cryptographic
 negotiation occurs during PDMv2 packet exchange.
@@ -160,7 +146,6 @@ behavior and data formats, not cryptographic algorithms.
 
 - Explicit Authorization:  Only registered and authorized entities may
 emit, receive, or analyze protected PDMv2 data.
-{: req_p}
 
 # Registration Framework Overview
 
@@ -172,9 +157,6 @@ context between participating entities.
 A registration system used with PDMv2 MUST:
 
 {:req_ro: style="empty"}
-
-{: req_ro}
-
 - Authenticate participating entities
 - Authorize PDMv2 usage
 - Establish one or more shared secrets or credentials
@@ -186,14 +168,12 @@ A registration system used with PDMv2 MUST:
 The following logical roles are assumed:
 
 {:req_rp: style="empty"}
-
-{: req_rp}
-
 -  Client : An endpoint that initiates communication and emits PDMv2 data
 -  Server : An endpoint that receives communication and emits PDMv2 data
 -  Authentication Server (AS) : A trusted entity that performs
   authentication and authorization
 -  Analyzer : An authorized entity that interprets collected PDMv2 data
+
 
 An implementation MAY combine roles within a single system.
 
@@ -215,14 +195,12 @@ apply unless explicitly updated by this document.
 PDMv2 supports the following metrics:
 
 {:req4: style="empty"}
-
-{: req4}
-
 - Packet Sequence Number (This Packet)
 - Packet Sequence Number (Last Received)
 - Delta Time Last Received
 - Delta Time Last Sent
 - Global Pointer
+
 
 These metrics have the same semantics as in RFC 8250, with the addition of
 the Global Pointer.
@@ -258,9 +236,6 @@ or unprotected is determined by local policy and registration context.
 
 
 {:req7: style="empty"}
-
-{: req7}
-
 - Option Type
 
     0x0F
@@ -361,30 +336,18 @@ or unprotected is determined by local policy and registration context.
 
 Prior to sending PDMv2 data:
 
-{:req_om_rp: counter="bar" style="format %d."}
-
-{: req_om_rp}
 
 - The endpoint authenticates to an Authentication Server
 - Authorization for PDMv2 usage is evaluated
 - Shared secret(s) or credentials are provisioned
-{: req_om_rp}
 
 ## Measurement Phase
-
-{:req_om_mp: counter="bar" style="format %d."}
-
-{: req_om_mp}
 
 - Endpoints send PDMv2 headers according to local policy
 - No cryptographic negotiation occurs on the wire
 - Intermediate devices forward packets unchanged
 
 ## Analysis Phase
-
-{:req_om_ap: counter="bar" style="format %d."}
-
-{: req_om_ap}
 
 - Authorized analyzers access collected data
 - Interpretation uses registration-derived context
@@ -402,9 +365,6 @@ authentication methods, and its key management practices.
 Implementations SHOULD support:
 
 {:req_sc: counter="bar" style="format %d."}
-
-{: req_sc}
-
 - Forward Secracy
 - Logging of anomalous PDMv2 behavior
 
@@ -417,7 +377,15 @@ reduce metadata distinguishability.
 
 # IANA Considerations
 
-No new IANA actions are required by this document.
+This document requests the allocation of a new IPv6 Destination
+Options Header Option Type from the "Destination Options and Hop-by-
+Hop Options" registry maintained by the Internet Assigned Numbers
+Authority.
+
+The requested allocation is for the Performance and Diagnostic
+Metrics Version 2 (PDMv2) option.  This option is distinct from and
+independent of the Performance and Diagnostic Metrics option defined
+in RFC 8250.
 
 # Contributors
 
@@ -471,9 +439,6 @@ An implementation MAY combine multiple roles within a single system.
 
 A typical registration flow proceeds as follows:
 
-{:req_rf: counter="bar" style="format %d."}
-
-{: req_rf}
 
 - Secure Channel Establishment
    The PDMv2 endpoint establishes a secure exchange with the Authentication
