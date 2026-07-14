@@ -65,9 +65,8 @@ author:
     email: "lorenzo.fedi3@edu.unifi.it"
 
 normative:
- RFC3552:
- RFC8250:
-
+ - RFC3552:
+ - RFC8250:
 
 --- abstract
 
@@ -405,13 +404,13 @@ reduce metadata distinguishability.
 # IANA Considerations
 
 This document requests the allocation of a new IPv6 Destination
-Options Header Option Type from the "Destination Options and Hop-by-	 		
-Hop Options" registry maintained by the Internet Assigned Numbers	 		
+Options Header Option Type from the "Destination Options and Hop-by-
+Hop Options" registry maintained by the Internet Assigned Numbers
 Authority.
 
-The requested allocation is for the Performance and Diagnostic	 		
-Metrics Version 2 (PDMv2) option.  This option is distinct from and	 		
-independent of the Performance and Diagnostic Metrics option defined	 		
+The requested allocation is for the Performance and Diagnostic
+Metrics Version 2 (PDMv2) option.  This option is distinct from and
+independent of the Performance and Diagnostic Metrics option defined
 in RFC 8250.
 
 # Contributors
