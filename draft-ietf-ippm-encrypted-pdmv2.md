@@ -102,8 +102,8 @@ Inferring from the PDM data, the attack can launch a timing attack.
 For example, if a cryptographic protocol is used, a timing attack
 may be launched against the keying material to obtain the secret.
 
-PDM metrics may also help the attacker find out about the network	 		
-speed or capabilities of the network path.  For example, are there	 		
+PDM metrics may also help the attacker find out about the network
+speed or capabilities of the network path.  For example, are there
 delays or blockages?  Are there alternate or multiple paths?
 Along with this, PDM does not provide integrity.  It is possible for
 a Machine-In-The-Middle (MITM) node to modify PDM headers leading to
@@ -192,14 +192,14 @@ Pointer defined for Link-Local addresses, and when the SADDR type is
 Global Unicast, it sends the one defined for Global Unicast
 addresses.
 
-The reason for the Global Pointers is to provide a rough estimation	 		
-of the load on the node in question.  That is, if the node is sending	 		
-many other packets to other destinations at the same time as this	 		
-particular session.  Given that goal, if we combine the Link Local	 		
-and Global Unicast, the traffic traversing the path over the LAN or	 		
-VLAN (Link Local) would be combined with the traffic traversing the	 		
-path over the internet or wide area network.  The nature of Link-	 		
-Local and Global Unicast traffic is quite different, hence the two	 		
+The reason for the Global Pointers is to provide a rough estimation
+of the load on the node in question.  That is, if the node is sending
+many other packets to other destinations at the same time as this
+particular session.  Given that goal, if we combine the Link Local
+and Global Unicast, the traffic traversing the path over the LAN or
+VLAN (Link Local) would be combined with the traffic traversing the
+path over the internet or wide area network.  The nature of Link-
+Local and Global Unicast traffic is quite different, hence the two
 separate counters.
 
 ## PDMv2 Layout
@@ -285,21 +285,21 @@ Following is the representation of the encrypted PDMv2 header:
     This field + Epoch are used in the Encrypted PDMv2 as the encryption
     nonce. The nonce MUST NOT be reused in different sessions.
 
-- Packet Sequence Number Last Received (PSNLR)	 		
- 		
-    32-bit unsigned number.	 		
+- Packet Sequence Number Last Received (PSNLR)
 
-    This field is the PSNTP of the last received packet on the	 		
+    32-bit unsigned number.
+
+    This field is the PSNTP of the last received packet on the
     5-tuple.
 
-- Global Pointer	 		
- 		
+- Global Pointer
+
     32-bit unsigned number.
 
     Global Pointer is initialized to 1 for the different source
-    address types and incremented sequentially for each packet with	 		
+    address types and incremented sequentially for each packet with
     the corresponding source address type.
- 		
+
     This field stores the Global Pointer type corresponding to the
     SADDR type of the packet.
 
@@ -370,7 +370,7 @@ Note: a client may act as a server (have listening ports).
 
 - Shared Secret: A piece of data, known only to the parties involved.
 
-- SessionTemporaryKey: A temporary key used to secure data for	 		
+- SessionTemporaryKey: A temporary key used to secure data for
   only the current session.
 
 # Protocol Flow
@@ -422,14 +422,14 @@ depending on the implementation and the security considerations.
 The sender MUST NOT create two packets with identical PSNTP and Epoch.
 
 When the Epoch overflows, then collection of PDM data for this
-session will be stopped.  An error message MUST be sent as per	 		
-[RFC9180]: MessageLimitReachedError: Context AEAD sequence number	 		
+session will be stopped.  An error message MUST be sent as per
+[RFC9180]: MessageLimitReachedError: Context AEAD sequence number
 overflow.
 
 For a protocol like ICMP where SrcPort and DstPort don't play any
 role, only use the 3-tuple (SrcIP, DstIP, Protocol).
 
-## Implementation Guidelines	 		
+## Implementation Guidelines
 
 How should a network administrator decide whether a client should use
 PDM, unencrypted PDMv2, or encrypted PDMv2?  This decision is a
@@ -459,7 +459,7 @@ have code which understands the header, the packet is processed
 according to the Option Type which is defined in RFC8250 and is in
 accordance with RFC8200.
 
-The Option Type identifiers is coded to skip over this option and	 		
+The Option Type identifiers is coded to skip over this option and
 continue processing the header.
 
 ### Use Case 2: Server does not allow PDM Option (PDM or PDMv2)
@@ -638,7 +638,7 @@ The same topological considerations highlighted in [RFC3552] applies in this con
 PDM includes cryptographic mechanisms to mitigate passive and active attacks.
 As a further security mechanism to protect from active attacks, it is possible for an implementation to include logging of anomalous events, e.g.:
 
-{: req14}
+{:req14}
 - Missing PDM header when expected (counteracts the Message Deletion).
 - Unusual variations of the PDM data (counteracts the Message Modification)
 - Accept the PDM data only if the application level accepts the packet payload (counteracts the Message Insertion)
@@ -654,16 +654,13 @@ about destination objects are addressed in RFC 8200.
 Encryption plays a crucial role in providing privacy as defined by [RFC6973], especially when metadata sniffing is a concern. [RFC6973], titled "Privacy Considerations for Internet Protocols," outlines the importance of protecting users' privacy in the context of various Internet protocols, including IPv6. When metadata like network and end-to-end response time is at risk of being observed by attackers, eavesdroppers, or observers, encryption can help mitigate the privacy risks. Here's how encryption achieves this:
 
 {:req15: style="format %c)"}
-
-{: req15}
-
 - Confidentiality: Encryption ensures that the actual content of the
    communication remains confidential. Even if attackers or observers
    intercept the data packets, they won't be able to decipher the
    information without the encryption key. In the case of IPv6
    Performance and Destination Option (PDM), the still-visible,
-   non-encrypted metadata is still visiblenegligible, and does not
-   poses confidentiality
+   non-encrypted metadata is still negligible, and does not
+   pose a confidentiality risk.
 
 - Content Protection: Metadata, such as network and end-to-end
    response time, may reveal sensitive information about the
@@ -715,9 +712,6 @@ implementation.
 
 The following steps describe the protocol flow:
 {:req16: style="format %d."}
-
-{: req16}
-
 - Client initiates a request to the Server.  The
   request contains a list of available ciphersuites for KEM, KDF,
   and AEAD.
