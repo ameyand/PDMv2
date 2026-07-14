@@ -77,7 +77,7 @@ While useful for measurement and troubleshooting, clear-text PDM data may
 expose operational characteristics of endpoints and networks.
 
 This document defines  PDMv2, a revised version of PDM that introduces a
- registration-based security model. Instead of specifying cryptographic
+registration-based security model. Instead of specifying cryptographic
 algorithms or inline key negotiation, PDMv2 relies on a  prior registration
 process  to authenticate entities, authorize participation, and establish
 shared secrets. These secrets are then used by endpoints and authorized
@@ -407,8 +407,8 @@ reduce metadata distinguishability.
 This document requests the allocation of a new IPv6 Destination
 Options Header Option Type from the "Destination Options and Hop-by-	 		
 Hop Options" registry maintained by the Internet Assigned Numbers	 		
-Authority.	 		
- 		
+Authority.
+
 The requested allocation is for the Performance and Diagnostic	 		
 Metrics Version 2 (PDMv2) option.  This option is distinct from and	 		
 independent of the Performance and Diagnostic Metrics option defined	 		
