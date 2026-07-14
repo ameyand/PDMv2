@@ -115,25 +115,18 @@ required to decrypt or interpret PDMv2 contents.
 PDMv2 is designed with the following goals:
 
 {:req_dg: style="empty"}
-
-{: req_dg}
-
 - Maintain compatibility with the operational model of RFC 8250
 - Avoid inline cryptographic handshakes at the IP layer
 - Support heterogeneous transport protocols and non-transport flows
 - Enable offline analysis by authorized entities
 - Integrate cleanly with existing authentication and authorization
   infrastructures
-{: req_dg}
 
 # PDMv2 Foundational Principles
 
 PDMv2 adheres to the following foundational principles:
 
 {:req_p: counter="bar" style="format %d."}
-
-{: req_p}
-
 - Registration-First Security:  All security context used by PDMv2 is
 established during a prior registration phase. No cryptographic
 negotiation occurs during PDMv2 packet exchange.
@@ -153,7 +146,6 @@ behavior and data formats, not cryptographic algorithms.
 
 - Explicit Authorization:  Only registered and authorized entities may
 emit, receive, or analyze protected PDMv2 data.
-{: req_p}
 
 # Registration Framework Overview
 
@@ -165,31 +157,23 @@ context between participating entities.
 A registration system used with PDMv2 MUST:
 
 {:req_ro: style="empty"}
-
-{: req_ro}
-
 - Authenticate participating entities
 - Authorize PDMv2 usage
 - Establish one or more shared secrets or credentials
 - Enable analyzers to interpret PDMv2 data
 - Support revocation and lifecycle management
-{: req_ro}
 
 ## Registration Participants
 
 The following logical roles are assumed:
 
 {:req_rp: style="empty"}
-
-{: req_rp}
-
 -  Client : An endpoint that initiates communication and emits PDMv2 data
 -  Server : An endpoint that receives communication and emits PDMv2 data
 -  Authentication Server (AS) : A trusted entity that performs
   authentication and authorization
 -  Analyzer : An authorized entity that interprets collected PDMv2 data
 
-{: req_rp}
 
 An implementation MAY combine roles within a single system.
 
@@ -211,16 +195,12 @@ apply unless explicitly updated by this document.
 PDMv2 supports the following metrics:
 
 {:req4: style="empty"}
-
-{: req4}
-
 - Packet Sequence Number (This Packet)
 - Packet Sequence Number (Last Received)
 - Delta Time Last Received
 - Delta Time Last Sent
 - Global Pointer
 
-{: req4}
 
 These metrics have the same semantics as in RFC 8250, with the addition of
 the Global Pointer.
@@ -256,9 +236,6 @@ or unprotected is determined by local policy and registration context.
 
 
 {:req7: style="empty"}
-
-{: req7}
-
 - Option Type
 
     0x0F
@@ -388,9 +365,6 @@ authentication methods, and its key management practices.
 Implementations SHOULD support:
 
 {:req_sc: counter="bar" style="format %d."}
-
-{: req_sc}
-
 - Forward Secracy
 - Logging of anomalous PDMv2 behavior
 
