@@ -431,11 +431,11 @@ infrastructure and operational experience.
 The following entities participate in this example:
 
 -  PDMv2 Endpoint
-A Client or Server that will emit or receive PDMv2 data.
+  A Client or Server that will emit or receive PDMv2 data.
 -  Authentication Server (AS)
-A RADIUS server that performs authentication and authorization using EAP.
+  A RADIUS server that performs authentication and authorization using EAP.
 -  Analyzer
-An authorized entity that may interpret or decrypt collected PDMv2 data
+  An authorized entity that may interpret or decrypt collected PDMv2 data
   using registration-derived context.
 
 An implementation MAY combine multiple roles within a single system.
