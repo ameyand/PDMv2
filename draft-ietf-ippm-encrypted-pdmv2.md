@@ -65,9 +65,8 @@ author:
     email: "lorenzo.fedi3@edu.unifi.it"
 
 normative:
- RFC3552:
- RFC8250:
-
+ - RFC3552:
+ - RFC8250:
 
 --- abstract
 
