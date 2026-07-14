@@ -29,13 +29,13 @@ Abstract
    clear-text PDM data may expose operational characteristics of
    endpoints and networks.
 
-   This document defines PDMv2 , a revised version of PDM that
-   introduces a registration-based security model . Instead of
-   specifying cryptographic algorithms or inline key negotiation, PDMv2
-   relies on a prior registration process to authenticate entities,
-   authorize participation, and establish shared secrets.  These secrets
-   are then used by endpoints and authorized analyzers to protect and
-   interpret PDMv2 data according to local policy.
+   This document defines PDMv2, a revised version of PDM that introduces
+   a registration-based security model.  Instead of specifying
+   cryptographic algorithms or inline key negotiation, PDMv2 relies on a
+   prior registration process to authenticate entities, authorize
+   participation, and establish shared secrets.  These secrets are then
+   used by endpoints and authorized analyzers to protect and interpret
+   PDMv2 data according to local policy.
 
    This document specifies the PDMv2 semantics, header structure, and
    operational model.  Cryptographic algorithms, key derivation
@@ -112,9 +112,7 @@ Table of Contents
    10. Privacy Considerations
    11. IANA Considerations
    12. Contributors
-   13. References
-     13.1.  Normative References
-     13.2.  Informative References
+   13. Normative References
    Appendix A.  Example: RADIUS / EAP-Based Registration
      A.1.  Overview
      A.2.  Participants
@@ -139,7 +137,7 @@ Table of Contents
    network characteristics.
 
    PDMv2 enhances PDM by enabling secure operation through a
-   registration-first architecture . Security-sensitive material is
+   registration-first architecture.  Security-sensitive material is
    established out of band, prior to data transmission, and is not
    negotiated inline with PDMv2 traffic.  This approach preserves the
    lightweight nature of PDM while avoiding tight coupling to transport-
@@ -161,40 +159,40 @@ Table of Contents
 
    PDMv2 is designed with the following goals:
 
-      Maintain compatibility with the operational model of RFC 8250
+   *  Maintain compatibility with the operational model of RFC 8250
 
-      Avoid inline cryptographic handshakes at the IP layer
+   *  Avoid inline cryptographic handshakes at the IP layer
 
-      Support heterogeneous transport protocols and non-transport flows
+   *  Support heterogeneous transport protocols and non-transport flows
 
-      Enable offline analysis by authorized entities
+   *  Enable offline analysis by authorized entities
 
-      Integrate cleanly with existing authentication and authorization
+   *  Integrate cleanly with existing authentication and authorization
       infrastructures
 
 4.  PDMv2 Foundational Principles
 
    PDMv2 adheres to the following foundational principles:
 
-   1.  Registration-First Security: All security context used by PDMv2
-       is established during a prior registration phase.  No
-       cryptographic negotiation occurs during PDMv2 packet exchange.
+   *  Registration-First Security: All security context used by PDMv2 is
+      established during a prior registration phase.  No cryptographic
+      negotiation occurs during PDMv2 packet exchange.
 
-   2.  IP-Layer Independence: PDMv2 security does not depend on TCP,
-       TLS, QUIC, or any specific transport protocol.
+   *  IP-Layer Independence: PDMv2 security does not depend on TCP, TLS,
+      QUIC, or any specific transport protocol.
 
-   3.  Minimal On-Path Impact: Routers and intermediate nodes forward
-       PDMv2 packets without decryption or inspection.
+   *  Minimal On-Path Impact: Routers and intermediate nodes forward
+      PDMv2 packets without decryption or inspection.
 
-   4.  Offline Decryption and Analysis: PDMv2 data MAY be collected and
-       analyzed after transmission.  Real-time interpretation is
-       optional and deployment-specific.
+   *  Offline Decryption and Analysis: PDMv2 data MAY be collected and
+      analyzed after transmission.  Real-time interpretation is optional
+      and deployment-specific.
 
-   5.  Separation of Specification Scope: This document defines protocol
-       behavior and data formats, not cryptographic algorithms.
+   *  Separation of Specification Scope: This document defines protocol
+      behavior and data formats, not cryptographic algorithms.
 
-   6.  Explicit Authorization: Only registered and authorized entities
-       may emit, receive, or analyze protected PDMv2 data.
+   *  Explicit Authorization: Only registered and authorized entities
+      may emit, receive, or analyze protected PDMv2 data.
 
 5.  Registration Framework Overview
 
@@ -205,30 +203,30 @@ Table of Contents
 
    A registration system used with PDMv2 MUST:
 
-      Authenticate participating entities
+   *  Authenticate participating entities
 
-      Authorize PDMv2 usage
+   *  Authorize PDMv2 usage
 
-      Establish one or more shared secrets or credentials
+   *  Establish one or more shared secrets or credentials
 
-      Enable analyzers to interpret PDMv2 data
+   *  Enable analyzers to interpret PDMv2 data
 
-      Support revocation and lifecycle management
+   *  Support revocation and lifecycle management
 
 5.2.  Registration Participants
 
    The following logical roles are assumed:
 
-      Client : An endpoint that initiates communication and emits PDMv2
+   *  Client : An endpoint that initiates communication and emits PDMv2
       data
 
-      Server : An endpoint that receives communication and emits PDMv2
+   *  Server : An endpoint that receives communication and emits PDMv2
       data
 
-      Authentication Server (AS) : A trusted entity that performs
+   *  Authentication Server (AS) : A trusted entity that performs
       authentication and authorization
 
-      Analyzer : An authorized entity that interprets collected PDMv2
+   *  Analyzer : An authorized entity that interprets collected PDMv2
       data
 
    An implementation MAY combine roles within a single system.
@@ -251,15 +249,15 @@ Table of Contents
 
    PDMv2 supports the following metrics:
 
-      Packet Sequence Number (This Packet)
+   *  Packet Sequence Number (This Packet)
 
-      Packet Sequence Number (Last Received)
+   *  Packet Sequence Number (Last Received)
 
-      Delta Time Last Received
+   *  Delta Time Last Received
 
-      Delta Time Last Sent
+   *  Delta Time Last Sent
 
-      Global Pointer
+   *  Global Pointer
 
    These metrics have the same semantics as in RFC 8250, with the
    addition of the Global Pointer.
@@ -292,14 +290,14 @@ Table of Contents
       |   Delta Time Last Received    |    Delta Time Last Sent       |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-      Option Type
+   *  Option Type
 
       0x0F
 
       8-bit unsigned integer.  The Option Type is adopted from RFC 8250
       [RFC8250].
 
-      Option Length
+   *  Option Length
 
       0x22: Unencrypted PDM
 
@@ -308,19 +306,19 @@ Table of Contents
       8-bit unsigned integer.  Length of the option, in octets,
       excluding the Option Type and Option Length fields.
 
-      Version Number
+   *  Version Number
 
       0x2
 
       4-bit unsigned number.
 
-      Epoch
+   *  Epoch
 
       12-bit unsigned number.
 
       Epoch field is used to indicate the valid SessionTemporaryKey.
 
-      Packet Sequence Number This Packet (PSNTP)
+   *  Packet Sequence Number This Packet (PSNTP)
 
       32-bit unsigned number.
 
@@ -331,14 +329,14 @@ Table of Contents
       encryption nonce.  The nonce MUST NOT be reused in different
       sessions.
 
-      Packet Sequence Number Last Received (PSNLR)
+   *  Packet Sequence Number Last Received (PSNLR)
 
       32-bit unsigned number.
 
       This field is the PSNTP of the last received packet on the
       5-tuple.
 
-      Global Pointer
+   *  Global Pointer
 
       32-bit unsigned number.
 
@@ -349,28 +347,28 @@ Table of Contents
       This field stores the Global Pointer type corresponding to the
       SADDR type of the packet.
 
-      Scale Delta Time Last Received (SCALEDTLR)
+   *  Scale Delta Time Last Received (SCALEDTLR)
 
       8-bit unsigned number.
 
       This is the scaling value for the Delta Time Last Sent (DELTATLS)
       field.
 
-      Scale Delta Time Last Sent (SCALEDTLS)
+   *  Scale Delta Time Last Sent (SCALEDTLS)
 
       8-bit unsigned number.
 
       This is the scaling value for the Delta Time Last Sent (DELTATLS)
       field.
 
-      Reserved Bits
+   *  Reserved Bits
 
       16-bits.
 
       Reserved bits for future use.  They MUST be set to zero on
       transmission and ignored on receipt per [RFC3552].
 
-      Delta Time Last Received (DELTATLR)
+   *  Delta Time Last Received (DELTATLR)
 
       16-bit unsigned integer.
 
@@ -379,7 +377,7 @@ Table of Contents
       Delta Time Last Received = (send time packet n - receive time
       packet (n - 1))
 
-      Delta Time Last Sent (DELTATLS)
+   *  Delta Time Last Sent (DELTATLS)
 
       16-bit unsigned integer.
 
@@ -394,25 +392,25 @@ Table of Contents
 
    Prior to sending PDMv2 data:
 
-   7.  The endpoint authenticates to an Authentication Server
+   *  The endpoint authenticates to an Authentication Server
 
-   8.  Authorization for PDMv2 usage is evaluated
+   *  Authorization for PDMv2 usage is evaluated
 
-   9.  Shared secret(s) or credentials are provisioned
+   *  Shared secret(s) or credentials are provisioned
 
 8.2.  Measurement Phase
 
-   10. Endpoints send PDMv2 headers according to local policy
+   *  Endpoints send PDMv2 headers according to local policy
 
-   11. No cryptographic negotiation occurs on the wire
+   *  No cryptographic negotiation occurs on the wire
 
-   12. Intermediate devices forward packets unchanged
+   *  Intermediate devices forward packets unchanged
 
 8.3.  Analysis Phase
 
-   13. Authorized analyzers access collected data
+   *  Authorized analyzers access collected data
 
-   14. Interpretation uses registration-derived context
+   *  Interpretation uses registration-derived context
 
 9.  Security Considerations
 
@@ -427,9 +425,9 @@ Table of Contents
 
    Implementations SHOULD support:
 
-   15. Forward Secracy
+   *  Forward Secracy
 
-   16. Logging of anomalous PDMv2 behavior
+   *  Logging of anomalous PDMv2 behavior
 
 10.  Privacy Considerations
 
@@ -440,7 +438,15 @@ Table of Contents
 
 11.  IANA Considerations
 
-   No new IANA actions are required by this document.
+   This document requests the allocation of a new IPv6 Destination
+   Options Header Option Type from the "Destination Options and Hop-by-
+   Hop Options" registry maintained by the Internet Assigned Numbers
+   Authority.
+
+   The requested allocation is for the Performance and Diagnostic
+   Metrics Version 2 (PDMv2) option.  This option is distinct from and
+   independent of the Performance and Diagnostic Metrics option defined
+   in RFC 8250.
 
 12.  Contributors
 
@@ -453,9 +459,7 @@ Table of Contents
    Thanks to Balajinaidu V, Amogh Umesh, and Chinmaya Sharma of NITK for
    developing the PDMv2 implementation for testing.
 
-13.  References
-
-13.1.  Normative References
+13.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -471,41 +475,10 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-   [RFC8200]  Deering, S. and R. Hinden, "Internet Protocol, Version 6
-              (IPv6) Specification", STD 86, RFC 8200,
-              DOI 10.17487/RFC8200, July 2017,
-              <https://www.rfc-editor.org/rfc/rfc8200>.
-
    [RFC8250]  Elkins, N., Hamilton, R., and M. Ackermann, "IPv6
               Performance and Diagnostic Metrics (PDM) Destination
               Option", RFC 8250, DOI 10.17487/RFC8250, September 2017,
               <https://www.rfc-editor.org/rfc/rfc8250>.
-
-13.2.  Informative References
-
-   [RFC1421]  Linn, J., "Privacy Enhancement for Internet Electronic
-              Mail: Part I: Message Encryption and Authentication
-              Procedures", RFC 1421, DOI 10.17487/RFC1421, February
-              1993, <https://www.rfc-editor.org/rfc/rfc1421>.
-
-   [RFC4303]  Kent, S., "IP Encapsulating Security Payload (ESP)",
-              RFC 4303, DOI 10.17487/RFC4303, December 2005,
-              <https://www.rfc-editor.org/rfc/rfc4303>.
-
-   [RFC6973]  Cooper, A., Tschofenig, H., Aboba, B., Peterson, J.,
-              Morris, J., Hansen, M., and R. Smith, "Privacy
-              Considerations for Internet Protocols", RFC 6973,
-              DOI 10.17487/RFC6973, July 2013,
-              <https://www.rfc-editor.org/rfc/rfc6973>.
-
-   [RFC9180]  Barnes, R., Bhargavan, K., Lipp, B., and C. Wood, "Hybrid
-              Public Key Encryption", RFC 9180, DOI 10.17487/RFC9180,
-              February 2022, <https://www.rfc-editor.org/rfc/rfc9180>.
-
-   [RFC9288]  Gont, F. and W. Liu, "Recommendations on the Filtering of
-              IPv6 Packets Containing IPv6 Extension Headers at Transit
-              Routers", RFC 9288, DOI 10.17487/RFC9288, August 2022,
-              <https://www.rfc-editor.org/rfc/rfc9288>.
 
 Appendix A.  Example: RADIUS / EAP-Based Registration
 
@@ -546,36 +519,36 @@ A.3.  Registration Flow (Example)
 
    A typical registration flow proceeds as follows:
 
-   17. Secure Channel Establishment The PDMv2 endpoint establishes a
-       secure exchange with the Authentication Server.  In many
-       deployments this occurs implicitly as part of an EAP method
-       protected by TLS (e.g., EAP-TLS or PEAP).
+   *  Secure Channel Establishment The PDMv2 endpoint establishes a
+      secure exchange with the Authentication Server.  In many
+      deployments this occurs implicitly as part of an EAP method
+      protected by TLS (e.g., EAP-TLS or PEAP).
 
-   18. Endpoint Authentication The endpoint authenticates using
-       credentials appropriate to the deployment, such as certificates,
-       credentials, tokens, or federated identity.
+   *  Endpoint Authentication The endpoint authenticates using
+      credentials appropriate to the deployment, such as certificates,
+      credentials, tokens, or federated identity.
 
-   19. Authorization Decision The Authentication Server determines
-       whether the endpoint is authorized to:
+   *  Authorization Decision The Authentication Server determines
+      whether the endpoint is authorized to:
 
-       *  Send PDMv2 data
+      -  Send PDMv2 data
 
-       *  Receive PDMv2 data
+      -  Receive PDMv2 data
 
-       *  Participate in specific measurement domains
+      -  Participate in specific measurement domains
 
-   20. Master Secret Establishment Upon successful authentication, EAP
-       produces keying material (e.g., a Master Session Key).  This
-       keying material is made available to the endpoint and retained by
-       the Authentication Server according to local policy.
+   *  Master Secret Establishment Upon successful authentication, EAP
+      produces keying material (e.g., a Master Session Key).  This
+      keying material is made available to the endpoint and retained by
+      the Authentication Server according to local policy.
 
-   21. Provisioning of Context The endpoint associates the received
-       master secret with local PDMv2 policy, such as permitted peers,
-       scope, and lifetime.
+   *  Provisioning of Context The endpoint associates the received
+      master secret with local PDMv2 policy, such as permitted peers,
+      scope, and lifetime.
 
-   22. Analyzer Enablement (Optional) If offline analysis is required,
-       the Authentication Server provisions appropriate authorization or
-       keying context to approved analyzers.
+   *  Analyzer Enablement (Optional) If offline analysis is required,
+      the Authentication Server provisions appropriate authorization or
+      keying context to approved analyzers.
 
 A.4.  Registration Flow (Illustrative ASCII Diagram)
 
