@@ -290,75 +290,86 @@ Table of Contents
       |   Delta Time Last Received    |    Delta Time Last Sent       |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-   Option Type  0x0F :
+   Option Type
+      0x0F
 
       8-bit unsigned integer.  The Option Type is adopted from RFC 8250
       [RFC8250].
 
-   Option Length  0x22: Unencrypted PDM :
+   Option Length
+      0x22: Unencrypted PDM
 
-      0x22: Encrypted PDM :
+      0x22: Encrypted PDM
 
       8-bit unsigned integer.  Length of the option, in octets,
       excluding the Option Type and Option Length fields.
 
-   Version Number  0x2 :
+   Version Number
+      0x2
 
       4-bit unsigned number.
 
-   Epoch  12-bit unsigned number. :
+   Epoch
+      12-bit unsigned number.
 
       Epoch field is used to indicate the valid SessionTemporaryKey.
 
-   Packet Sequence Number This Packet (PSNTP)  32-bit unsigned number. :
+   Packet Sequence Number This Packet (PSNTP)
+      32-bit unsigned number.
 
       This field is initialized at a random number and is incremented
-      sequentially for each packet of the 5-tuple. :
+      sequentially for each packet of the 5-tuple.
 
       This field + Epoch are used in the Encrypted PDMv2 as the
       encryption nonce.  The nonce MUST NOT be reused in different
       sessions.
 
-   Packet Sequence Number Last Received (PSNLR)  32-bit unsigned number.
-      :
+   Packet Sequence Number Last Received (PSNLR)
+      32-bit unsigned number.
 
       This field is the PSNTP of the last received packet on the
       5-tuple.
 
-   Global Pointer  32-bit unsigned number. :
+   Global Pointer
+      32-bit unsigned number.
 
       Global Pointer is initialized to 1 for the different source
       address types and incremented sequentially for each packet with
-      the corresponding source address type. :
+      the corresponding source address type.
 
       This field stores the Global Pointer type corresponding to the
       SADDR type of the packet.
 
-   Scale Delta Time Last Received (SCALEDTLR)  8-bit unsigned number. :
+   Scale Delta Time Last Received (SCALEDTLR)
+      8-bit unsigned number.
 
       This is the scaling value for the Delta Time Last Sent (DELTATLS)
       field.
 
-   Scale Delta Time Last Sent (SCALEDTLS)  8-bit unsigned number. :
+   Scale Delta Time Last Sent (SCALEDTLS)
+      8-bit unsigned number.
 
       This is the scaling value for the Delta Time Last Sent (DELTATLS)
       field.
 
-   Reserved Bits  16-bits. :
+   Reserved Bits
+      16-bits.
 
       Reserved bits for future use.  They MUST be set to zero on
       transmission and ignored on receipt per [RFC3552].
 
-   Delta Time Last Received (DELTATLR)  16-bit unsigned integer. :
+   Delta Time Last Received (DELTATLR)
+      16-bit unsigned integer.
 
-      The value is set according to the scale in SCALEDTLR. :
+      The value is set according to the scale in SCALEDTLR.
 
       Delta Time Last Received = (send time packet n - receive time
       packet (n - 1))
 
-   Delta Time Last Sent (DELTATLS)  16-bit unsigned integer. :
+   Delta Time Last Sent (DELTATLS)
+      16-bit unsigned integer.
 
-      The value is set according to the scale in SCALEDTLS. :
+      The value is set according to the scale in SCALEDTLS.
 
       Delta Time Last Sent = (receive time packet n - send time packet
       (n - 1))
