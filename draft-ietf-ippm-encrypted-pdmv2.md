@@ -154,14 +154,19 @@ context between participating entities.
 
 ## Registration Objectives
 
-A registration system used with PDMv2 MUST:
+A PDMv2 registration mechanism establishes the context required for authorized endpoints and measurement systems to generate, receive, interpret, and, when applicable, decrypt PDMv2 information.
 
-{:req_ro: style="empty"}
-- Authenticate participating entities
-- Authorize PDMv2 usage
-- Establish one or more shared secrets or credentials
-- Enable analyzers to interpret PDMv2 data
-- Support revocation and lifecycle management
+A registration mechanism is expected to provide:
+* identification and authorization of participating endpoints or measurement domains;
+* authorization to generate, receive, or analyze PDMv2 data;
+* selection of the PDMv2 protection suite;
+* establishment or provisioning of the keying material required by that suite;
+* assignment of an Epoch value;
+* definition of the scope and lifetime of the resulting security context;
+* delivery of the context required to construct nonces and associated data; and
+* procedures for expiration, replacement, and revocation of the security context.
+
+This document does not require a particular registration protocol. Appendix A describes one possible mechanism.
 
 ## Registration Participants
 
@@ -182,6 +187,35 @@ An implementation MAY combine roles within a single system.
 
 The registration exchange MUST be protected by a secure channel. The choice
 of transport and security protocol is out of scope for this document.
+
+## Registration Output and SessionTemporaryKey
+
+A successful registration produces a PDMv2 security context containing, at minimum:
+* the identities or measurement domains to which the context applies;
+* the authorization granted to each participant;
+* the selected PDMv2 protection suite;
+* an Epoch value;
+* keying material or a directly provisioned SessionTemporaryKey;
+* the scope and lifetime of the keying material; and
+* the information required to construct nonces and associated data.
+
+A SessionTemporaryKey is cryptographic keying material used to protect PDMv2 metric blocks during a bounded key epoch. It is derived or provisioned from keying material established by the applicable registration mechanism.
+
+The registration mechanism or protection-suite specification MUST define:
+* how the SessionTemporaryKey is derived or provisioned;
+* the cryptographic algorithm and key length;
+* the endpoints, flows, or measurement domain to which the key applies;
+* the Epoch value associated with the key;
+* the lifetime of the key;
+* the rekey procedure;
+* how authorized measurement systems obtain the required security context; and
+* how expiration and revocation are handled.
+
+When a SessionTemporaryKey is derived from a master secret, the derivation MUST use a cryptographically secure key-derivation function and a PDMv2-specific purpose label. The derivation MUST provide cryptographic separation between PDMv2 keys and keys used by other protocols or for other purposes.
+
+A PDMv2 SessionTemporaryKey MUST NOT be a TLS, QUIC, IPsec, or other application or transport traffic key.
+
+The specific registration protocol and key-derivation function are outside the scope of this document.
 
 # PDMv2 Destination Options
 
@@ -213,112 +247,237 @@ The Global Pointer provides a coarse indicator of packet transmission
 activity by an endpoint. Separate counters are maintained for link-local
 and global unicast source addresses.
 
-# PDMv2 Header Format
+# PDMv2 Destination Option
 
-PDMv2 uses a single header format. Whether metric contents are protected
-or unprotected is determined by local policy and registration context.
+PDMv2 defines an unprotected wire format and a protected wire format. Both formats use the PDMv2 Option Type assigned by IANA.
+
+PDMv2 does not reuse the PDM Option Type 0x0F assigned by RFC 8250. References in this document to fields adopted from RFC 8250 describe their semantics and do not indicate reuse of the RFC 8250 Option Type.
+
+The Option Length distinguishes the unprotected and protected formats. A receiver can therefore determine from the PDMv2 option itself whether the metric block is protected. Registration context is required to decrypt and interpret a protected metric block, but it is not required merely to identify the format.
+
+An implementation MUST NOT determine whether a received PDMv2 option is protected solely from local policy or registration context.
+
+## Unprotected PDMv2 Format
 
 ~~~
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |  Option Type  | Option Length | Version |        Epoch        |
+   |  Option Type  | Option Len=22 | Version |        Epoch        |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                Packet Sequence Number (This)                  |
+   |                Packet Sequence Number This Packet             |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                Packet Sequence Number (Last)                  |
+   |                Packet Sequence Number Last Received           |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                       Global Pointer                          |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |  ScaleDTLR    |  ScaleDTLS    |           Reserved            |
+   |   ScaleDTLR   |   ScaleDTLS   |           Reserved            |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |   Delta Time Last Received    |    Delta Time Last Sent       |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
 
+The Option Length is 22 decimal (0x16). As specified for IPv6 options, the Option Length excludes the Option Type and Option Length octets. The complete unprotected PDMv2 option occupies 24 octets.
 
-{:newline="true"}
-Option Type
-: 0x0F
+The fields following the Option Length are:
 
-  8-bit unsigned integer.  The Option Type is adopted from RFC 8250 [RFC8250].
+| Offset | Length | Field |
+|---|---|---|
+| 2 | 4 bits | Version |
+| 2 | 12 bits | Epoch |
+| 4 | 4 octets | PSNTP |
+| 8 | 4 octets | PSNLR |
+| 12 | 4 octets | Global Pointer |
+| 16 | 1 octet | ScaleDTLR |
+| 17 | 1 octet | ScaleDTLS |
+| 18 | 2 octets | Reserved |
+| 20 | 2 octets | Delta Time Last Received |
+| 22 | 2 octets | Delta Time Last Sent |
 
-Option Length
-: 0x22: Unencrypted PDM
+## Protected PDMv2 Format
 
-  0x22: Encrypted PDM
+The protected format uses an authenticated-encryption protection suite that produces a 16-octet authentication tag.
 
-  8-bit unsigned integer.  Length of the option, in octets, excluding the Option
-  Type and Option Length fields.
+~~~
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |  Option Type  | Option Len=38 | Version |        Epoch        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                Packet Sequence Number This Packet             |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                                                               |
+   +                  Protected Metric Block                       +
+   |                       (16 octets)                             |
+   +                                                               +
+   |                                                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                                                               |
+   +                   Authentication Tag                          +
+   |                       (16 octets)                             |
+   +                                                               +
+   |                                                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+~~~
 
-Version Number
-: 0x2
+The Option Length is 38 decimal (0x26). It excludes the Option Type and Option Length octets. The complete protected PDMv2 option occupies 40 octets.
 
-  4-bit unsigned number.
+The plaintext protected metric block is:
 
-Epoch
-: 12-bit unsigned number.
+~~~
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                Packet Sequence Number Last Received           |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                       Global Pointer                          |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |   ScaleDTLR   |   ScaleDTLS   |           Reserved            |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |   Delta Time Last Received    |    Delta Time Last Sent       |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+~~~
 
-  Epoch field is used to indicate the valid SessionTemporaryKey.
+The protected format has the following organization:
 
-Packet Sequence Number This Packet (PSNTP)
-: 32-bit unsigned number.
+| Offset | Length | Field | Protection |
+|---|---|---|---|
+| 0 | 1 octet | Option Type | Clear |
+| 1 | 1 octet | Option Length | Clear |
+| 2 | 4 bits | Version | Clear and authenticated |
+| 2 | 12 bits | Epoch | Clear and authenticated |
+| 4 | 4 octets | PSNTP | Clear and authenticated |
+| 8 | 16 octets | Protected Metric Block | Encrypted and authenticated |
+| 24 | 16 octets | Authentication Tag | AEAD output |
 
-  This field is initialized at a random number and is incremented
-  sequentially for each packet of the 5-tuple.
+The Option Type, Option Length, Version, Epoch, and PSNTP fields MUST be cryptographically bound to the protected metric block as associated data.
 
-  This field + Epoch are used in the Encrypted PDMv2 as the encryption
-  nonce. The nonce MUST NOT be reused in different sessions.
+This specification requires a 16-octet authentication tag. A future protection suite using a different tag length must define an unambiguous on-wire indication of its format and length.
 
-Packet Sequence Number Last Received (PSNLR)
-: 32-bit unsigned number.
+## Option Type
 
-  This field is the PSNTP of the last received packet on the
-  5-tuple.
+The Option Type is the 8-bit value assigned by IANA for PDMv2:
+TBD1
 
-Global Pointer
-: 32-bit unsigned number.
+TBD1 is distinct from the PDM Option Type 0x0F assigned by RFC 8250.
 
-  Global Pointer is initialized to 1 for the different source
-  address types and incremented sequentially for each packet with
-  the corresponding source address type.
+The required IPv6 option action and change-en-route bits are reflected in the value assigned by IANA. The hexadecimal value remains TBD1 until the allocation is made.
 
-  This field stores the Global Pointer type corresponding to the
-  SADDR type of the packet.
+## Version
 
-Scale Delta Time Last Received (SCALEDTLR)
-: 8-bit unsigned number.
+The Version field is a 4-bit unsigned integer. This document defines Version 2.
 
-  This is the scaling value for the Delta Time Last Sent
-  (DELTATLS) field.
+A receiver that does not support the indicated version MUST process the option according to the action bits in the PDMv2 Option Type.
 
-Scale Delta Time Last Sent (SCALEDTLS)
-: 8-bit unsigned number.
+## Epoch
 
-  This is the scaling value for the Delta Time Last Sent
-  (DELTATLS) field.
+The Epoch field is a 12-bit unsigned integer identifying the PDMv2 security context and SessionTemporaryKey applicable to the protected option.
 
-Reserved Bits
-: 16-bits.
+The Epoch value is a key selector. It is not secret keying material.
 
-  Reserved bits for future use.  They MUST be set to zero on
-  transmission and ignored on receipt per [RFC3552].
+The registration mechanism or protection-suite specification MUST define how an Epoch is assigned, how long it remains valid, and how a receiver maps the Epoch to the applicable security context.
 
-Delta Time Last Received (DELTATLR)
-: 16-bit unsigned integer.
+A sender MUST NOT independently protect different PDMv2 plaintext values using the same SessionTemporaryKey and nonce.
 
-  The value is set according to the scale in SCALEDTLR.
+Before PSNTP reuse could cause nonce reuse with the same SessionTemporaryKey, the sender MUST establish a new key epoch or otherwise follow a nonce construction defined by the selected protection suite that prevents nonce reuse.
 
-  Delta Time Last Received =
-  (send time packet n - receive time packet (n - 1))
+## PDMv2 Flow Identification
 
-Delta Time Last Sent (DELTATLS)
-: 16-bit unsigned integer.
+The term "PDMv2 flow" identifies the packet sequence and associated PDMv2 state. It is not limited to protocols that provide transport-layer port numbers.
 
-  The value is set according to the scale in SCALEDTLS.
+For TCP and UDP, a PDMv2 flow is identified by:
+* IPv6 source address;
+* IPv6 destination address;
+* upper-layer protocol number;
+* source port; and
+* destination port.
 
-  Delta Time Last Sent =
-  (receive time packet n - send time packet (n - 1))
+For ICMPv6, where transport-layer ports do not exist, a PDMv2 flow is identified by:
+* IPv6 source address;
+* IPv6 destination address;
+* ICMPv6 Next Header value;
+* ICMPv6 Type; and
+* ICMPv6 Code.
+
+For ICMPv6 message types containing an Identifier field, such as Echo Request and Echo Reply, an implementation SHOULD also use that Identifier to distinguish concurrent exchanges.
+
+An ICMPv6 error message is classified using its outer IPv6 and ICMPv6 headers. The quoted packet carried inside the ICMPv6 error message does not identify the flow carrying the PDMv2 option.
+
+For another upper-layer protocol without port numbers, the protocol specification or registration context SHOULD define an equivalent stable flow identifier. If no protocol-specific discriminator is available, packets having the same IPv6 source address, IPv6 destination address, and upper-layer protocol number are treated as one PDMv2 flow.
+
+## Packet Sequence Number This Packet
+
+The Packet Sequence Number This Packet field, abbreviated PSNTP, is a 32-bit unsigned integer.
+
+PSNTP is initialized to a pseudorandom value when PDMv2 state is created for a flow. It is incremented modulo (2^{32}) for each packet processed as a new transmission at the PDMv2 sender's processing point.
+
+PSNTP counts packet-processing events visible to the PDMv2 module. It does not count application data units, TCP sequence space, or unique transport payloads.
+
+A TCP retransmission presented to the PDMv2 module as a new packet is a new transmission and receives a new PSNTP value.
+
+Packets produced below the PDMv2 processing point by segmentation offload can retain the PSNTP value of the packet from which they were produced, as described in Section 7.12.
+
+## Packet Sequence Number Last Received
+
+The Packet Sequence Number Last Received field, abbreviated PSNLR, contains the PSNTP value from the most recently received PDMv2 observation associated with the corresponding reverse-direction flow.
+
+Because segmentation, aggregation, packet duplication, reordering, or differences in processing location can affect the observations available to an implementation, PSNLR describes the most recent PDMv2 observation at the implementation's processing point. It does not necessarily identify the last physical packet received by an interface.
+
+Before a PDMv2 option has been received for the corresponding reverse-direction flow, PSNLR is initialized to zero.
+
+## Global Pointer
+
+The Global Pointer identifies the applicable registration or measurement context. Its interpretation and allocation are defined by the registration mechanism.
+
+The Global Pointer is not secret. A protected PDMv2 implementation MUST NOT treat possession of a Global Pointer as proof of authorization.
+
+## Scale Fields and Delta Times
+
+ScaleDTLR specifies the scale applied to Delta Time Last Received.
+
+ScaleDTLS specifies the scale applied to Delta Time Last Sent.
+
+Delta Time Last Received and Delta Time Last Sent are 16-bit unsigned values interpreted using their respective scale fields.
+
+The existing scale and delta-time calculations inherited from the PDM model remain unchanged unless otherwise specified by this document.
+
+## Reserved Field
+
+The Reserved field is 16 bits.
+
+A sender MUST set the Reserved field to zero. A receiver MUST ignore its value unless a future specification assigns meaning to these bits.
+
+In the protected format, the Reserved field is part of the protected metric block.
+
+## Segmentation and Aggregation Offload
+
+PDMv2 can be implemented at a processing point preceding transmit segmentation or following receive aggregation. Consequently, the packets observed by a PDMv2 implementation do not necessarily have a one-to-one relationship with the IPv6 packets transmitted or received by a physical interface.
+
+When a packet carrying PDMv2 is divided into multiple packets by TCP Segmentation Offload, Generic Segmentation Offload, or an equivalent mechanism below the PDMv2 processing point, the resulting packets MAY carry identical PDMv2 field values, including the same PSNTP.
+
+Repeated PSNTP values resulting from such processing do not, by themselves, indicate packet loss, retransmission, malformed PDMv2 data, or nonconforming sender behavior.
+
+Similarly, Generic Receive Offload, Large Receive Offload, or another receive-side aggregation mechanism can combine multiple received packets before they become visible to a PDMv2 implementation.
+
+PDMv2 does not require an implementation to:
+* disable segmentation or aggregation offload;
+* inspect an outgoing interface's Maximum Transmission Unit solely for PDMv2 processing;
+* update a PDMv2 option separately in each packet produced below the PDMv2 processing point; or
+* reconstruct an exact one-to-one correspondence between PDMv2 observations and packets appearing on a physical interface.
+
+A measurement or reconstruction system observing repeated PSNTP values SHOULD use other available information, including TCP sequence-number ranges, payload lengths, timestamps, IPv6 fragmentation information, and surrounding PDMv2 observations, to distinguish likely segmentation, duplication, retransmission, and reordering.
+
+If the available information is insufficient to distinguish among these conditions, the system SHOULD report the result as ambiguous. It MUST NOT classify a repeated PSNTP as a protocol error solely because the value was repeated.
+
+PDMv2 alone cannot always determine the exact number of IPv6 packets transmitted or received at a physical interface when segmentation or aggregation occurs outside the PDMv2 processing point.
+
+## Protected Options and Repeated PSNTP Values
+
+Multiple packets can contain the same protected PDMv2 value because of packet duplication or segmentation below the PDMv2 processing point.
+
+Replication of an already protected PDMv2 option is not a new invocation of the authenticated-encryption algorithm. Repetition of an identical ciphertext and authentication tag therefore does not, by itself, constitute cryptographic nonce reuse.
+
+A sender MUST NOT independently encrypt different PDMv2 plaintext values using the same SessionTemporaryKey and nonce.
+
+A receiver or analyzer MAY recognize identical protected values as repeated observations. It MUST authenticate a protected value before using its contents, regardless of whether an identical value was previously observed.
 
 # Operational Model
 
@@ -367,15 +526,17 @@ reduce metadata distinguishability.
 
 # IANA Considerations
 
-This document requests the allocation of a new IPv6 Destination
-Options Header Option Type from the "Destination Options and Hop-by-
-Hop Options" registry maintained by the Internet Assigned Numbers
-Authority.
+## PDMv2 Destination Option
 
-The requested allocation is for the Performance and Diagnostic
-Metrics Version 2 (PDMv2) option.  This option is distinct from and
-independent of the Performance and Diagnostic Metrics option defined
-in RFC 8250.
+IANA is requested to assign a new IPv6 Destination Option Type for PDMv2 from the "Destination Options and Hop-by-Hop Options" registry.
+
+| Value | Description | Reference |
+|---|---|---|
+| TBD1 | Performance and Diagnostic Metrics Version 2 | This document |
+
+The PDMv2 allocation is independent of the PDM Option Type 0x0F assigned to RFC 8250. This document does not modify or redefine the RFC 8250 allocation.
+
+The requested allocation must provide the option-processing behavior specified by this document. The final hexadecimal representation, including the action and change-en-route bits, will be inserted when IANA assigns the value.
 
 # Contributors
 
@@ -393,9 +554,7 @@ developing the PDMv2 implementation for testing.
 
 # Example: RADIUS / EAP-Based Registration
 
-This appendix illustrates one possible registration mechanism that
-satisfies the requirements defined in Section 4. Other mechanisms
-may be used.
+This appendix illustrates one possible registration mechanism that can meet the registration objectives listed in Section 5.1 and provide the security context described in Section 5.4. The example is informative. Conformance with this document depends on satisfying the applicable normative requirements in the main body and does not depend on using RADIUS or EAP.
 
 
 ## Overview
@@ -549,10 +708,11 @@ reusing transport-layer session keys.
 ## Summary
 
 This appendix demonstrates that a RADIUS/EAP-based registration system can
-satisfy the PDMv2 registration requirements defined in this document. The
-example shows that secure, scalable, and federated registration can be
-achieved using existing AAA infrastructure, without constraining PDMv2 to a
-specific authentication or cryptographic technology.
+satisfy the registration objectives and applicable normative requirements
+defined in this document. The example shows that secure, scalable, and
+federated registration can be achieved using existing AAA infrastructure,
+without constraining PDMv2 to a specific authentication or cryptographic
+technology.
 
 
 # Change Log
