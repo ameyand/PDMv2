@@ -217,6 +217,8 @@ A PDMv2 SessionTemporaryKey MUST NOT be a TLS, QUIC, IPsec, or other application
 
 The specific registration protocol and key-derivation function are outside the scope of this document.
 
+This document specifies the PDMv2 on-wire formats and the processing and exception-handling requirements for those formats. A registration mechanism supplies the security context described in this section but does not redefine receiver behavior for malformed, unauthenticated, or unauthorized PDMv2 options.
+
 # PDMv2 Destination Options
 
 ## Use of IPv6 Destination Options
@@ -340,8 +342,8 @@ The protected format has the following organization:
 
 | Offset | Length | Field | Protection |
 |---|---|---|---|
-| 0 | 1 octet | Option Type | Clear |
-| 1 | 1 octet | Option Length | Clear |
+| 0 | 1 octet | Option Type | Clear and authenticated |
+| 1 | 1 octet | Option Length | Clear and authenticated |
 | 2 | 4 bits | Version | Clear and authenticated |
 | 2 | 12 bits | Epoch | Clear and authenticated |
 | 4 | 4 octets | PSNTP | Clear and authenticated |
@@ -402,6 +404,12 @@ For ICMPv6 message types containing an Identifier field, such as Echo Request an
 An ICMPv6 error message is classified using its outer IPv6 and ICMPv6 headers. The quoted packet carried inside the ICMPv6 error message does not identify the flow carrying the PDMv2 option.
 
 For another upper-layer protocol without port numbers, the protocol specification or registration context SHOULD define an equivalent stable flow identifier. If no protocol-specific discriminator is available, packets having the same IPv6 source address, IPv6 destination address, and upper-layer protocol number are treated as one PDMv2 flow.
+
+For TCP and UDP, the corresponding reverse-direction flow is identified by exchanging the source and destination IPv6 addresses and exchanging the source and destination ports.
+
+For ICMPv6 request-and-reply message pairs, the corresponding reverse-direction flow exchanges the source and destination IPv6 addresses and associates the applicable request Type with its corresponding reply Type. When an Identifier field is present, the same Identifier is used for the association. A registration or protocol specification defining another request-and-reply relationship MUST define its reverse-direction mapping.
+
+If no corresponding reverse-direction flow can be identified, PSNLR is initialized as specified by this document.
 
 ## Packet Sequence Number This Packet
 
@@ -479,6 +487,24 @@ A sender MUST NOT independently encrypt different PDMv2 plaintext values using t
 
 A receiver or analyzer MAY recognize identical protected values as repeated observations. It MUST authenticate a protected value before using its contents, regardless of whether an identical value was previously observed.
 
+## Receiver Validation and Exception Handling
+
+A receiver MUST validate the PDMv2 Option Type, Option Length, Version, and format before interpreting dependent PDMv2 fields. A receiver MUST treat a protected PDMv2 option as invalid for PDMv2 processing if authentication fails, the indicated Epoch is unknown or expired, the required security context is unavailable, the sender is not authorized by that context, or the option is malformed or inconsistent with its declared format.
+
+An invalid, unauthenticated, or unauthorized PDMv2 option MUST NOT be used for measurement, reconstruction, or updating PDMv2 state. Failure of a registration service or inability to obtain an applicable security context MUST fail closed with respect to protected PDMv2 content: the content MUST NOT be decrypted, interpreted, or used to update measurement state.
+
+Unless local security policy requires otherwise, failure to process PDMv2 information SHOULD NOT cause the receiver to discard the enclosing packet's upper-layer payload. The receiver MAY ignore the PDMv2 information and continue normal IPv6 processing, subject to the processing behavior encoded in the IPv6 Option Type action bits.
+
+A deployment MAY discard or block packets carrying invalid or unauthorized PDMv2 options when required by local security policy. Because such behavior can affect connectivity and can be exploited for denial of service, implementations SHOULD default to ignoring invalid PDMv2 measurement information rather than discarding the enclosing packet when the IPv6 Option Type action bits permit that behavior.
+
+An unsupported Version MUST be processed according to the action bits in the PDMv2 Option Type. The receiver MUST NOT interpret the remaining fields using the Version 2 format.
+
+A sender MUST set Reserved fields to zero. A receiver MUST ignore nonzero Reserved fields for protocol processing but MAY record the condition as an anomaly.
+
+Implementations SHOULD count, log, or alert on authentication failures, unknown or expired Epoch values, unavailable security contexts, unauthorized senders, malformed options, unsupported versions, and other anomalous PDMv2 conditions. Such reporting SHOULD be aggregated or rate-limited to prevent logging-based denial of service.
+
+Implementations SHOULD provide configurable policies for ignoring invalid PDMv2 data, generating an alert, discarding an enclosing packet, or blocking a source. The selected policy and its operational consequences are deployment-specific.
+
 # Operational Model
 
 ## Registration Phase
@@ -503,19 +529,60 @@ Prior to sending PDMv2 data:
 
 # Security Considerations
 
-PDMv2 reduces exposure of sensitive operational metadata by ensuring that
-only registered and authorized entities can meaningfully interpret
-measurement data.
+PDMv2 reduces exposure of sensitive operational metadata by ensuring that only
+registered and authorized entities can meaningfully decrypt and interpret
+protected measurement data.
 
-This document intentionally does not specify cryptographic mechanisms.
-Security strength therefore depends on the chosen registration system, its
-authentication methods, and its key management practices.
+This document intentionally does not specify cryptographic mechanisms or
+ciphersuites. Security strength therefore depends on the chosen registration
+system, its authentication methods, and its key management practices.
 
-Implementations SHOULD support:
+Authoritative receiver validation and exception-handling requirements are
+specified in Section 7.14. This section summarizes the security rationale for
+those rules:
 
-{:req_sc: counter="bar" style="format %d."}
-- Forward Secracy
-- Logging of anomalous PDMv2 behavior
+*  Authentication and Authorization Failures:
+   An attacker may attempt to inject fabricated PDMv2 options or forge metric
+   data. To prevent forged, unauthenticated, or unauthorized PDMv2 options from
+   contaminating measurement or reconstruction state, receivers MUST NOT use
+   such data for metric calculations or PDMv2 state updates.
+
+*  Unknown, Expired, or Unavailable Key Context:
+   If an indicated Epoch is unknown or expired, or if the necessary security
+   context cannot be retrieved, the receiver fails closed with respect to
+   protected PDMv2 content. The protected metric block is not decrypted,
+   interpreted, or used.
+
+*  Nonce Reuse Prevention:
+   Using the same SessionTemporaryKey and nonce to protect different plaintexts
+   destroys AEAD cryptographic security guarantees. As specified in Section
+   7.5, senders MUST rekey or follow suite-defined nonce construction to
+   prevent nonce reuse under the same key before PSNTP space wraps.
+
+*  Replication vs. Independent Encryption:
+   As described in Section 7.13, replication of an already protected option by
+   segmentation offload (TSO/GSO) or duplication is not a new AEAD encryption
+   event and does not cause nonce reuse. However, receivers must authenticate
+   each received option before using its contents.
+
+*  Context Selectors vs. Secrets:
+   The Global Pointer and Epoch fields are explicit key and context selectors;
+   they are not secret and do not constitute proof of authorization. Possession
+   of a Global Pointer or Epoch value MUST NOT be treated as proof of
+   authorization.
+
+*  Denial of Service via Packet Dropping:
+   Dropping enclosing packets due to invalid or unauthenticated PDMv2 options
+   creates a denial-of-service vector where on-path or off-path attackers can
+   disrupt legitimate traffic by corrupting or attaching invalid options.
+   Implementations SHOULD default to ignoring invalid PDMv2 information and
+   continuing normal IPv6 processing of the packet payload, subject to the IPv6
+   Option Type action bits.
+
+*  Denial of Service via Logging and Alerts:
+   Generating logs or alerts on every anomalous or invalid PDMv2 option could
+   allow an attacker to exhaust system resources or logging storage.
+   Implementations SHOULD aggregate or rate-limit anomaly reporting and alerts.
 
 # Privacy Considerations
 
