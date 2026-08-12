@@ -1066,7 +1066,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Elkins, et al.</td>
-<td class="center">Expires 12 February 2027</td>
+<td class="center">Expires 13 February 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1079,12 +1079,12 @@ svg {
 <dd class="internet-draft">draft-ietf-ippm-encrypted-pdmv2-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-08-11" class="published">11 August 2026</time>
+<time datetime="2026-08-12" class="published">12 August 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-02-12">12 February 2027</time></dd>
+<dd class="expires"><time datetime="2027-02-13">13 February 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1166,7 +1166,7 @@ negotiation are explicitly out of scope.<a href="#section-abstract-3" class="pil
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 12 February 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 13 February 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1279,6 +1279,9 @@ negotiation are explicitly out of scope.<a href="#section-abstract-3" class="pil
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.13">
                 <p id="section-toc.1-1.7.2.13.1"><a href="#section-7.13" class="auto internal xref">7.13</a>. <a href="#name-protected-options-and-repea" class="internal xref">Protected Options and Repeated PSNTP Values</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.14">
+                <p id="section-toc.1-1.7.2.14.1"><a href="#section-7.14" class="auto internal xref">7.14</a>. <a href="#name-receiver-validation-and-exc" class="internal xref">Receiver Validation and Exception Handling</a></p>
 </li>
             </ul>
 </li>
@@ -1538,6 +1541,7 @@ of transport and security protocol is out of scope for this document.<a href="#s
 <p id="section-5.4-4">When a SessionTemporaryKey is derived from a master secret, the derivation <span class="bcp14">MUST</span> use a cryptographically secure key-derivation function and a PDMv2-specific purpose label. The derivation <span class="bcp14">MUST</span> provide cryptographic separation between PDMv2 keys and keys used by other protocols or for other purposes.<a href="#section-5.4-4" class="pilcrow">¶</a></p>
 <p id="section-5.4-5">A PDMv2 SessionTemporaryKey <span class="bcp14">MUST NOT</span> be a TLS, QUIC, IPsec, or other application or transport traffic key.<a href="#section-5.4-5" class="pilcrow">¶</a></p>
 <p id="section-5.4-6">The specific registration protocol and key-derivation function are outside the scope of this document.<a href="#section-5.4-6" class="pilcrow">¶</a></p>
+<p id="section-5.4-7">This document specifies the PDMv2 on-wire formats and the processing and exception-handling requirements for those formats. A registration mechanism supplies the security context described in this section but does not redefine receiver behavior for malformed, unauthenticated, or unauthorized PDMv2 options.<a href="#section-5.4-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1755,13 +1759,13 @@ and global unicast source addresses.<a href="#section-6.3-1" class="pilcrow">¶<
               <td class="text-left" rowspan="1" colspan="1">0</td>
               <td class="text-left" rowspan="1" colspan="1">1 octet</td>
               <td class="text-left" rowspan="1" colspan="1">Option Type</td>
-              <td class="text-left" rowspan="1" colspan="1">Clear</td>
+              <td class="text-left" rowspan="1" colspan="1">Clear and authenticated</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">1</td>
               <td class="text-left" rowspan="1" colspan="1">1 octet</td>
               <td class="text-left" rowspan="1" colspan="1">Option Length</td>
-              <td class="text-left" rowspan="1" colspan="1">Clear</td>
+              <td class="text-left" rowspan="1" colspan="1">Clear and authenticated</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">2</td>
@@ -1852,6 +1856,9 @@ TBD1<a href="#section-7.3-1" class="pilcrow">¶</a></p>
 <p id="section-7.6-4">For ICMPv6 message types containing an Identifier field, such as Echo Request and Echo Reply, an implementation <span class="bcp14">SHOULD</span> also use that Identifier to distinguish concurrent exchanges.<a href="#section-7.6-4" class="pilcrow">¶</a></p>
 <p id="section-7.6-5">An ICMPv6 error message is classified using its outer IPv6 and ICMPv6 headers. The quoted packet carried inside the ICMPv6 error message does not identify the flow carrying the PDMv2 option.<a href="#section-7.6-5" class="pilcrow">¶</a></p>
 <p id="section-7.6-6">For another upper-layer protocol without port numbers, the protocol specification or registration context <span class="bcp14">SHOULD</span> define an equivalent stable flow identifier. If no protocol-specific discriminator is available, packets having the same IPv6 source address, IPv6 destination address, and upper-layer protocol number are treated as one PDMv2 flow.<a href="#section-7.6-6" class="pilcrow">¶</a></p>
+<p id="section-7.6-7">For TCP and UDP, the corresponding reverse-direction flow is identified by exchanging the source and destination IPv6 addresses and exchanging the source and destination ports.<a href="#section-7.6-7" class="pilcrow">¶</a></p>
+<p id="section-7.6-8">For ICMPv6 request-and-reply message pairs, the corresponding reverse-direction flow exchanges the source and destination IPv6 addresses and associates the applicable request Type with its corresponding reply Type. When an Identifier field is present, the same Identifier is used for the association. A registration or protocol specification defining another request-and-reply relationship <span class="bcp14">MUST</span> define its reverse-direction mapping.<a href="#section-7.6-8" class="pilcrow">¶</a></p>
+<p id="section-7.6-9">If no corresponding reverse-direction flow can be identified, PSNLR is initialized as specified by this document.<a href="#section-7.6-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="packet-sequence-number-this-packet">
@@ -1936,6 +1943,21 @@ TBD1<a href="#section-7.3-1" class="pilcrow">¶</a></p>
 <p id="section-7.13-4">A receiver or analyzer <span class="bcp14">MAY</span> recognize identical protected values as repeated observations. It <span class="bcp14">MUST</span> authenticate a protected value before using its contents, regardless of whether an identical value was previously observed.<a href="#section-7.13-4" class="pilcrow">¶</a></p>
 </section>
 </div>
+<div id="receiver-validation-and-exception-handling">
+<section id="section-7.14">
+        <h3 id="name-receiver-validation-and-exc">
+<a href="#section-7.14" class="section-number selfRef">7.14. </a><a href="#name-receiver-validation-and-exc" class="section-name selfRef">Receiver Validation and Exception Handling</a>
+        </h3>
+<p id="section-7.14-1">A receiver <span class="bcp14">MUST</span> validate the PDMv2 Option Type, Option Length, Version, and format before interpreting dependent PDMv2 fields. A receiver <span class="bcp14">MUST</span> treat a protected PDMv2 option as invalid for PDMv2 processing if authentication fails, the indicated Epoch is unknown or expired, the required security context is unavailable, the sender is not authorized by that context, or the option is malformed or inconsistent with its declared format.<a href="#section-7.14-1" class="pilcrow">¶</a></p>
+<p id="section-7.14-2">An invalid, unauthenticated, or unauthorized PDMv2 option <span class="bcp14">MUST NOT</span> be used for measurement, reconstruction, or updating PDMv2 state. Failure of a registration service or inability to obtain an applicable security context <span class="bcp14">MUST</span> fail closed with respect to protected PDMv2 content: the content <span class="bcp14">MUST NOT</span> be decrypted, interpreted, or used to update measurement state.<a href="#section-7.14-2" class="pilcrow">¶</a></p>
+<p id="section-7.14-3">Unless local security policy requires otherwise, failure to process PDMv2 information <span class="bcp14">SHOULD NOT</span> cause the receiver to discard the enclosing packet's upper-layer payload. The receiver <span class="bcp14">MAY</span> ignore the PDMv2 information and continue normal IPv6 processing, subject to the processing behavior encoded in the IPv6 Option Type action bits.<a href="#section-7.14-3" class="pilcrow">¶</a></p>
+<p id="section-7.14-4">A deployment <span class="bcp14">MAY</span> discard or block packets carrying invalid or unauthorized PDMv2 options when required by local security policy. Because such behavior can affect connectivity and can be exploited for denial of service, implementations <span class="bcp14">SHOULD</span> default to ignoring invalid PDMv2 measurement information rather than discarding the enclosing packet when the IPv6 Option Type action bits permit that behavior.<a href="#section-7.14-4" class="pilcrow">¶</a></p>
+<p id="section-7.14-5">An unsupported Version <span class="bcp14">MUST</span> be processed according to the action bits in the PDMv2 Option Type. The receiver <span class="bcp14">MUST NOT</span> interpret the remaining fields using the Version 2 format.<a href="#section-7.14-5" class="pilcrow">¶</a></p>
+<p id="section-7.14-6">A sender <span class="bcp14">MUST</span> set Reserved fields to zero. A receiver <span class="bcp14">MUST</span> ignore nonzero Reserved fields for protocol processing but <span class="bcp14">MAY</span> record the condition as an anomaly.<a href="#section-7.14-6" class="pilcrow">¶</a></p>
+<p id="section-7.14-7">Implementations <span class="bcp14">SHOULD</span> count, log, or alert on authentication failures, unknown or expired Epoch values, unavailable security contexts, unauthorized senders, malformed options, unsupported versions, and other anomalous PDMv2 conditions. Such reporting <span class="bcp14">SHOULD</span> be aggregated or rate-limited to prevent logging-based denial of service.<a href="#section-7.14-7" class="pilcrow">¶</a></p>
+<p id="section-7.14-8">Implementations <span class="bcp14">SHOULD</span> provide configurable policies for ignoring invalid PDMv2 data, generating an alert, discarding an enclosing packet, or blocking a source. The selected policy and its operational consequences are deployment-specific.<a href="#section-7.14-8" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="operational-model">
@@ -2002,19 +2024,65 @@ TBD1<a href="#section-7.3-1" class="pilcrow">¶</a></p>
       <h2 id="name-security-considerations">
 <a href="#section-9" class="section-number selfRef">9. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-9-1">PDMv2 reduces exposure of sensitive operational metadata by ensuring that
-only registered and authorized entities can meaningfully interpret
-measurement data.<a href="#section-9-1" class="pilcrow">¶</a></p>
-<p id="section-9-2">This document intentionally does not specify cryptographic mechanisms.
-Security strength therefore depends on the chosen registration system, its
-authentication methods, and its key management practices.<a href="#section-9-2" class="pilcrow">¶</a></p>
-<p id="section-9-3">Implementations <span class="bcp14">SHOULD</span> support:<a href="#section-9-3" class="pilcrow">¶</a></p>
+<p id="section-9-1">PDMv2 reduces exposure of sensitive operational metadata by ensuring that only
+registered and authorized entities can meaningfully decrypt and interpret
+protected measurement data.<a href="#section-9-1" class="pilcrow">¶</a></p>
+<p id="section-9-2">This document intentionally does not specify cryptographic mechanisms or
+ciphersuites. Security strength therefore depends on the chosen registration
+system, its authentication methods, and its key management practices.<a href="#section-9-2" class="pilcrow">¶</a></p>
+<p id="section-9-3">Authoritative receiver validation and exception-handling requirements are
+specified in Section 7.14. This section summarizes the security rationale for
+those rules:<a href="#section-9-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-9-4.1">
-          <p id="section-9-4.1.1">Forward Secracy<a href="#section-9-4.1.1" class="pilcrow">¶</a></p>
+          <p id="section-9-4.1.1">Authentication and Authorization Failures:
+An attacker may attempt to inject fabricated PDMv2 options or forge metric
+data. To prevent forged, unauthenticated, or unauthorized PDMv2 options from
+contaminating measurement or reconstruction state, receivers <span class="bcp14">MUST NOT</span> use
+such data for metric calculations or PDMv2 state updates.<a href="#section-9-4.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-9-4.2">
-          <p id="section-9-4.2.1">Logging of anomalous PDMv2 behavior<a href="#section-9-4.2.1" class="pilcrow">¶</a></p>
+          <p id="section-9-4.2.1">Unknown, Expired, or Unavailable Key Context:
+If an indicated Epoch is unknown or expired, or if the necessary security
+context cannot be retrieved, the receiver fails closed with respect to
+protected PDMv2 content. The protected metric block is not decrypted,
+interpreted, or used.<a href="#section-9-4.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-9-4.3">
+          <p id="section-9-4.3.1">Nonce Reuse Prevention:
+Using the same SessionTemporaryKey and nonce to protect different plaintexts
+destroys AEAD cryptographic security guarantees. As specified in Section
+7.5, senders <span class="bcp14">MUST</span> rekey or follow suite-defined nonce construction to
+prevent nonce reuse under the same key before PSNTP space wraps.<a href="#section-9-4.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-9-4.4">
+          <p id="section-9-4.4.1">Replication vs. Independent Encryption:
+As described in Section 7.13, replication of an already protected option by
+segmentation offload (TSO/GSO) or duplication is not a new AEAD encryption
+event and does not cause nonce reuse. However, receivers must authenticate
+each received option before using its contents.<a href="#section-9-4.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-9-4.5">
+          <p id="section-9-4.5.1">Context Selectors vs. Secrets:
+The Global Pointer and Epoch fields are explicit key and context selectors;
+they are not secret and do not constitute proof of authorization. Possession
+of a Global Pointer or Epoch value <span class="bcp14">MUST NOT</span> be treated as proof of
+authorization.<a href="#section-9-4.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-9-4.6">
+          <p id="section-9-4.6.1">Denial of Service via Packet Dropping:
+Dropping enclosing packets due to invalid or unauthenticated PDMv2 options
+creates a denial-of-service vector where on-path or off-path attackers can
+disrupt legitimate traffic by corrupting or attaching invalid options.
+Implementations <span class="bcp14">SHOULD</span> default to ignoring invalid PDMv2 information and
+continuing normal IPv6 processing of the packet payload, subject to the IPv6
+Option Type action bits.<a href="#section-9-4.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-9-4.7">
+          <p id="section-9-4.7.1">Denial of Service via Logging and Alerts:
+Generating logs or alerts on every anomalous or invalid PDMv2 option could
+allow an attacker to exhaust system resources or logging storage.
+Implementations <span class="bcp14">SHOULD</span> aggregate or rate-limit anomaly reporting and alerts.<a href="#section-9-4.7.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
