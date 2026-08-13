@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-08-11T02:02:50.567540+00:00",
+  "timestamp": "2026-08-13T02:21:37.331813+00:00",
   "repo": "ameyand/PDMv2",
   "labels": [
     {
@@ -1411,6 +1411,90 @@
       "mergedBy": "ameyand",
       "mergeCommit": {
         "oid": "b0ca3efc7d152a25617206445def94cf7a9f43c2"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 49,
+      "id": "PR_kwDOJCM9B879ufLD",
+      "title": "Incorporate TSV-ART comments and update Section 5, 7, IANA considerat\u2026",
+      "url": "https://github.com/ameyand/PDMv2/pull/49",
+      "state": "MERGED",
+      "author": "ameyand",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "\u2026ions, and Appendix A",
+      "createdAt": "2026-08-11T20:45:41Z",
+      "updatedAt": "2026-08-11T20:47:16Z",
+      "baseRepository": "ameyand/PDMv2",
+      "baseRefName": "main",
+      "baseRefOid": "b0ca3efc7d152a25617206445def94cf7a9f43c2",
+      "headRepository": "ameyand/PDMv2",
+      "headRefName": "ameyand-patch-6",
+      "headRefOid": "6eb3abf4162f32826fa7ace8e9b0cf18517bfef5",
+      "closedAt": "2026-08-11T20:47:15Z",
+      "mergedAt": "2026-08-11T20:47:15Z",
+      "mergedBy": "ameyand",
+      "mergeCommit": {
+        "oid": "ec44c43d4a5de2e75b40aa5d4e44835e17be8a76"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 50,
+      "id": "PR_kwDOJCM9B87-UgH0",
+      "title": "Address combined TSV-ART and SECdir review requirements and add recei\u2026",
+      "url": "https://github.com/ameyand/PDMv2/pull/50",
+      "state": "MERGED",
+      "author": "ameyand",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "\u2026ver validation",
+      "createdAt": "2026-08-12T23:30:24Z",
+      "updatedAt": "2026-08-12T23:30:55Z",
+      "baseRepository": "ameyand/PDMv2",
+      "baseRefName": "main",
+      "baseRefOid": "ec44c43d4a5de2e75b40aa5d4e44835e17be8a76",
+      "headRepository": "ameyand/PDMv2",
+      "headRefName": "ameyand-patch-6",
+      "headRefOid": "9089eb3aa332252894a8428962ff8b1bae10dc9f",
+      "closedAt": "2026-08-12T23:30:54Z",
+      "mergedAt": "2026-08-12T23:30:54Z",
+      "mergedBy": "ameyand",
+      "mergeCommit": {
+        "oid": "1d9cf9a61b83755d2f5dafa367bb194fa5b34673"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 51,
+      "id": "PR_kwDOJCM9B87-Ul7W",
+      "title": "Update draft version to 15",
+      "url": "https://github.com/ameyand/PDMv2/pull/51",
+      "state": "MERGED",
+      "author": "ameyand",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-08-12T23:34:54Z",
+      "updatedAt": "2026-08-12T23:35:32Z",
+      "baseRepository": "ameyand/PDMv2",
+      "baseRefName": "main",
+      "baseRefOid": "1d9cf9a61b83755d2f5dafa367bb194fa5b34673",
+      "headRepository": "ameyand/PDMv2",
+      "headRefName": "ameyand-patch-6",
+      "headRefOid": "6a4085729b1ea263d701197acd4a4c40d2727f9f",
+      "closedAt": "2026-08-12T23:35:31Z",
+      "mergedAt": "2026-08-12T23:35:30Z",
+      "mergedBy": "ameyand",
+      "mergeCommit": {
+        "oid": "f333aecb5ff7e6ddc0bcf156f8ef05541fe11134"
       },
       "comments": [],
       "reviews": []
